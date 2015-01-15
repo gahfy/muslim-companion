@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">Muslim Companion</string>
+
+    <string name="cancel">Cancel</string>
+
+    <string name="location_required_title">Enable location</string>
+    <string name="location_required_message">The application needs location to be enabled.</string>
+    <string name="location_go_to_settings">Location Settings</string>
 </resources>
