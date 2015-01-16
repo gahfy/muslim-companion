@@ -1,14 +1,14 @@
 <resources>
     <string name="app_name">Muslim Companion</string>
 
-    <string name="cancel">Cancel</string>
+    <string name="cancel">Annuler</string>
 
-    <string name="location_required_title">Enable location</string>
-    <string name="location_required_message">The application needs location to be enabled.</string>
-    <string name="location_go_to_settings">Location Settings</string>
+    <string name="location_required_title">Activez la localisation</string>
+    <string name="location_required_message">L\'application nécessite que la localisation soit active.</string>
+    <string name="location_go_to_settings">Paramètres de localisation</string>
 
-    <string name="geolocating">Geolocating</string>
-    <string name="qibla">Qibla:</string>
+    <string name="geolocating">Geolocalisation</string>
+    <string name="qibla">Qibla :&#160;</string>
     <string name="angle">%d°N</string>
 
     <string name="thin_path">font/Roboto-Thin.ttf</string>

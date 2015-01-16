@@ -5,4 +5,10 @@
         <!-- Customize your theme here. -->
     </style>
 
+    <!-- Base application theme. -->
+    <style name="HorizontalProgressBarStyle" parent="android:Widget.ProgressBar.Horizontal">
+    </style>
+
+    <style name="CompassStyle">
+    </style>
 </resources>

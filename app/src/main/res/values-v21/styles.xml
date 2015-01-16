@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="HorizontalProgressBarStyle" parent="android:Widget.Material.ProgressBar.Horizontal">
+        <item name="android:indeterminateTint">@color/primary</item>
+        <item name="android:indeterminateTintMode">src_in</item>
+    </style>
+
+    <style name="CompassStyle">
+        <item name="android:elevation">15dp</item>
+    </style>
+</resources>

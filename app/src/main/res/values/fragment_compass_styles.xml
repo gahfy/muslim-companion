@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="lyt_geolocating_container">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_centerVertical">true</item>
+        <item name="android:orientation">vertical</item>
+        <item name="android:visibility">gone</item>
+    </style>
+
+    <style name="lbl_geolocating">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_gravity">center_horizontal</item>
+        <item name="android:textSize">32sp</item>
+    </style>
+
+    <style name="prg_geolocating" parent="HorizontalProgressBarStyle">
+        <item name="android:layout_marginTop">25dp</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:indeterminate">true</item>
+        <item name="android:layout_marginLeft">17.66dp</item>
+        <item name="android:layout_marginRight">17.66dp</item>
+    </style>
+
+    <style name="lyt_compass_container">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_centerInParent">true</item>
+        <item name="android:orientation">vertical</item>
+    </style>
+
+    <style name="lyt_compass_shadow">
+        <item name="android:layout_width">300dp</item>
+        <item name="android:layout_height">300dp</item>
+        <item name="android:layout_gravity">center_horizontal</item>
+        <item name="android:background">@drawable/compass_background_shadow</item>
+        <item name="android:orientation">horizontal</item>
+    </style>
+
+    <style name="lyt_compass">
+        <item name="android:layout_margin">15dp</item>
+        <item name="android:layout_width">270dp</item>
+        <item name="android:layout_height">270dp</item>
+        <item name="android:background">@drawable/compass_background</item>
+        <item name="android:orientation">horizontal</item>
+    </style>
+
+    <style name="img_compass_direction">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+    </style>
+
+    <style name="lyt_txt_qibla_container">
+        <item name="android:layout_marginTop">15dp</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_gravity">center_horizontal</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:orientation">horizontal</item>
+    </style>
+
+    <style name="lbl_qibla">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/black_87</item>
+        <item name="android:textSize">32sp</item>
+    </style>
+
+    <style name="lbl_angle">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/accent</item>
+        <item name="android:textSize">48sp</item>
+    </style>
+</resources>

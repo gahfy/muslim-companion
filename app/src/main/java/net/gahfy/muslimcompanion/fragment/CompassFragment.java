@@ -3,13 +3,24 @@ package net.gahfy.muslimcompanion.fragment;
 
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.graphics.Outline;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.os.Build;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.ViewOutlineProvider;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import net.gahfy.muslimcompanion.R;
 import net.gahfy.muslimcompanion.utils.LocationUtils;
+import net.gahfy.muslimcompanion.utils.ViewUtils;
 
 import java.util.Date;
 
@@ -35,6 +46,22 @@ public class CompassFragment extends AbstractFragment {
      * @see net.gahfy.muslimcompanion.utils.LocationUtils
      */
     int locationProvidersStatus = 0;
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View resultView = inflater.inflate(R.layout.fragment_compass, container, false);
+
+        TextView lblGeolocating = (TextView) resultView.findViewById(R.id.lbl_geolocating);
+        TextView lblQibla = (TextView) resultView.findViewById(R.id.lbl_qibla);
+        TextView lblAngle = (TextView) resultView.findViewById(R.id.lbl_angle);
+
+        ViewUtils.setTypefaceToTextView(getMainActivity(), lblGeolocating, ViewUtils.FONT_WEIGHT.LIGHT);
+        ViewUtils.setTypefaceToTextView(getMainActivity(), lblQibla, ViewUtils.FONT_WEIGHT.LIGHT);
+        ViewUtils.setTypefaceToTextView(getMainActivity(), lblAngle, ViewUtils.FONT_WEIGHT.MEDIUM);
+
+        lblAngle.setText(getMainActivity().getString(R.string.angle, 35));
+        return resultView;
+    }
 
     @Override
     public void onStart(){
@@ -102,7 +129,12 @@ public class CompassFragment extends AbstractFragment {
         if(!isLocationListenerEnabled) {
             isLocationListenerEnabled = true;
             locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
-            locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, locationListener);
+            try {
+                locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, locationListener);
+            }
+            catch(IllegalArgumentException e){
+
+            }
             locationManager.requestLocationUpdates(LocationManager.PASSIVE_PROVIDER, 0, 0, locationListener);
         }
     }
@@ -130,8 +162,18 @@ public class CompassFragment extends AbstractFragment {
 
         builder.setMessage(R.string.location_required_message)
                 .setTitle(R.string.location_required_title)
-                .setPositiveButton(R.string.location_go_to_settings, null)
-                .setNegativeButton(R.string.cancel, null);
+                .setPositiveButton(R.string.location_go_to_settings, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        startActivity(new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS));
+                    }
+                })
+                .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        locationDisabledDialog.dismiss();
+                    }
+                });
         locationDisabledDialog = builder.create();
 
         locationDisabledDialog.show();
