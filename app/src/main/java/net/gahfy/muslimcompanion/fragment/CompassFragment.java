@@ -11,10 +11,13 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewOutlineProvider;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -41,6 +44,9 @@ public class CompassFragment extends AbstractFragment {
     /** The location in use for the Fragment */
     private Location location;
 
+    private LinearLayout lytCompassContainer;
+    private LinearLayout lytGeolocatingContainer;
+
     /**
      * The status (enabled/disabled) of location listeners
      * @see net.gahfy.muslimcompanion.utils.LocationUtils
@@ -51,15 +57,19 @@ public class CompassFragment extends AbstractFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View resultView = inflater.inflate(R.layout.fragment_compass, container, false);
 
+        lytCompassContainer = (LinearLayout) resultView.findViewById(R.id.lyt_compass_container);
+        lytGeolocatingContainer = (LinearLayout) resultView.findViewById(R.id.lyt_geolocating_container);
+
         TextView lblGeolocating = (TextView) resultView.findViewById(R.id.lbl_geolocating);
         TextView lblQibla = (TextView) resultView.findViewById(R.id.lbl_qibla);
         TextView lblAngle = (TextView) resultView.findViewById(R.id.lbl_angle);
+
+        lytCompassContainer.setVisibility(View.GONE);
 
         ViewUtils.setTypefaceToTextView(getMainActivity(), lblGeolocating, ViewUtils.FONT_WEIGHT.LIGHT);
         ViewUtils.setTypefaceToTextView(getMainActivity(), lblQibla, ViewUtils.FONT_WEIGHT.LIGHT);
         ViewUtils.setTypefaceToTextView(getMainActivity(), lblAngle, ViewUtils.FONT_WEIGHT.MEDIUM);
 
-        lblAngle.setText(getMainActivity().getString(R.string.angle, 35));
         return resultView;
     }
 
@@ -104,8 +114,10 @@ public class CompassFragment extends AbstractFragment {
      * Called when a location is found
      */
     public void manageFoundLocation(){
-
+        ViewUtils.crossFadeAnimation(getMainActivity(), lytCompassContainer, lytGeolocatingContainer);
     }
+
+
 
     /**
      * Checks the last known locations

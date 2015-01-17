@@ -13,6 +13,6 @@
     <string name="black_path">font/NotoKufiArabic-Bold.ttf</string>
     <string name="black_italic_path">font/NotoKufiArabic-Bold.ttf</string>
 
-    <string name="qibla">قبلة:</string>
+    <string name="qibla">القبلة:</string>
     <string name="angle">%d°ش</string>
 </resources>

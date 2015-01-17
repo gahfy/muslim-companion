@@ -5,7 +5,6 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_centerVertical">true</item>
         <item name="android:orientation">vertical</item>
-        <item name="android:visibility">gone</item>
     </style>
 
     <style name="lbl_geolocating">
@@ -44,10 +43,14 @@
         <item name="android:layout_width">270dp</item>
         <item name="android:layout_height">270dp</item>
         <item name="android:background">@drawable/compass_background</item>
-        <item name="android:orientation">horizontal</item>
     </style>
 
     <style name="img_compass_direction">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+    </style>
+
+    <style name="img_compass_cardinal_direction">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">match_parent</item>
     </style>

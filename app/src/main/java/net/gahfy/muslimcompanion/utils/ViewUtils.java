@@ -2,6 +2,9 @@ package net.gahfy.muslimcompanion.utils;
 
 import android.content.Context;
 import android.graphics.Typeface;
+import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.TextView;
 
 import net.gahfy.muslimcompanion.R;
@@ -86,5 +89,55 @@ public class ViewUtils {
                 setTypefaceToTextView(context, textView, context.getString(R.string.black_italic_path));
                 break;
         }
+    }
+
+    /**
+     * Hide a view while showing an other one using fade_in and fade_out animations
+     * @param context Context in which the application is running
+     * @param viewToShow The view to show
+     * @param viewToHide The view to hide
+     */
+    public static void crossFadeAnimation(Context context, final View viewToShow, final View viewToHide){
+        Animation animFadein = AnimationUtils.loadAnimation(context,
+                R.anim.fade_in);
+        Animation animFadeout = AnimationUtils.loadAnimation(context,
+                R.anim.fade_out);
+
+        animFadeout.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                viewToHide.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+
+            }
+        });
+
+        animFadein.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+                viewToShow.setVisibility(View.VISIBLE);
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+
+            }
+        });
+
+        viewToShow.startAnimation(animFadein);
+        viewToHide.startAnimation(animFadeout);
     }
 }
