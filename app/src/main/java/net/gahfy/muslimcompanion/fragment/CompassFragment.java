@@ -8,13 +8,11 @@ import android.content.Intent;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
-import android.hardware.SensorEventListener2;
 import android.hardware.SensorManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.Surface;
@@ -33,7 +31,6 @@ import net.gahfy.muslimcompanion.utils.LocationUtils;
 import net.gahfy.muslimcompanion.utils.ViewUtils;
 
 import java.util.Date;
-import java.util.Locale;
 
 /**
  * The fragment with the Compass and the Qibla
@@ -49,15 +46,14 @@ public class CompassFragment extends AbstractFragment {
     /** Whether the location listener is on (true) or off (false) */
     private boolean isLocationListenerEnabled = false;
 
-    /** The location in use for the Fragment */
-    private Location location;
+    private double currentLatitude = 300.0;
+    private double currentLongitude = 300.0;
 
     private RelativeLayout lytCompassContainer;
     private LinearLayout lytGeolocatingContainer;
     private TextView lblAngle;
     private ImageView imgCompassArrowDirection;
 
-    private float lastAzimuthInDegrees = 0;
     private boolean isCompassAnimating = false;
     private boolean isCompassWorking = false;
     private SensorManager mSensorManager;
@@ -70,7 +66,6 @@ public class CompassFragment extends AbstractFragment {
     private float[] mR = new float[9];
     private float[] mOrientation = new float[3];
     private float mCurrentDegree = 0f;
-    private WindowManager mWindowManager;
     private Display mDisplay;
 
     /**
@@ -83,7 +78,7 @@ public class CompassFragment extends AbstractFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View resultView = inflater.inflate(R.layout.fragment_compass, container, false);
 
-        mWindowManager = (WindowManager) getMainActivity().getSystemService(Context.WINDOW_SERVICE);
+        WindowManager mWindowManager = (WindowManager) getMainActivity().getSystemService(Context.WINDOW_SERVICE);
         mDisplay = mWindowManager.getDefaultDisplay();
 
         mSensorManager = (SensorManager) getMainActivity().getSystemService(Context.SENSOR_SERVICE);
@@ -99,8 +94,6 @@ public class CompassFragment extends AbstractFragment {
 
         imgCompassArrowDirection = (ImageView) resultView.findViewById(R.id.img_compass_arrow_direction);
 
-        lytCompassContainer.setVisibility(View.INVISIBLE);
-
         ViewUtils.setTypefaceToTextView(getMainActivity(), lblGeolocating, ViewUtils.FONT_WEIGHT.LIGHT);
         ViewUtils.setTypefaceToTextView(getMainActivity(), lblQibla, ViewUtils.FONT_WEIGHT.LIGHT);
         ViewUtils.setTypefaceToTextView(getMainActivity(), lblAngle, ViewUtils.FONT_WEIGHT.MEDIUM);
@@ -109,20 +102,37 @@ public class CompassFragment extends AbstractFragment {
     }
 
     @Override
+    public void onCreate(Bundle savedInstanceState){
+        super.onCreate(savedInstanceState);
+
+        if(savedInstanceState != null){
+            currentLatitude = savedInstanceState.getDouble("latitude");
+            currentLongitude = savedInstanceState.getDouble("longitude");
+        }
+    }
+
+    @Override
     public void onStart(){
         super.onStart();
-
-        locationProvidersStatus = LocationUtils.getLocationProvidersStatus(getMainActivity());
-        if(locationManager == null)
-            locationManager = (LocationManager) getMainActivity().getSystemService(Context.LOCATION_SERVICE);
-
-        checkLastKnownLocation();
-        if(location != null){
+        if(currentLatitude < 300.0) {
             manageFoundLocation();
         }
-        else {
-            checkLocationProviders();
-            enableLocationListeners();
+        else{
+            lytCompassContainer.setVisibility(View.GONE);
+
+            locationProvidersStatus = LocationUtils.getLocationProvidersStatus(getMainActivity());
+            if (locationManager == null)
+                locationManager = (LocationManager) getMainActivity().getSystemService(Context.LOCATION_SERVICE);
+
+            checkLastKnownLocation();
+
+            if (currentLatitude < 300.0) {
+                manageFoundLocation();
+            } else {
+
+                checkLocationProviders();
+                enableLocationListeners();
+            }
         }
     }
 
@@ -154,7 +164,7 @@ public class CompassFragment extends AbstractFragment {
      * Called when a location is found
      */
     public void manageFoundLocation(){
-        int kaabaBearing = (int) LocationUtils.bearingToKaaba(location.getLatitude(), location.getLongitude());
+        int kaabaBearing = (int) LocationUtils.bearingToKaaba(currentLatitude, currentLongitude);
         lblAngle.setText(getMainActivity().getString(R.string.angle, kaabaBearing));
 
         Animation an = new RotateAnimation(0.0f, kaabaBearing, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
@@ -200,10 +210,12 @@ public class CompassFragment extends AbstractFragment {
         Location lastKnownNetworkLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
 
         if(isLocationGoodEnough(lastKnownGpsLocation)){
-            location = lastKnownGpsLocation;
+            currentLatitude = lastKnownGpsLocation.getLatitude();
+            currentLongitude = lastKnownGpsLocation.getLongitude();
         }
         else if(isLocationGoodEnough(lastKnownNetworkLocation)){
-            location = lastKnownNetworkLocation;
+            currentLatitude = lastKnownNetworkLocation.getLatitude();
+            currentLongitude = lastKnownNetworkLocation.getLongitude();
         }
     }
 
@@ -278,7 +290,8 @@ public class CompassFragment extends AbstractFragment {
      */
     private LocationListener locationListener = new LocationListener() {
         public void onLocationChanged(Location location) {
-            CompassFragment.this.location = location;
+            CompassFragment.this.currentLatitude = location.getLatitude();
+            CompassFragment.this.currentLongitude = location.getLongitude();
             disableLocationListeners();
             manageFoundLocation();
         }
@@ -338,8 +351,6 @@ public class CompassFragment extends AbstractFragment {
                 float azimuthInRadians = mOrientation[0];
                 float azimuthInDegress = (float)(Math.toDegrees(azimuthInRadians)+360);
 
-                Log.i(CompassFragment.class.getSimpleName(), String.format(Locale.US, "Screen rotation = %d", mDisplay.getRotation()*90));
-
                 switch(mDisplay.getRotation()){
                     case Surface.ROTATION_90:
                         azimuthInDegress += 90;
@@ -356,7 +367,6 @@ public class CompassFragment extends AbstractFragment {
                 if(!isCompassAnimating) {
 
                     isCompassAnimating = true;
-                    lastAzimuthInDegrees = azimuthInDegress;
                     RotateAnimation ra = new RotateAnimation(
                             mCurrentDegree,
                             -azimuthInDegress,
@@ -403,5 +413,12 @@ public class CompassFragment extends AbstractFragment {
             output[i] = output[i] + alpha * (input[i] - output[i]);
         }
         return output;
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState){
+        super.onSaveInstanceState(outState);
+        outState.putDouble("latitude", currentLatitude);
+        outState.putDouble("longitude", currentLongitude);
     }
 }

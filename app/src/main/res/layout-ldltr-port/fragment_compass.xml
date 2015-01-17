@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <LinearLayout
+        android:id="@+id/lyt_geolocating_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:orientation="vertical">
+        <TextView
+            android:id="@+id/lbl_geolocating"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:textSize="32sp"
+            android:text="@string/geolocating" />
+
+        <ProgressBar
+            android:id="@+id/prg_geolocating"
+            style="@style/HorizontalProgressBarStyle"
+            android:layout_marginTop="25dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:indeterminate="true"
+            android:layout_marginLeft="17.66dp"
+            android:layout_marginRight="17.66dp"
+        />
+    </LinearLayout>
+
+    <RelativeLayout
+        android:id="@+id/lyt_compass_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true">
+        <LinearLayout
+            android:id="@+id/lyt_compass_shadow"
+            android:layout_width="300dp"
+            android:layout_height="300dp"
+            android:layout_centerHorizontal="true"
+            android:background="@drawable/compass_background_shadow"
+            android:orientation="horizontal">
+            <RelativeLayout
+                android:id="@+id/lyt_compass"
+                android:layout_margin="15dp"
+                android:layout_width="270dp"
+                android:layout_height="270dp"
+                android:background="@drawable/compass_background">
+                <ImageView
+                    android:id="@+id/img_compass_cardinal_direction"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/compass_cardinal_direction" />
+                <ImageView
+                    android:id="@+id/img_compass_arrow_direction"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/compass_direction" />
+            </RelativeLayout>
+        </LinearLayout>
+        <RelativeLayout
+            android:id="@+id/lyt_line_qibla_container"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:layout_below="@id/lyt_compass_shadow"
+            android:layout_centerHorizontal="true">
+            <RelativeLayout
+                android:id="@+id/lyt_txt_qibla_container"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true">
+                <TextView
+                    android:id="@+id/lbl_qibla"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/black_87"
+                    android:textSize="32sp"
+                    android:layout_centerVertical="true"
+                    android:text="@string/qibla" />
+            </RelativeLayout>
+            <RelativeLayout
+                android:id="@+id/lyt_txt_angle_container"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toRightOf="@id/lyt_txt_qibla_container">
+                <TextView
+                    android:id="@+id/lbl_angle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/accent"
+                    android:textSize="48sp"
+                    android:layout_centerVertical="true" />
+            </RelativeLayout>
+        </RelativeLayout>
+    </RelativeLayout>
+</RelativeLayout>
