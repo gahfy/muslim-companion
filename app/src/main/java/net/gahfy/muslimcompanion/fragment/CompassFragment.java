@@ -5,20 +5,27 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Outline;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorEventListener2;
+import android.hardware.SensorManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
-import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Display;
 import android.view.LayoutInflater;
+import android.view.Surface;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewOutlineProvider;
+import android.view.WindowManager;
 import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
+import android.view.animation.RotateAnimation;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import net.gahfy.muslimcompanion.R;
@@ -26,6 +33,7 @@ import net.gahfy.muslimcompanion.utils.LocationUtils;
 import net.gahfy.muslimcompanion.utils.ViewUtils;
 
 import java.util.Date;
+import java.util.Locale;
 
 /**
  * The fragment with the Compass and the Qibla
@@ -44,8 +52,26 @@ public class CompassFragment extends AbstractFragment {
     /** The location in use for the Fragment */
     private Location location;
 
-    private LinearLayout lytCompassContainer;
+    private RelativeLayout lytCompassContainer;
     private LinearLayout lytGeolocatingContainer;
+    private TextView lblAngle;
+    private ImageView imgCompassArrowDirection;
+
+    private float lastAzimuthInDegrees = 0;
+    private boolean isCompassAnimating = false;
+    private boolean isCompassWorking = false;
+    private SensorManager mSensorManager;
+    private Sensor mAccelerometer;
+    private Sensor mMagnetometer;
+    private float[] mLastAccelerometer = new float[3];
+    private float[] mLastMagnetometer = new float[3];
+    private boolean mLastAccelerometerSet = false;
+    private boolean mLastMagnetometerSet = false;
+    private float[] mR = new float[9];
+    private float[] mOrientation = new float[3];
+    private float mCurrentDegree = 0f;
+    private WindowManager mWindowManager;
+    private Display mDisplay;
 
     /**
      * The status (enabled/disabled) of location listeners
@@ -57,14 +83,23 @@ public class CompassFragment extends AbstractFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View resultView = inflater.inflate(R.layout.fragment_compass, container, false);
 
-        lytCompassContainer = (LinearLayout) resultView.findViewById(R.id.lyt_compass_container);
+        mWindowManager = (WindowManager) getMainActivity().getSystemService(Context.WINDOW_SERVICE);
+        mDisplay = mWindowManager.getDefaultDisplay();
+
+        mSensorManager = (SensorManager) getMainActivity().getSystemService(Context.SENSOR_SERVICE);
+        mAccelerometer = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+        mMagnetometer = mSensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD);
+
+        lytCompassContainer = (RelativeLayout) resultView.findViewById(R.id.lyt_compass_container);
         lytGeolocatingContainer = (LinearLayout) resultView.findViewById(R.id.lyt_geolocating_container);
 
         TextView lblGeolocating = (TextView) resultView.findViewById(R.id.lbl_geolocating);
         TextView lblQibla = (TextView) resultView.findViewById(R.id.lbl_qibla);
-        TextView lblAngle = (TextView) resultView.findViewById(R.id.lbl_angle);
+        lblAngle = (TextView) resultView.findViewById(R.id.lbl_angle);
 
-        lytCompassContainer.setVisibility(View.GONE);
+        imgCompassArrowDirection = (ImageView) resultView.findViewById(R.id.img_compass_arrow_direction);
+
+        lytCompassContainer.setVisibility(View.INVISIBLE);
 
         ViewUtils.setTypefaceToTextView(getMainActivity(), lblGeolocating, ViewUtils.FONT_WEIGHT.LIGHT);
         ViewUtils.setTypefaceToTextView(getMainActivity(), lblQibla, ViewUtils.FONT_WEIGHT.LIGHT);
@@ -95,6 +130,11 @@ public class CompassFragment extends AbstractFragment {
     public void onStop(){
         super.onStop();
         disableLocationListeners();
+        if(isCompassWorking){
+            mSensorManager.unregisterListener(sensorEventListener, mAccelerometer);
+            mSensorManager.unregisterListener(sensorEventListener, mMagnetometer);
+            isCompassWorking = false;
+        }
     }
 
     /**
@@ -114,6 +154,39 @@ public class CompassFragment extends AbstractFragment {
      * Called when a location is found
      */
     public void manageFoundLocation(){
+        int kaabaBearing = (int) LocationUtils.bearingToKaaba(location.getLatitude(), location.getLongitude());
+        lblAngle.setText(getMainActivity().getString(R.string.angle, kaabaBearing));
+
+        Animation an = new RotateAnimation(0.0f, kaabaBearing, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+
+        an.setDuration(0);
+        an.setRepeatCount(0);
+        an.setRepeatMode(Animation.REVERSE);
+        an.setFillAfter(true);
+
+        an.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+                if(mAccelerometer != null && mMagnetometer != null) {
+                    isCompassWorking = true;
+                    mSensorManager.registerListener(sensorEventListener, mAccelerometer, SensorManager.SENSOR_DELAY_GAME);
+                    mSensorManager.registerListener(sensorEventListener, mMagnetometer, SensorManager.SENSOR_DELAY_GAME);
+                }
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+
+            }
+        });
+        // Aply animation to image view
+        imgCompassArrowDirection.startAnimation(an);
+
         ViewUtils.crossFadeAnimation(getMainActivity(), lytCompassContainer, lytGeolocatingContainer);
     }
 
@@ -192,6 +265,15 @@ public class CompassFragment extends AbstractFragment {
     }
 
     /**
+     * Returns whether a location is good for this fragment or not.
+     * @param location the location to check
+     * @return whether a location is good for this fragment or not
+     */
+    public static boolean isLocationGoodEnough(Location location){
+        return location != null && location.getTime()+3600000l >= new Date().getTime();
+    }
+
+    /**
      * The location listener of the fragment
      */
     private LocationListener locationListener = new LocationListener() {
@@ -236,12 +318,90 @@ public class CompassFragment extends AbstractFragment {
         }
     };
 
-    /**
-     * Returns whether a location is good for this fragment or not.
-     * @param location the location to check
-     * @return whether a location is good for this fragment or not
-     */
-    public static boolean isLocationGoodEnough(Location location){
-        return location != null && location.getTime()+3600000l >= new Date().getTime();
+    private SensorEventListener sensorEventListener = new SensorEventListener() {
+
+
+        @Override
+        public void onSensorChanged(SensorEvent event) {
+            if (event.sensor == mAccelerometer) {
+                float[] temp = exponentialSmoothing(mLastAccelerometer, event.values, 0.5f);
+                System.arraycopy(temp, 0, mLastAccelerometer, 0, temp.length);
+                mLastAccelerometerSet = true;
+            } else if (event.sensor == mMagnetometer) {
+                float[] temp = exponentialSmoothing(mLastMagnetometer, event.values, 0.8f);
+                System.arraycopy(temp, 0, mLastMagnetometer, 0, temp.length);
+                mLastMagnetometerSet = true;
+            }
+            if (mLastAccelerometerSet && mLastMagnetometerSet) {
+                SensorManager.getRotationMatrix(mR, null, mLastAccelerometer, mLastMagnetometer);
+                SensorManager.getOrientation(mR, mOrientation);
+                float azimuthInRadians = mOrientation[0];
+                float azimuthInDegress = (float)(Math.toDegrees(azimuthInRadians)+360);
+
+                Log.i(CompassFragment.class.getSimpleName(), String.format(Locale.US, "Screen rotation = %d", mDisplay.getRotation()*90));
+
+                switch(mDisplay.getRotation()){
+                    case Surface.ROTATION_90:
+                        azimuthInDegress += 90;
+                        break;
+                    case Surface.ROTATION_180:
+                        azimuthInDegress += 180;
+                        break;
+                    case Surface.ROTATION_270:
+                        azimuthInDegress -= 90;
+                        break;
+                }
+                azimuthInDegress = azimuthInDegress%360;
+
+                if(!isCompassAnimating) {
+
+                    isCompassAnimating = true;
+                    lastAzimuthInDegrees = azimuthInDegress;
+                    RotateAnimation ra = new RotateAnimation(
+                            mCurrentDegree,
+                            -azimuthInDegress,
+                            Animation.RELATIVE_TO_SELF, 0.5f,
+                            Animation.RELATIVE_TO_SELF,
+                            0.5f);
+
+                    ra.setAnimationListener(new Animation.AnimationListener() {
+                        @Override
+                        public void onAnimationStart(Animation animation) {
+                        }
+
+                        @Override
+                        public void onAnimationEnd(Animation animation) {
+                            isCompassAnimating = false;
+                        }
+
+                        @Override
+                        public void onAnimationRepeat(Animation animation) {
+
+                        }
+                    });
+
+                    ra.setDuration(250);
+
+                    ra.setFillAfter(true);
+
+                    getView().findViewById(R.id.lyt_compass).startAnimation(ra);
+                    mCurrentDegree = -azimuthInDegress;
+                }
+            }
+        }
+
+        @Override
+        public void onAccuracyChanged(Sensor sensor, int accuracy) {
+
+        }
+    };
+
+    private float[] exponentialSmoothing( float[] input, float[] output, float alpha ) {
+        if ( output == null )
+            return input;
+        for ( int i=0; i<input.length; i++ ) {
+            output[i] = output[i] + alpha * (input[i] - output[i]);
+        }
+        return output;
     }
 }

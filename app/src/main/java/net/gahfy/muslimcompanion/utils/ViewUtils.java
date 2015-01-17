@@ -5,6 +5,7 @@ import android.graphics.Typeface;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.view.animation.RotateAnimation;
 import android.widget.TextView;
 
 import net.gahfy.muslimcompanion.R;
@@ -98,12 +99,12 @@ public class ViewUtils {
      * @param viewToHide The view to hide
      */
     public static void crossFadeAnimation(Context context, final View viewToShow, final View viewToHide){
-        Animation animFadein = AnimationUtils.loadAnimation(context,
+        Animation fadeInAnimation = AnimationUtils.loadAnimation(context,
                 R.anim.fade_in);
-        Animation animFadeout = AnimationUtils.loadAnimation(context,
+        Animation fadeOutAnimation = AnimationUtils.loadAnimation(context,
                 R.anim.fade_out);
 
-        animFadeout.setAnimationListener(new Animation.AnimationListener() {
+        fadeOutAnimation.setAnimationListener(new Animation.AnimationListener() {
             @Override
             public void onAnimationStart(Animation animation) {
 
@@ -120,7 +121,7 @@ public class ViewUtils {
             }
         });
 
-        animFadein.setAnimationListener(new Animation.AnimationListener() {
+        fadeInAnimation.setAnimationListener(new Animation.AnimationListener() {
             @Override
             public void onAnimationStart(Animation animation) {
                 viewToShow.setVisibility(View.VISIBLE);
@@ -137,7 +138,7 @@ public class ViewUtils {
             }
         });
 
-        viewToShow.startAnimation(animFadein);
-        viewToHide.startAnimation(animFadeout);
+        viewToShow.startAnimation(fadeInAnimation);
+        viewToHide.startAnimation(fadeOutAnimation);
     }
 }

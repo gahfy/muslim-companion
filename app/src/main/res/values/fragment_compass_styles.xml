@@ -23,14 +23,11 @@
         <item name="android:layout_marginRight">17.66dp</item>
     </style>
 
-    <style name="lyt_compass_container">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">wrap_content</item>
+    <style name="lyt_compass_container_common">
         <item name="android:layout_centerInParent">true</item>
-        <item name="android:orientation">vertical</item>
     </style>
 
-    <style name="lyt_compass_shadow">
+    <style name="lyt_compass_shadow_common">
         <item name="android:layout_width">300dp</item>
         <item name="android:layout_height">300dp</item>
         <item name="android:layout_gravity">center_horizontal</item>
@@ -55,26 +52,53 @@
         <item name="android:layout_height">match_parent</item>
     </style>
 
-    <style name="lyt_txt_qibla_container">
-        <item name="android:layout_marginTop">15dp</item>
+    <style name="lyt_line_qibla_container_common">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_gravity">center_horizontal</item>
-        <item name="android:gravity">center_vertical</item>
-        <item name="android:orientation">horizontal</item>
     </style>
 
-    <style name="lbl_qibla">
+    <style name="lyt_txt_qibla_container_common">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <style name="lbl_qibla_common">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:textColor">@color/black_87</item>
         <item name="android:textSize">32sp</item>
+        <item name="android:layout_centerVertical">true</item>
     </style>
 
-    <style name="lbl_angle">
+    <style name="lyt_txt_angle_container_common">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <style name="lbl_angle_common">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:textColor">@color/accent</item>
         <item name="android:textSize">48sp</item>
+        <item name="android:layout_centerVertical">true</item>
     </style>
+
+    <style name="lbl_qibla" parent="lbl_qibla_common">
+    </style>
+
+    <style name="lbl_angle" parent="lbl_angle_common">
+    </style>
+
+    <style name="lyt_compass_container" parent="lyt_compass_container_common">
+    </style>
+
+    <style name="lyt_line_qibla_container" parent="lyt_line_qibla_container_common">
+    </style>
+
+    <style name="lyt_compass_shadow" parent="lyt_compass_shadow_common">
+    </style>
+
+    <style name="lyt_txt_qibla_container" parent="lyt_txt_qibla_container_common"></style>
+
+    <style name="lyt_txt_angle_container" parent="lyt_txt_angle_container_common"></style>
 </resources>
