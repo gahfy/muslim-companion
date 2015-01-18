@@ -4,11 +4,11 @@
     <string name="cancel">Cancel</string>
 
     <string name="location_required_title">Enable location</string>
-    <string name="location_required_message">The application needs location to be enabled.</string>
-    <string name="location_go_to_settings">Location Settings</string>
+    <string name="location_required_message">The application needs location to be enabled</string>
+    <string name="location_go_to_settings">Settings</string>
 
     <string name="geolocating">Geolocating</string>
-    <string name="qibla">Qibla:</string>
+    <string name="qibla">Qibla:&#160;</string>
     <string name="angle">%d°N</string>
 
     <string name="thin_path">font/Roboto-Thin.ttf</string>

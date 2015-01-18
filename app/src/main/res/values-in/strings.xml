@@ -1,0 +1,26 @@
+<resources>
+    <string name="app_name">Muslim Companion</string>
+
+    <string name="cancel">Batal</string>
+
+    <string name="location_required_title">Aktifkan lokasi</string>
+    <string name="location_required_message">Aplikasi ini butuh keterangan lokasi</string>
+    <string name="location_go_to_settings">Setelan</string>
+
+    <string name="geolocating">Lokasi</string>
+    <string name="qibla">Kiblat:&#160;</string>
+    <string name="angle">%d°U</string>
+
+    <string name="thin_path">font/Roboto-Thin.ttf</string>
+    <string name="thin_italic_path">font/Roboto-ThinItalic.ttf</string>
+    <string name="light_path">font/Roboto-Light.ttf</string>
+    <string name="light_italic_path">font/Roboto-LightItalic.ttf</string>
+    <string name="regular_path">font/Roboto-Regular.ttf</string>
+    <string name="regular_italic_path">font/Roboto-Italic.ttf</string>
+    <string name="medium_path">font/Roboto-Medium.ttf</string>
+    <string name="medium_italic_path">font/Roboto-MediumItalic.ttf</string>
+    <string name="bold_path">font/Roboto-Bold.ttf</string>
+    <string name="bold_italic_path">font/Roboto-BoldItalic.ttf</string>
+    <string name="black_path">font/Roboto-Black.ttf</string>
+    <string name="black_italic_path">font/Roboto-Black-Italic.ttf</string>
+</resources>

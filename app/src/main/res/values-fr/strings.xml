@@ -4,7 +4,7 @@
     <string name="cancel">Annuler</string>
 
     <string name="location_required_title">Activez la localisation</string>
-    <string name="location_required_message">L\'application nécessite que la localisation soit active.</string>
+    <string name="location_required_message">L\'application nécessite que la localisation soit active</string>
     <string name="location_go_to_settings">Paramètres</string>
 
     <string name="geolocating">Geolocalisation</string>
