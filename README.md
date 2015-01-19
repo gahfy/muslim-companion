@@ -1,6 +1,4 @@
-<img align="right" src="https://raw.githubusercontent.com/gahfy/muslim-companion/master/app/src/main/res/drawable-xxhdpi/ic_launcher.png" />
-
-<h1>Muslim Companion</h1>
+<img align="right" src="https://raw.githubusercontent.com/gahfy/muslim-companion/master/app/src/main/res/drawable-xxhdpi/ic_launcher.png" /><h1>Muslim Companion</h1>
 
 Muslim Companion is an open-source and free application for Muslims.
 
