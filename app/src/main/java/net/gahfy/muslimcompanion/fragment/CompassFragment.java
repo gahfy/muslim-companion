@@ -37,36 +37,193 @@ import java.util.Date;
  * @author Gahfy
  */
 public class CompassFragment extends AbstractFragment {
+
+    /** The latitude in use for this Fragment */
+    private double currentLatitude = 300.0;
+    /** The longitude in use for this Fragment */
+    private double currentLongitude = 300.0;
+
     /** The alert dialog shown to the user for requiring him to enable location providers */
     private AlertDialog locationDisabledDialog;
 
-    /** The location manager of the fragment */
-    private LocationManager locationManager;
+    /** The layout that contains the compass with the text of the Qibla */
+    private RelativeLayout lytCompassContainer;
+
+    /** The layout that contains the geolocating text with the progress bar */
+    private LinearLayout lytGeolocatingContainer;
+
+    /** The TextView on which the Angle of the Qibla is written */
+    private TextView lblAngle;
+
+    /** The ImageView that contains the arrow with the direction of the Qibla */
+    private ImageView imgCompassArrowDirection;
+
 
     /** Whether the location listener is on (true) or off (false) */
     private boolean isLocationListenerEnabled = false;
 
-    private double currentLatitude = 300.0;
-    private double currentLongitude = 300.0;
-
-    private RelativeLayout lytCompassContainer;
-    private LinearLayout lytGeolocatingContainer;
-    private TextView lblAngle;
-    private ImageView imgCompassArrowDirection;
-
+    /** Whether the compass is currently animating or not */
     private boolean isCompassAnimating = false;
+    /** Whether the compass is currently working or not */
     private boolean isCompassWorking = false;
+
+    /** The Location manager of the fragment */
+    private LocationManager locationManager;
+
+    /** The Sensor manager of the fragment */
     private SensorManager mSensorManager;
+
+    /** The sensor accelerometer of the fragment */
     private Sensor mAccelerometer;
+    /** The sensor magnetometer of the fragment */
     private Sensor mMagnetometer;
+
+    /** The last data of the sensor accelerometer */
     private float[] mLastAccelerometer = new float[3];
+    /** The last data of the sensor magnetometer */
     private float[] mLastMagnetometer = new float[3];
+
+    /** Whether the data of the sensor accelerometer has been set at least one time */
     private boolean mLastAccelerometerSet = false;
+    /** Whether the data of the sensor magnetometer has been set at least one time */
     private boolean mLastMagnetometerSet = false;
-    private float[] mR = new float[9];
-    private float[] mOrientation = new float[3];
+
+    /** The current rotation in degrees of the compass */
     private float mCurrentDegree = 0f;
+
+    /** The current display of the screen */
     private Display mDisplay;
+
+
+
+    /**
+     * The location listener of the fragment
+     */
+    private LocationListener locationListener = new LocationListener() {
+        @Override
+        public void onLocationChanged(Location location) {
+            CompassFragment.this.currentLatitude = location.getLatitude();
+            CompassFragment.this.currentLongitude = location.getLongitude();
+            disableLocationListeners();
+            manageFoundLocation();
+        }
+
+        @Override
+        public void onStatusChanged(String provider, int status, Bundle extras){
+
+        }
+
+        @Override
+        public void onProviderEnabled(String provider) {
+            switch(provider){
+                case LocationManager.GPS_PROVIDER:
+                    locationProvidersStatus = locationProvidersStatus | LocationUtils.GPS_ENABLED;
+                    break;
+                case LocationManager.NETWORK_PROVIDER:
+                    locationProvidersStatus = locationProvidersStatus | LocationUtils.NETWORK_ENABLED;
+                    break;
+                case LocationManager.PASSIVE_PROVIDER:
+                    locationProvidersStatus = locationProvidersStatus | LocationUtils.PASSIVE_ENABLED;
+                    break;
+            }
+            checkLocationProviders();
+        }
+
+        @Override
+        public void onProviderDisabled(String provider) {
+            switch(provider){
+                case LocationManager.GPS_PROVIDER:
+                    locationProvidersStatus = locationProvidersStatus & LocationUtils.NOT_GPS_ENABLED;
+                    break;
+                case LocationManager.NETWORK_PROVIDER:
+                    locationProvidersStatus = locationProvidersStatus & LocationUtils.NOT_NETWORK_ENABLED;
+                    break;
+                case LocationManager.PASSIVE_PROVIDER:
+                    locationProvidersStatus = locationProvidersStatus & LocationUtils.NOT_PASSIVE_ENABLED;
+                    break;
+            }
+            checkLocationProviders();
+        }
+    };
+
+    /**
+     * The Sensor listener of the fragment
+     */
+    private SensorEventListener sensorEventListener = new SensorEventListener() {
+        private float[] mR = new float[9];
+        private float[] mOrientation = new float[3];
+
+        @Override
+        public void onSensorChanged(SensorEvent event) {
+            if (event.sensor == mAccelerometer) {
+                float[] temp = exponentialSmoothing(mLastAccelerometer, event.values, 0.5f);
+                System.arraycopy(temp, 0, mLastAccelerometer, 0, temp.length);
+                mLastAccelerometerSet = true;
+            } else if (event.sensor == mMagnetometer) {
+                float[] temp = exponentialSmoothing(mLastMagnetometer, event.values, 0.8f);
+                System.arraycopy(temp, 0, mLastMagnetometer, 0, temp.length);
+                mLastMagnetometerSet = true;
+            }
+            if (mLastAccelerometerSet && mLastMagnetometerSet) {
+                SensorManager.getRotationMatrix(mR, null, mLastAccelerometer, mLastMagnetometer);
+                SensorManager.getOrientation(mR, mOrientation);
+                float azimuthInRadians = mOrientation[0];
+                float azimuthInDegress = (float)(Math.toDegrees(azimuthInRadians)+360);
+
+                switch(mDisplay.getRotation()){
+                    case Surface.ROTATION_90:
+                        azimuthInDegress += 90;
+                        break;
+                    case Surface.ROTATION_180:
+                        azimuthInDegress += 180;
+                        break;
+                    case Surface.ROTATION_270:
+                        azimuthInDegress -= 90;
+                        break;
+                }
+                azimuthInDegress = azimuthInDegress%360;
+
+                if(!isCompassAnimating) {
+
+                    isCompassAnimating = true;
+                    RotateAnimation ra = new RotateAnimation(
+                            mCurrentDegree,
+                            -azimuthInDegress,
+                            Animation.RELATIVE_TO_SELF, 0.5f,
+                            Animation.RELATIVE_TO_SELF,
+                            0.5f);
+
+                    ra.setAnimationListener(new Animation.AnimationListener() {
+                        @Override
+                        public void onAnimationStart(Animation animation) {
+                        }
+
+                        @Override
+                        public void onAnimationEnd(Animation animation) {
+                            isCompassAnimating = false;
+                        }
+
+                        @Override
+                        public void onAnimationRepeat(Animation animation) {
+
+                        }
+                    });
+
+                    ra.setDuration(250);
+
+                    ra.setFillAfter(true);
+
+                    getView().findViewById(R.id.lyt_compass).startAnimation(ra);
+                    mCurrentDegree = -azimuthInDegress;
+                }
+            }
+        }
+
+        @Override
+        public void onAccuracyChanged(Sensor sensor, int accuracy) {
+
+        }
+    };
 
     /**
      * The status (enabled/disabled) of location listeners
@@ -145,6 +302,13 @@ public class CompassFragment extends AbstractFragment {
             mSensorManager.unregisterListener(sensorEventListener, mMagnetometer);
             isCompassWorking = false;
         }
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState){
+        super.onSaveInstanceState(outState);
+        outState.putDouble("latitude", currentLatitude);
+        outState.putDouble("longitude", currentLongitude);
     }
 
     /**
@@ -286,126 +450,13 @@ public class CompassFragment extends AbstractFragment {
     }
 
     /**
-     * The location listener of the fragment
+     * Calculate the exponentialSmoothing for a smoother rotation of the compass
+     * @param input the previous values
+     * @param output the gross values to go to
+     * @param alpha The coefficient of smoothness
+     * @return the array with exponential smoothing applied on it
+     * @link http://en.wikipedia.org/wiki/Exponential_smoothing
      */
-    private LocationListener locationListener = new LocationListener() {
-        public void onLocationChanged(Location location) {
-            CompassFragment.this.currentLatitude = location.getLatitude();
-            CompassFragment.this.currentLongitude = location.getLongitude();
-            disableLocationListeners();
-            manageFoundLocation();
-        }
-
-        public void onStatusChanged(String provider, int status, Bundle extras){
-
-        }
-
-        public void onProviderEnabled(String provider) {
-            switch(provider){
-                case LocationManager.GPS_PROVIDER:
-                    locationProvidersStatus = locationProvidersStatus | LocationUtils.GPS_ENABLED;
-                    break;
-                case LocationManager.NETWORK_PROVIDER:
-                    locationProvidersStatus = locationProvidersStatus | LocationUtils.NETWORK_ENABLED;
-                    break;
-                case LocationManager.PASSIVE_PROVIDER:
-                    locationProvidersStatus = locationProvidersStatus | LocationUtils.PASSIVE_ENABLED;
-                    break;
-            }
-            checkLocationProviders();
-        }
-
-        public void onProviderDisabled(String provider) {
-            switch(provider){
-                case LocationManager.GPS_PROVIDER:
-                    locationProvidersStatus = locationProvidersStatus & LocationUtils.NOT_GPS_ENABLED;
-                    break;
-                case LocationManager.NETWORK_PROVIDER:
-                    locationProvidersStatus = locationProvidersStatus & LocationUtils.NOT_NETWORK_ENABLED;
-                    break;
-                case LocationManager.PASSIVE_PROVIDER:
-                    locationProvidersStatus = locationProvidersStatus & LocationUtils.NOT_PASSIVE_ENABLED;
-                    break;
-            }
-            checkLocationProviders();
-        }
-    };
-
-    private SensorEventListener sensorEventListener = new SensorEventListener() {
-
-
-        @Override
-        public void onSensorChanged(SensorEvent event) {
-            if (event.sensor == mAccelerometer) {
-                float[] temp = exponentialSmoothing(mLastAccelerometer, event.values, 0.5f);
-                System.arraycopy(temp, 0, mLastAccelerometer, 0, temp.length);
-                mLastAccelerometerSet = true;
-            } else if (event.sensor == mMagnetometer) {
-                float[] temp = exponentialSmoothing(mLastMagnetometer, event.values, 0.8f);
-                System.arraycopy(temp, 0, mLastMagnetometer, 0, temp.length);
-                mLastMagnetometerSet = true;
-            }
-            if (mLastAccelerometerSet && mLastMagnetometerSet) {
-                SensorManager.getRotationMatrix(mR, null, mLastAccelerometer, mLastMagnetometer);
-                SensorManager.getOrientation(mR, mOrientation);
-                float azimuthInRadians = mOrientation[0];
-                float azimuthInDegress = (float)(Math.toDegrees(azimuthInRadians)+360);
-
-                switch(mDisplay.getRotation()){
-                    case Surface.ROTATION_90:
-                        azimuthInDegress += 90;
-                        break;
-                    case Surface.ROTATION_180:
-                        azimuthInDegress += 180;
-                        break;
-                    case Surface.ROTATION_270:
-                        azimuthInDegress -= 90;
-                        break;
-                }
-                azimuthInDegress = azimuthInDegress%360;
-
-                if(!isCompassAnimating) {
-
-                    isCompassAnimating = true;
-                    RotateAnimation ra = new RotateAnimation(
-                            mCurrentDegree,
-                            -azimuthInDegress,
-                            Animation.RELATIVE_TO_SELF, 0.5f,
-                            Animation.RELATIVE_TO_SELF,
-                            0.5f);
-
-                    ra.setAnimationListener(new Animation.AnimationListener() {
-                        @Override
-                        public void onAnimationStart(Animation animation) {
-                        }
-
-                        @Override
-                        public void onAnimationEnd(Animation animation) {
-                            isCompassAnimating = false;
-                        }
-
-                        @Override
-                        public void onAnimationRepeat(Animation animation) {
-
-                        }
-                    });
-
-                    ra.setDuration(250);
-
-                    ra.setFillAfter(true);
-
-                    getView().findViewById(R.id.lyt_compass).startAnimation(ra);
-                    mCurrentDegree = -azimuthInDegress;
-                }
-            }
-        }
-
-        @Override
-        public void onAccuracyChanged(Sensor sensor, int accuracy) {
-
-        }
-    };
-
     private float[] exponentialSmoothing( float[] input, float[] output, float alpha ) {
         if ( output == null )
             return input;
@@ -413,12 +464,5 @@ public class CompassFragment extends AbstractFragment {
             output[i] = output[i] + alpha * (input[i] - output[i]);
         }
         return output;
-    }
-
-    @Override
-    public void onSaveInstanceState(Bundle outState){
-        super.onSaveInstanceState(outState);
-        outState.putDouble("latitude", currentLatitude);
-        outState.putDouble("longitude", currentLongitude);
     }
 }
