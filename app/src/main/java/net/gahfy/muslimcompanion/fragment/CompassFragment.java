@@ -26,6 +26,10 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
+
+import net.gahfy.muslimcompanion.MuslimCompanionApplication;
 import net.gahfy.muslimcompanion.R;
 import net.gahfy.muslimcompanion.utils.LocationUtils;
 import net.gahfy.muslimcompanion.utils.ViewUtils;
@@ -98,6 +102,9 @@ public class CompassFragment extends AbstractFragment implements LocationListene
     /** The current display of the screen */
     private Display mDisplay;
 
+    /** The time in ms when the user started Geolocation */
+    private long geolocationStartTime;
+
     /**
      * The status (enabled/disabled) of location listeners
      * @see net.gahfy.muslimcompanion.utils.LocationUtils
@@ -144,6 +151,10 @@ public class CompassFragment extends AbstractFragment implements LocationListene
     @Override
     public void onStart(){
         super.onStart();
+
+        // Send a screen view.
+        getMainActivity().activityTracker.send(new HitBuilders.AppViewBuilder().build());
+
         if(currentLatitude < 300.0) {
             manageFoundLocation();
         }
@@ -159,7 +170,6 @@ public class CompassFragment extends AbstractFragment implements LocationListene
             if (currentLatitude < 300.0) {
                 manageFoundLocation();
             } else {
-
                 checkLocationProviders();
                 enableLocationListeners();
             }
@@ -188,6 +198,14 @@ public class CompassFragment extends AbstractFragment implements LocationListene
     public void onLocationChanged(Location location) {
         CompassFragment.this.currentLatitude = location.getLatitude();
         CompassFragment.this.currentLongitude = location.getLongitude();
+
+
+        getMainActivity().activityTracker.send(new HitBuilders.TimingBuilder()
+                .setCategory("Listener")
+                .setValue(new Date().getTime() - geolocationStartTime)
+                .setVariable("Time to geolocate")
+                .setLabel("Geolocation")
+                .build());
         disableLocationListeners();
         manageFoundLocation();
     }
@@ -387,6 +405,8 @@ public class CompassFragment extends AbstractFragment implements LocationListene
                 e.printStackTrace();
             }
             locationManager.requestLocationUpdates(LocationManager.PASSIVE_PROVIDER, 0, 0, this);
+
+            geolocationStartTime = new Date().getTime();
         }
     }
 

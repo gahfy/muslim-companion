@@ -3,7 +3,11 @@ package net.gahfy.muslimcompanion.fragment;
 import android.app.Activity;
 import android.support.v4.app.Fragment;
 
+import com.google.android.gms.analytics.HitBuilders;
+
 import net.gahfy.muslimcompanion.MainActivity;
+
+import java.util.Date;
 
 /**
  * Abstract class that all fragments of the application should extend
@@ -21,6 +25,22 @@ public class AbstractFragment extends Fragment {
         // MainActivity
         if(activity instanceof MainActivity)
             this.mainActivity = (MainActivity) activity;
+    }
+
+    @Override
+    public void onStart(){
+        super.onStart();
+
+        // Set screen name.
+        getMainActivity().activityTracker.setScreenName(getClass().getSimpleName());
+
+        // Send a screen view.
+        getMainActivity().activityTracker.send(new HitBuilders.AppViewBuilder().build());
+    }
+
+    @Override
+    public void onStop(){
+        super.onStop();
     }
 
     /**
