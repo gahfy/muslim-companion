@@ -6,4 +6,4 @@ If you are not interested in the development of the application, but only in dow
 
 <h2>Structure of the project</h2>
 
-The *design* folder contains *all the psd and png files* that are in use in the application and on the Play Store.
+The <strong>design</strong> folder contains <strong>all the psd and png files<strong> that are in use in the application and on the Play Store.
