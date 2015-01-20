@@ -12,22 +12,33 @@ import net.gahfy.muslimcompanion.R;
 
 public class CompassArrowView extends View {
     Context context;
-    float height;
-    float width;
+    float viewHeight;
+    float viewWidth;
+    Paint arrowPaint;
+    Path arrowPath;
 
     public CompassArrowView(Context context) {
         super(context);
         this.context = context;
+        initPaint();
     }
 
     public CompassArrowView(Context context, AttributeSet attrs){
         super(context, attrs);
         this.context = context;
+        initPaint();
     }
 
     public CompassArrowView(Context context, AttributeSet attrs, int defStyleAttr){
         super(context, attrs, defStyleAttr);
         this.context = context;
+        initPaint();
+    }
+
+    private void initPaint(){
+        arrowPaint = new Paint();
+        arrowPaint.setStyle(Paint.Style.FILL);
+        arrowPaint.setColor(context.getResources().getColor(R.color.primary));
     }
 
     @TargetApi(21)
@@ -39,22 +50,19 @@ public class CompassArrowView extends View {
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        width = View.MeasureSpec.getSize(widthMeasureSpec);
-        height = View.MeasureSpec.getSize(heightMeasureSpec);
-        setMeasuredDimension((int) width, (int) height);
+        viewWidth = View.MeasureSpec.getSize(widthMeasureSpec);
+        viewHeight = View.MeasureSpec.getSize(heightMeasureSpec);
+        setMeasuredDimension((int) viewWidth, (int) viewHeight);
+
+        arrowPath = new Path();
+        arrowPath.moveTo(0.34f * viewWidth, 0.66f*viewHeight);
+        arrowPath.lineTo(0.5f * viewWidth, 0.17f*viewHeight);
+        arrowPath.lineTo(0.66f * viewWidth, 0.66f*viewHeight);
+        arrowPath.lineTo(0.5f * viewWidth, 0.55f*viewHeight);
+        arrowPath.close();
     }
 
     public void onDraw(Canvas canvas){
-        Paint paint = new Paint();
-        Path path = new Path();
-        paint.setStyle(Paint.Style.FILL);
-        paint.setColor(context.getResources().getColor(R.color.primary));
-
-        path.moveTo(0.34f * width, 0.66f*height);
-        path.lineTo(0.5f * width, 0.17f*height);
-        path.lineTo(0.66f * width, 0.66f*height);
-        path.lineTo(0.5f * width, 0.55f*height);
-        path.close();
-        canvas.drawPath(path, paint);
+        canvas.drawPath(arrowPath, arrowPaint);
     }
 }
