@@ -5,6 +5,8 @@
     <style name="AppTheme.Base" parent="Theme.AppCompat.Light">
         <item name="colorPrimary">@color/primary</item>
         <item name="colorPrimaryDark">@color/primary</item>
+        <item name="android:windowBackground">@color/white_93</item>
+        <item name="android:textColorPrimary">@color/white_93</item>
         <item name="android:windowNoTitle">true</item>
         <item name="windowActionBar">false</item>
     </style>

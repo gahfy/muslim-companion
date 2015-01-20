@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="green_primary_100">#C8E6C9</color>
-    <color name="green_primary_500">#4CAF50</color>
     <color name="green_primary_700">#388E3C</color>
+    <color name="green_primary_900">#1B5E20</color>
 
     <color name="red_accent_700">#D50000</color>
 
@@ -10,5 +10,6 @@
     <color name="black_87">#212121</color>
 
     <color name="primary">@color/green_primary_700</color>
+    <color name="primary_dark">@color/green_primary_900</color>
     <color name="accent">@color/red_accent_700</color>
 </resources>
