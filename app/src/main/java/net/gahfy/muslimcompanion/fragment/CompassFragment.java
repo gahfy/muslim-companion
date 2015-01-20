@@ -262,27 +262,33 @@ public class CompassFragment extends AbstractFragment implements LocationListene
             SensorManager.getRotationMatrix(mR, null, mLastAccelerometer, mLastMagnetometer);
             SensorManager.getOrientation(mR, mOrientation);
             float azimuthInRadians = mOrientation[0];
-            float azimuthInDegress = (float)(Math.toDegrees(azimuthInRadians)+360);
+            float azimuthInDegrees = (float)(Math.toDegrees(azimuthInRadians)+360);
 
             switch(mDisplay.getRotation()){
                 case Surface.ROTATION_90:
-                    azimuthInDegress += 90;
+                    azimuthInDegrees += 90;
                     break;
                 case Surface.ROTATION_180:
-                    azimuthInDegress += 180;
+                    azimuthInDegrees += 180;
                     break;
                 case Surface.ROTATION_270:
-                    azimuthInDegress -= 90;
+                    azimuthInDegrees -= 90;
                     break;
             }
-            azimuthInDegress = azimuthInDegress%360;
+            azimuthInDegrees = azimuthInDegrees%360;
+
+            if(Math.abs(-azimuthInDegrees-mCurrentDegree) >= 180f){
+                if(-azimuthInDegrees < mCurrentDegree)
+                    azimuthInDegrees -= 360f;
+                else
+                    azimuthInDegrees += 360f;
+            }
 
             if(!isCompassAnimating) {
-
                 isCompassAnimating = true;
                 RotateAnimation ra = new RotateAnimation(
                         mCurrentDegree,
-                        -azimuthInDegress,
+                        -azimuthInDegrees,
                         Animation.RELATIVE_TO_SELF, 0.5f,
                         Animation.RELATIVE_TO_SELF,
                         0.5f);
@@ -309,7 +315,7 @@ public class CompassFragment extends AbstractFragment implements LocationListene
 
                 if(getView() != null)
                     getView().findViewById(R.id.lyt_compass).startAnimation(ra);
-                mCurrentDegree = -azimuthInDegress;
+                mCurrentDegree = -azimuthInDegrees;
             }
         }
     }
