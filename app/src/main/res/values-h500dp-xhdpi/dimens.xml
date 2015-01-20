@@ -1,4 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <fraction name="compass_shadow_radius">12500%</fraction>
+    <fraction name="compass_shadow_radius">30000%</fraction>
 </resources>

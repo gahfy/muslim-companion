@@ -22,7 +22,7 @@ public class MainActivity extends FragmentActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-
+        this.setContentView(R.layout.activity_main);
 
         // Get tracker.
         activityTracker = ((MuslimCompanionApplication) getApplication()).getTracker(
@@ -32,11 +32,11 @@ public class MainActivity extends FragmentActivity {
             currentFragment = new CompassFragment();
             getSupportFragmentManager()
                     .beginTransaction()
-                    .add(android.R.id.content, currentFragment)
+                    .replace(R.id.lyt_fragment_container, currentFragment)
                     .commit();
         } else {
             currentFragment = (AbstractFragment) getSupportFragmentManager()
-                    .findFragmentById(android.R.id.content);
+                    .findFragmentById(R.id.lyt_fragment_container);
         }
     }
 }
