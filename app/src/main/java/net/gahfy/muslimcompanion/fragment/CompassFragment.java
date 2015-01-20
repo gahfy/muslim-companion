@@ -33,6 +33,7 @@ import net.gahfy.muslimcompanion.MuslimCompanionApplication;
 import net.gahfy.muslimcompanion.R;
 import net.gahfy.muslimcompanion.utils.LocationUtils;
 import net.gahfy.muslimcompanion.utils.ViewUtils;
+import net.gahfy.muslimcompanion.view.CompassArrowView;
 
 import java.util.Date;
 
@@ -60,7 +61,7 @@ public class CompassFragment extends AbstractFragment implements LocationListene
     private TextView lblAngle;
 
     /** The ImageView that contains the arrow with the direction of the Qibla */
-    private ImageView imgCompassArrowDirection;
+    private CompassArrowView imgCompassArrowDirection;
 
 
     /** Whether the location listener is on (true) or off (false) */
@@ -129,7 +130,7 @@ public class CompassFragment extends AbstractFragment implements LocationListene
         TextView lblQibla = (TextView) resultView.findViewById(R.id.lbl_qibla);
         lblAngle = (TextView) resultView.findViewById(R.id.lbl_angle);
 
-        imgCompassArrowDirection = (ImageView) resultView.findViewById(R.id.img_compass_arrow_direction);
+        imgCompassArrowDirection = (CompassArrowView) resultView.findViewById(R.id.img_compass_arrow_direction);
 
         ViewUtils.setTypefaceToTextView(getMainActivity(), lblGeolocating, ViewUtils.FONT_WEIGHT.LIGHT);
         ViewUtils.setTypefaceToTextView(getMainActivity(), lblQibla, ViewUtils.FONT_WEIGHT.LIGHT);
