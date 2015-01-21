@@ -47,7 +47,7 @@
                 android:layout_width="@dimen/compass_inside_size"
                 android:layout_height="@dimen/compass_inside_size"
                 android:background="@drawable/compass_background">
-                <ImageView
+                <net.gahfy.muslimcompanion.view.CompassView
                     android:id="@+id/img_compass_cardinal_direction"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"

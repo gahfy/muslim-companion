@@ -14,6 +14,11 @@
     <string name="qibla">القبلة:&#160;</string>
     <string name="angle">%d°ش</string>
 
+    <string name="north_abbreviation">ش</string>
+    <string name="south_abbreviation">ج</string>
+    <string name="east_abbreviation">ق</string>
+    <string name="west_abbreviation">غ</string>
+
 
     <string name="thin_path">font/NotoKufiArabic-Regular.ttf</string>
     <string name="thin_italic_path">font/NotoKufiArabic-Regular.ttf</string>
