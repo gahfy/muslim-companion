@@ -40,7 +40,8 @@
             android:layout_height="@dimen/compass_size"
             android:background="@drawable/compass_background_shadow"
             android:layout_centerVertical="true"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:layout_toRightOf="@+id/lyt_line_qibla_container">
             <RelativeLayout
                 android:id="@+id/lyt_compass"
                 android:layout_margin="@dimen/compass_inside_margin"
