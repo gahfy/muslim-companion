@@ -36,59 +36,49 @@ public class ViewUtils {
     }
 
     /**
-     * Sets a typeface (given by its path from assets) to a TextView.
-     * @param context Context in which the application is running
-     * @param textView The TextView to which the typeface should be applied
-     * @param typefacePath The path (relative to assets) to the font to apply to the TextView
-     */
-    private static void setTypefaceToTextView(Context context, TextView textView, String typefacePath){
-        textView.setTypeface(Typeface.createFromAsset(context.getAssets(), typefacePath));
-    }
-
-    /**
      * Sets a type of typeface (regarding the character set) to a TextView.
      * @param context Context in which the application is running
      * @param textView The TextView to which the typeface should be applied
      * @param typefaceType The type of the typeface to apply to the TextView
      */
     public static void setTypefaceToTextView(Context context, TextView textView, FONT_WEIGHT typefaceType){
+        textView.setTypeface(getTypefaceToUse(context, typefaceType));
+    }
+
+    /**
+     * Returns the typeface to use with the given typeface type.
+     * @param context Context in which the application is running
+     * @param typefaceType The type of the typeface to return
+     * @return the typeface to use with the given typeface type
+     */
+    public static Typeface getTypefaceToUse(Context context, FONT_WEIGHT typefaceType){
         switch(typefaceType){
             case THIN:
-                setTypefaceToTextView(context, textView, context.getString(R.string.thin_path));
-                break;
+                return Typeface.createFromAsset(context.getAssets(), context.getString(R.string.thin_path));
             case THIN_ITALIC:
-                setTypefaceToTextView(context, textView, context.getString(R.string.thin_italic_path));
-                break;
+                return Typeface.createFromAsset(context.getAssets(), context.getString(R.string.thin_italic_path));
             case LIGHT:
-                setTypefaceToTextView(context, textView, context.getString(R.string.light_path));
-                break;
+                return Typeface.createFromAsset(context.getAssets(), context.getString(R.string.light_path));
             case LIGHT_ITALIC:
-                setTypefaceToTextView(context, textView, context.getString(R.string.light_italic_path));
-                break;
+                return Typeface.createFromAsset(context.getAssets(), context.getString(R.string.light_italic_path));
             case REGULAR:
-                setTypefaceToTextView(context, textView, context.getString(R.string.regular_path));
-                break;
+                return Typeface.createFromAsset(context.getAssets(), context.getString(R.string.regular_path));
             case REGULAR_ITALIC:
-                setTypefaceToTextView(context, textView, context.getString(R.string.regular_italic_path));
-                break;
+                return Typeface.createFromAsset(context.getAssets(), context.getString(R.string.regular_italic_path));
             case MEDIUM:
-                setTypefaceToTextView(context, textView, context.getString(R.string.medium_path));
-                break;
+                return Typeface.createFromAsset(context.getAssets(), context.getString(R.string.medium_path));
             case MEDIUM_ITALIC:
-                setTypefaceToTextView(context, textView, context.getString(R.string.medium_italic_path));
-                break;
+                return Typeface.createFromAsset(context.getAssets(), context.getString(R.string.medium_italic_path));
             case BOLD:
-                setTypefaceToTextView(context, textView, context.getString(R.string.bold_path));
-                break;
+                return Typeface.createFromAsset(context.getAssets(), context.getString(R.string.bold_path));
             case BOLD_ITALIC:
-                setTypefaceToTextView(context, textView, context.getString(R.string.bold_italic_path));
-                break;
+                return Typeface.createFromAsset(context.getAssets(), context.getString(R.string.bold_italic_path));
             case BLACK:
-                setTypefaceToTextView(context, textView, context.getString(R.string.black_path));
-                break;
+                return Typeface.createFromAsset(context.getAssets(), context.getString(R.string.black_path));
             case BLACK_ITALIC:
-                setTypefaceToTextView(context, textView, context.getString(R.string.black_italic_path));
-                break;
+                return Typeface.createFromAsset(context.getAssets(), context.getString(R.string.black_italic_path));
+            default:
+                return Typeface.createFromAsset(context.getAssets(), context.getString(R.string.regular_path));
         }
     }
 
