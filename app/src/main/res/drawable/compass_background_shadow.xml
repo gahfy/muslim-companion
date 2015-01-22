@@ -2,7 +2,6 @@
 <shape xmlns:android="http://schemas.android.com/apk/res/android"
     android:shape="oval">
     <gradient
-        android:gradientRadius="@fraction/compass_shadow_radius"
         android:endColor="@color/white_93"
         android:startColor="#000000"
         android:type="radial" />

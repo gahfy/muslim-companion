@@ -31,22 +31,23 @@
     <RelativeLayout
         android:id="@+id/lyt_compass_container"
         android:layout_centerInParent="true"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent">
-
-        <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="0dp">
+        <RelativeLayout
             android:id="@+id/lyt_compass_shadow"
-            android:layout_width="@dimen/compass_size"
-            android:layout_height="@dimen/compass_size"
-            android:background="@drawable/compass_background_shadow"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
             android:layout_centerVertical="true"
-            android:orientation="horizontal"
             android:layout_toRightOf="@+id/lyt_line_qibla_container">
+            <net.gahfy.muslimcompanion.view.CompassShadowView
+                android:id="@+id/compass_shadow"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_centerVertical="true" />
             <RelativeLayout
                 android:id="@+id/lyt_compass"
-                android:layout_margin="@dimen/compass_inside_margin"
-                android:layout_width="@dimen/compass_inside_size"
-                android:layout_height="@dimen/compass_inside_size"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
                 android:background="@drawable/compass_background">
                 <net.gahfy.muslimcompanion.view.CompassView
                     android:id="@+id/img_compass_cardinal_direction"
@@ -57,7 +58,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent" />
             </RelativeLayout>
-        </LinearLayout>
+        </RelativeLayout>
         <RelativeLayout
             android:id="@id/lyt_line_qibla_container"
             android:layout_width="wrap_content"
@@ -75,7 +76,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@color/black_87"
-                    android:textSize="32sp"
+                    android:textSize="0sp"
                     android:layout_centerVertical="true"
                     android:text="@string/qibla" />
             </RelativeLayout>
@@ -90,7 +91,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@color/accent"
-                    android:textSize="40sp"
+                    android:textSize="0sp"
                     android:layout_centerVertical="true" />
             </RelativeLayout>
         </RelativeLayout>

@@ -13,29 +13,30 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.util.Log;
+import android.util.TypedValue;
 import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.Surface;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.RotateAnimation;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.google.android.gms.analytics.HitBuilders;
-import com.google.android.gms.analytics.Tracker;
 
-import net.gahfy.muslimcompanion.MuslimCompanionApplication;
 import net.gahfy.muslimcompanion.R;
 import net.gahfy.muslimcompanion.utils.LocationUtils;
 import net.gahfy.muslimcompanion.utils.ViewUtils;
 import net.gahfy.muslimcompanion.view.CompassArrowView;
 
 import java.util.Date;
+import java.util.Locale;
 
 /**
  * The fragment with the Compass and the Qibla
@@ -56,6 +57,8 @@ public class CompassFragment extends AbstractFragment implements LocationListene
 
     /** The layout that contains the geolocating text with the progress bar */
     private LinearLayout lytGeolocatingContainer;
+
+    private TextView lblQibla;
 
     /** The TextView on which the Angle of the Qibla is written */
     private TextView lblAngle;
@@ -106,15 +109,21 @@ public class CompassFragment extends AbstractFragment implements LocationListene
     /** The time in ms when the user started Geolocation */
     private long geolocationStartTime;
 
+    /** The view of the fragment */
+    private View fragmentView;
+
     /**
      * The status (enabled/disabled) of location listeners
      * @see net.gahfy.muslimcompanion.utils.LocationUtils
      */
     int locationProvidersStatus = 0;
 
+    float fragmentWidth = 0f;
+    float fragmentHeight = 0f;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View resultView = inflater.inflate(R.layout.fragment_compass, container, false);
+        fragmentView = inflater.inflate(R.layout.fragment_compass, container, false);
 
         WindowManager mWindowManager = (WindowManager) getMainActivity().getSystemService(Context.WINDOW_SERVICE);
         mDisplay = mWindowManager.getDefaultDisplay();
@@ -123,20 +132,27 @@ public class CompassFragment extends AbstractFragment implements LocationListene
         mAccelerometer = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         mMagnetometer = mSensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD);
 
-        lytCompassContainer = (RelativeLayout) resultView.findViewById(R.id.lyt_compass_container);
-        lytGeolocatingContainer = (LinearLayout) resultView.findViewById(R.id.lyt_geolocating_container);
+        lytCompassContainer = (RelativeLayout) fragmentView.findViewById(R.id.lyt_compass_container);
+        lytGeolocatingContainer = (LinearLayout) fragmentView.findViewById(R.id.lyt_geolocating_container);
 
-        TextView lblGeolocating = (TextView) resultView.findViewById(R.id.lbl_geolocating);
-        TextView lblQibla = (TextView) resultView.findViewById(R.id.lbl_qibla);
-        lblAngle = (TextView) resultView.findViewById(R.id.lbl_angle);
+        TextView lblGeolocating = (TextView) fragmentView.findViewById(R.id.lbl_geolocating);
+        lblQibla = (TextView) fragmentView.findViewById(R.id.lbl_qibla);
+        lblAngle = (TextView) fragmentView.findViewById(R.id.lbl_angle);
 
-        imgCompassArrowDirection = (CompassArrowView) resultView.findViewById(R.id.img_compass_arrow_direction);
+        imgCompassArrowDirection = (CompassArrowView) fragmentView.findViewById(R.id.img_compass_arrow_direction);
 
         ViewUtils.setTypefaceToTextView(getMainActivity(), lblGeolocating, ViewUtils.FONT_WEIGHT.LIGHT);
         ViewUtils.setTypefaceToTextView(getMainActivity(), lblQibla, ViewUtils.FONT_WEIGHT.LIGHT);
         ViewUtils.setTypefaceToTextView(getMainActivity(), lblAngle, ViewUtils.FONT_WEIGHT.MEDIUM);
+        fragmentView.getViewTreeObserver().addOnGlobalLayoutListener(layoutObserver);
 
-        return resultView;
+        lytCompassContainer.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                Log.i(CompassFragment.class.getSimpleName(), String.format(Locale.US, "CompassContainer width: %d / height: %d", lytCompassContainer.getMeasuredWidth(), lytCompassContainer.getMeasuredHeight()));
+            }
+        });
+        return fragmentView;
     }
 
     @Override
@@ -482,4 +498,70 @@ public class CompassFragment extends AbstractFragment implements LocationListene
         }
         return output;
     }
+
+private ViewTreeObserver.OnGlobalLayoutListener layoutObserver = new ViewTreeObserver.OnGlobalLayoutListener() {
+    @Override
+    public void onGlobalLayout() {
+        if(fragmentView.getMeasuredWidth() != fragmentWidth || fragmentView.getMeasuredHeight() != fragmentHeight) {
+            fragmentWidth = fragmentView.getMeasuredWidth();
+            fragmentHeight = fragmentView.getMeasuredHeight();
+
+            if (fragmentWidth < fragmentHeight) {
+                float compassWidth = fragmentView.getMeasuredWidth() * 0.83f;
+                float compassHeight = fragmentView.getMeasuredHeight() * 0.75f;
+
+                if (compassWidth > compassHeight * 0.75f)
+                    compassWidth = compassHeight * 0.75f;
+                else
+                    compassHeight = compassWidth / 0.75f;
+
+                RelativeLayout.LayoutParams lytCompassContainerLytParams = (RelativeLayout.LayoutParams) lytCompassContainer.getLayoutParams();
+                lytCompassContainerLytParams.width = (int) compassWidth;
+                lytCompassContainerLytParams.height = (int) compassHeight;
+                lytCompassContainer.setLayoutParams(lytCompassContainerLytParams);
+
+                RelativeLayout.LayoutParams lytCompassShadowLytParams = (RelativeLayout.LayoutParams) fragmentView.findViewById(R.id.lyt_compass_shadow).getLayoutParams();
+                lytCompassShadowLytParams.width = (int) compassWidth;
+                lytCompassShadowLytParams.height = (int) compassWidth;
+                fragmentView.findViewById(R.id.lyt_compass_shadow).setLayoutParams(lytCompassShadowLytParams);
+
+                RelativeLayout.LayoutParams lytCompassLytParams = (RelativeLayout.LayoutParams) fragmentView.findViewById(R.id.lyt_compass).getLayoutParams();
+                lytCompassLytParams.width = (int) (compassWidth * 0.9f);
+                lytCompassLytParams.height = (int) (compassWidth * 0.9f);
+                lytCompassLytParams.setMargins((int) (compassWidth / 20f), (int) (compassWidth / 20f), (int) (compassWidth / 20f), (int) (compassWidth / 20f));
+                fragmentView.findViewById(R.id.lyt_compass).setLayoutParams(lytCompassLytParams);
+
+                lblQibla.setTextSize(TypedValue.COMPLEX_UNIT_PX, compassWidth * 0.107f);
+                lblAngle.setTextSize(TypedValue.COMPLEX_UNIT_PX, compassWidth * 0.16f);
+            } else {
+                float compassWidth = fragmentView.getMeasuredWidth() * 0.66f;
+                float compassHeight = fragmentView.getMeasuredHeight() * 0.90f;
+
+                if (compassWidth > compassHeight * 1.6f)
+                    compassWidth = compassHeight * 1.6f;
+                else
+                    compassHeight = compassWidth / 1.6f;
+
+                RelativeLayout.LayoutParams lytCompassContainerLytParams = (RelativeLayout.LayoutParams) lytCompassContainer.getLayoutParams();
+                lytCompassContainerLytParams.width = (int) compassWidth;
+                lytCompassContainerLytParams.height = (int) compassHeight;
+                lytCompassContainer.setLayoutParams(lytCompassContainerLytParams);
+
+                RelativeLayout.LayoutParams lytCompassShadowLytParams = (RelativeLayout.LayoutParams) fragmentView.findViewById(R.id.lyt_compass_shadow).getLayoutParams();
+                lytCompassShadowLytParams.width = (int) compassHeight;
+                lytCompassShadowLytParams.height = (int) compassHeight;
+                fragmentView.findViewById(R.id.lyt_compass_shadow).setLayoutParams(lytCompassShadowLytParams);
+
+                RelativeLayout.LayoutParams lytCompassLytParams = (RelativeLayout.LayoutParams) fragmentView.findViewById(R.id.lyt_compass).getLayoutParams();
+                lytCompassLytParams.width = (int) (compassHeight * 0.9f);
+                lytCompassLytParams.height = (int) (compassHeight * 0.9f);
+                lytCompassLytParams.setMargins((int) (compassHeight / 20f), (int) (compassHeight / 20f), (int) (compassHeight / 20f), (int) (compassHeight / 20f));
+                fragmentView.findViewById(R.id.lyt_compass).setLayoutParams(lytCompassLytParams);
+
+                lblQibla.setTextSize(TypedValue.COMPLEX_UNIT_PX, compassHeight * 0.13f);
+                lblAngle.setTextSize(TypedValue.COMPLEX_UNIT_PX, compassHeight * 0.19f);
+            }
+        }
+    }
+};
 }

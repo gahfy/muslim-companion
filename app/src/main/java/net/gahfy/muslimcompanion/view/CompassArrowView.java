@@ -1,10 +1,15 @@
 package net.gahfy.muslimcompanion.view;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffXfermode;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 
 import net.gahfy.muslimcompanion.R;
@@ -39,8 +44,6 @@ public class CompassArrowView extends View {
      * Initialization of the Paint used to draw the arrow
      */
     private void initPaintAndPath(){
-        arrowPath = new Path();
-
         arrowPaint = new Paint();
         arrowPaint.setStyle(Paint.Style.FILL);
         arrowPaint.setColor(getResources().getColor(R.color.primary));
@@ -53,6 +56,7 @@ public class CompassArrowView extends View {
         setMeasuredDimension((int) viewWidth, (int) viewHeight);
 
         // Initialization of the path of the arrow
+        arrowPath = new Path();
         arrowPath.moveTo(0.34f * viewWidth, 0.66f*viewHeight);
         arrowPath.lineTo(0.5f * viewWidth, 0.17f*viewHeight);
         arrowPath.lineTo(0.66f * viewWidth, 0.66f*viewHeight);
@@ -61,6 +65,8 @@ public class CompassArrowView extends View {
     }
 
     public void onDraw(Canvas canvas){
+        super.onDraw(canvas);
+
         canvas.drawPath(arrowPath, arrowPaint);
     }
 }

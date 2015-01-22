@@ -1,6 +1,3 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="compass_size">250dp</dimen>
-    <dimen name="compass_inside_margin">12.5dp</dimen>
-    <dimen name="compass_inside_size">225dp</dimen>
 </resources>
