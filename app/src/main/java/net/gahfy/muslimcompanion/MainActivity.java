@@ -98,9 +98,24 @@ public class MainActivity extends ActionBarActivity implements LocationListener{
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         locationProvidersStatus = LocationUtils.getLocationProvidersStatus(this);
 
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+
+        setTitle(R.string.app_name);
+
         ViewUtils.setTypefaceToTextView(this, lblGeolocating, ViewUtils.FONT_WEIGHT.LIGHT);
 
         redirectToFragment(new CompassFragment());
+    }
+
+    @Override
+    public void setTitle(int titleResId){
+        TextView textViewTitle = (TextView) findViewById(R.id.toolbar_title);
+        if(textViewTitle != null){
+            textViewTitle.setText(titleResId);
+            ViewUtils.setTypefaceToTextView(this, textViewTitle, ViewUtils.FONT_WEIGHT.MEDIUM);
+        }
     }
 
     @Override
