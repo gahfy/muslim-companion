@@ -5,15 +5,15 @@
 
     <RelativeLayout
         android:id="@+id/lyt_compass_container"
-        android:layout_centerInParent="true"
         android:layout_width="0dp"
-        android:layout_height="0dp">
+        android:layout_height="0dp"
+        android:layout_centerInParent="true">
         <RelativeLayout
             android:id="@+id/lyt_compass_shadow"
+            android:layout_alignParentRight="true"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:layout_centerVertical="true"
-            android:layout_toRightOf="@+id/lyt_line_qibla_container">
+            android:layout_centerVertical="true">
             <net.gahfy.muslimcompanion.view.CompassShadowView
                 android:id="@+id/compass_shadow"
                 android:layout_width="match_parent"
@@ -35,7 +35,8 @@
             </RelativeLayout>
         </RelativeLayout>
         <RelativeLayout
-            android:id="@id/lyt_line_qibla_container"
+            android:id="@+id/lyt_line_qibla_container"
+            android:layout_toLeftOf="@id/lyt_compass_shadow"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginRight="15dp"

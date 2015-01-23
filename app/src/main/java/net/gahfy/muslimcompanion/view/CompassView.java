@@ -2,9 +2,7 @@ package net.gahfy.muslimcompanion.view;
 
 import android.content.Context;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.PorterDuff;
 import android.graphics.Rect;
 import android.util.AttributeSet;
 import android.view.View;
@@ -51,13 +49,13 @@ public class CompassView extends View{
         eastAbbreviation = getResources().getString(R.string.east_abbreviation);
         westAbbreviation = getResources().getString(R.string.west_abbreviation);
 
-        northTextPaint = new Paint();
+        northTextPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         northTextPaint.setColor(getResources().getColor(R.color.accent));
         northTextPaint.setStyle(Paint.Style.FILL);
         northTextPaint.setTextSize(50);
         northTextPaint.setTypeface(ViewUtils.getTypefaceToUse(this.getContext(), ViewUtils.FONT_WEIGHT.MEDIUM));
 
-        defaultTextPaint = new Paint();
+        defaultTextPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         defaultTextPaint.setColor(getResources().getColor(R.color.black_87));
         defaultTextPaint.setStyle(Paint.Style.FILL);
         defaultTextPaint.setTextSize(50);

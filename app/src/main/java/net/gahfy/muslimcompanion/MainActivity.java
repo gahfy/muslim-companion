@@ -8,10 +8,13 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.google.android.gms.analytics.HitBuilders;
@@ -23,6 +26,8 @@ import net.gahfy.muslimcompanion.models.MuslimLocation;
 import net.gahfy.muslimcompanion.utils.LocationUtils;
 import net.gahfy.muslimcompanion.utils.SharedPreferencesUtils;
 import net.gahfy.muslimcompanion.utils.ViewUtils;
+
+import org.w3c.dom.Text;
 
 import java.util.Date;
 
@@ -56,8 +61,20 @@ public class MainActivity extends ActionBarActivity implements LocationListener{
     /** The Geolocating TextView */
     private TextView lblGeolocating;
 
+    /** The Settings TextView */
+    private TextView lblMenuSettings;
+
     /** The Geolocating layout */
     private LinearLayout lytGeolocatingContainer;
+
+    /** The menu icon for the drawer layout */
+    private RelativeLayout lytIcMenuContainer;
+
+    /** The drawer layout */
+    private DrawerLayout drawerLayout;
+
+    /** The scrollview with the navigation drawer */
+    private ScrollView scrollDrawerView;
 
     /** The Google Analytics Tracker */
     private Tracker analyticsTracker;
@@ -106,17 +123,31 @@ public class MainActivity extends ActionBarActivity implements LocationListener{
 
         lblGeolocating = (TextView) findViewById(R.id.lbl_geolocating);
         lytGeolocatingContainer = (LinearLayout) findViewById(R.id.lyt_geolocating_container);
+        drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        lytIcMenuContainer = (RelativeLayout) findViewById(R.id.lyt_ic_menu_container);
+        scrollDrawerView = (ScrollView) findViewById(R.id.scroll_drawer_view);
+
+        lblMenuSettings = (TextView) findViewById(R.id.lbl_menu_settings);
 
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         locationProvidersStatus = LocationUtils.getLocationProvidersStatus(this);
+
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
+        lytIcMenuContainer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                drawerLayout.openDrawer(scrollDrawerView);
+            }
+        });
+
         setTitle(R.string.app_name);
 
         ViewUtils.setTypefaceToTextView(this, lblGeolocating, ViewUtils.FONT_WEIGHT.LIGHT);
+        ViewUtils.setTypefaceToTextView(this, lblMenuSettings, ViewUtils.FONT_WEIGHT.MEDIUM);
 
         redirectToFragment(new CompassFragment());
     }
@@ -126,7 +157,7 @@ public class MainActivity extends ActionBarActivity implements LocationListener{
         TextView textViewTitle = (TextView) findViewById(R.id.toolbar_title);
         if(textViewTitle != null){
             textViewTitle.setText(titleResId);
-            ViewUtils.setTypefaceToTextView(this, textViewTitle, ViewUtils.FONT_WEIGHT.MEDIUM);
+            ViewUtils.setTypefaceToTextView(this, textViewTitle, ViewUtils.FONT_WEIGHT.TOOLBAR_TITLE);
         }
     }
 
@@ -182,7 +213,7 @@ public class MainActivity extends ActionBarActivity implements LocationListener{
 
         builder.setMessage(R.string.location_required_message)
                 .setTitle(R.string.location_required_title)
-                .setPositiveButton(R.string.location_go_to_settings, new DialogInterface.OnClickListener() {
+                .setPositiveButton(R.string.settings, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         startActivity(new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS));

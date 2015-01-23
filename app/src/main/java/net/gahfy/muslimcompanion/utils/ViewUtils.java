@@ -32,7 +32,8 @@ public class ViewUtils {
         BOLD,
         BOLD_ITALIC,
         BLACK,
-        BLACK_ITALIC
+        BLACK_ITALIC,
+        TOOLBAR_TITLE
     }
 
     /**
@@ -77,6 +78,8 @@ public class ViewUtils {
                 return Typeface.createFromAsset(context.getAssets(), context.getString(R.string.black_path));
             case BLACK_ITALIC:
                 return Typeface.createFromAsset(context.getAssets(), context.getString(R.string.black_italic_path));
+            case TOOLBAR_TITLE:
+                return Typeface.createFromAsset(context.getAssets(), context.getString(R.string.toolbat_title_path));
             default:
                 return Typeface.createFromAsset(context.getAssets(), context.getString(R.string.regular_path));
         }

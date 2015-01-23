@@ -7,7 +7,7 @@
 
     <string name="location_required_title">شغل خاصية تحديد المواقع</string>
     <string name="location_required_message">التطبيق يحتاج تشغيل تحديد المواقع</string>
-    <string name="location_go_to_settings">الإعدادات</string>
+    <string name="settings">الإعدادات</string>
 
     <string name="geolocating">تحديد موقعك</string>
 
@@ -32,4 +32,6 @@
     <string name="bold_italic_path">font/NotoKufiArabic-Bold.ttf</string>
     <string name="black_path">font/NotoKufiArabic-Bold.ttf</string>
     <string name="black_italic_path">font/NotoKufiArabic-Bold.ttf</string>
+
+    <string name="toolbat_title_path">font/NotoKufiArabic-Regular.ttf</string>
 </resources>

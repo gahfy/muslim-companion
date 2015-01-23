@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="green_primary_100">#C8E6C9</color>
+    <color name="green_primary_500">#4CAF50</color>
     <color name="green_primary_700">#388E3C</color>
     <color name="green_primary_900">#1B5E20</color>
 

@@ -27,6 +27,8 @@ import net.gahfy.muslimcompanion.utils.MathUtils;
 import net.gahfy.muslimcompanion.utils.ViewUtils;
 import net.gahfy.muslimcompanion.view.CompassArrowView;
 
+import java.util.Locale;
+
 public class CompassFragment extends AbstractFragment implements ViewTreeObserver.OnGlobalLayoutListener, SensorEventListener {
     /** The layout that contains the compass with the text of the Qibla */
     private RelativeLayout lytCompassContainer;
@@ -251,16 +253,19 @@ public class CompassFragment extends AbstractFragment implements ViewTreeObserve
                 lytCompassLytParams.setMargins((int) (compassWidth / 20f), (int) (compassWidth / 20f), (int) (compassWidth / 20f), (int) (compassWidth / 20f));
                 fragmentView.findViewById(R.id.lyt_compass).setLayoutParams(lytCompassLytParams);
 
+                Log.i(CompassFragment.class.getSimpleName(), String.format(Locale.US, "Width: %d / Height: %d", lytCompassLytParams.width, lytCompassLytParams.height));
+                Log.i(CompassFragment.class.getSimpleName(), String.format(Locale.US, "(int) (compassWidth * 0.9f) = %d", (int) (compassWidth * 0.9f)));
+
                 lblQibla.setTextSize(TypedValue.COMPLEX_UNIT_PX, compassWidth * 0.107f);
                 lblAngle.setTextSize(TypedValue.COMPLEX_UNIT_PX, compassWidth * 0.16f);
             } else {
                 float compassWidth = fragmentView.getMeasuredWidth() * 0.66f;
                 float compassHeight = fragmentView.getMeasuredHeight() * 0.90f;
 
-                if (compassWidth > compassHeight * 1.6f)
-                    compassWidth = compassHeight * 1.6f;
+                if (compassWidth > compassHeight * 1.7f)
+                    compassWidth = compassHeight * 1.7f;
                 else
-                    compassHeight = compassWidth / 1.6f;
+                    compassHeight = compassWidth / 1.7f;
 
                 RelativeLayout.LayoutParams lytCompassContainerLytParams = (RelativeLayout.LayoutParams) lytCompassContainer.getLayoutParams();
                 lytCompassContainerLytParams.width = (int) compassWidth;
@@ -277,6 +282,16 @@ public class CompassFragment extends AbstractFragment implements ViewTreeObserve
                 lytCompassLytParams.height = (int) (compassHeight * 0.9f);
                 lytCompassLytParams.setMargins((int) (compassHeight / 20f), (int) (compassHeight / 20f), (int) (compassHeight / 20f), (int) (compassHeight / 20f));
                 fragmentView.findViewById(R.id.lyt_compass).setLayoutParams(lytCompassLytParams);
+
+                Log.i(CompassFragment.class.getSimpleName(), String.format(Locale.US, "Width: %d / Height: %d", lytCompassLytParams.width, lytCompassLytParams.height));
+                Log.i(CompassFragment.class.getSimpleName(), String.format(Locale.US, "(int) (compassHeight * 0.9f) = %d", (int) (compassHeight * 0.9f)));
+
+                fragmentView.findViewById(R.id.lyt_compass).getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+                    @Override
+                    public void onGlobalLayout() {
+                        Log.i(CompassFragment.class.getSimpleName(), String.format(Locale.US, "Measured Width: %d / Measured Height: %d", fragmentView.findViewById(R.id.lyt_compass).getMeasuredWidth(), fragmentView.findViewById(R.id.lyt_compass).getMeasuredHeight()));
+                    }
+                });
 
                 lblQibla.setTextSize(TypedValue.COMPLEX_UNIT_PX, compassHeight * 0.13f);
                 lblAngle.setTextSize(TypedValue.COMPLEX_UNIT_PX, compassHeight * 0.19f);

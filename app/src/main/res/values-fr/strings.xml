@@ -5,7 +5,7 @@
 
     <string name="location_required_title">Activez la localisation</string>
     <string name="location_required_message">L\'application nécessite que la localisation soit active</string>
-    <string name="location_go_to_settings">Paramètres</string>
+    <string name="settings">Paramètres</string>
 
     <string name="geolocating">Geolocalisation</string>
     <string name="qibla">Qibla :&#160;</string>
@@ -28,4 +28,6 @@
     <string name="bold_italic_path">font/Roboto-BoldItalic.ttf</string>
     <string name="black_path">font/Roboto-Black.ttf</string>
     <string name="black_italic_path">font/Roboto-Black-Italic.ttf</string>
+
+    <string name="toolbat_title_path">font/Roboto-Medium.ttf</string>
 </resources>
