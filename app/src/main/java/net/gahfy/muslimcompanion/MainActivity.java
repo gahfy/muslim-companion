@@ -32,14 +32,23 @@ public class MainActivity extends ActionBarActivity implements LocationListener{
     /** The Category for analytics event about listeners */
     private static final String CATEGORY_LISTENER = "Listener";
 
-    /** The Category for analytics event about listeners */
+    /** The Action for analytics about compass */
     private static final String ACTION_COMPASS = "Compass";
 
-    /** The Category for analytics event about listeners */
+    /** The Action for analytics about location */
+    private static final String ACTION_LOCATION = "Location";
+
+    /** The Label for analytics when compass is switched on */
     private static final String LABEL_COMPASS_ON = "CompassOn";
 
-    /** The Category for analytics event about listeners */
+    /** The Label for analytics when compass has an error */
     private static final String LABEL_COMPASS_ERROR = "CompassError";
+
+    /** The Label for analytics when location is found */
+    private static final String LABEL_LOCATION_FOUND = "LocationFound";
+
+    /** The Label for analytics when user leave before finding location */
+    private static final String LABEL_LOCATION_LEAVE = "LocationLeave";
 
     /** The current Fragment */
     private AbstractFragment currentFragment;
@@ -64,6 +73,9 @@ public class MainActivity extends ActionBarActivity implements LocationListener{
 
     /** The current location of the Activity */
     private MuslimLocation currentLocation;
+
+    /** The microtime when the location is switched on */
+    private long locationStartTime;
 
     /**
      * The status (enabled/disabled) of location listeners
@@ -121,6 +133,9 @@ public class MainActivity extends ActionBarActivity implements LocationListener{
     @Override
     public void onPause(){
         super.onPause();
+        if(isGeolocationWorking && currentLocation == null){
+            sendLocationFoundEvent(new Date().getTime() - locationStartTime);
+        }
         switchOffLocationListeners();
     }
 
@@ -130,6 +145,7 @@ public class MainActivity extends ActionBarActivity implements LocationListener{
 
     public void switchOnLocationListeners(){
         if(!isGeolocationWorking) {
+            locationStartTime = new Date().getTime();
             isGeolocationWorking = true;
             locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
             try {
@@ -239,6 +255,14 @@ public class MainActivity extends ActionBarActivity implements LocationListener{
         return null;
     }
 
+    public void sendLocationFoundEvent(long timeTaken){
+        sendAnalyticsEvent(CATEGORY_LISTENER, ACTION_LOCATION, LABEL_LOCATION_FOUND, timeTaken);
+    }
+
+    public void sendLocationLeaveEvent(long afterTime){
+        sendAnalyticsEvent(CATEGORY_LISTENER, ACTION_LOCATION, LABEL_LOCATION_LEAVE, afterTime);
+    }
+
     public void sendCompassOnEvent(){
         sendAnalyticsEvent(CATEGORY_LISTENER, ACTION_COMPASS, LABEL_COMPASS_ON);
     }
@@ -253,6 +277,17 @@ public class MainActivity extends ActionBarActivity implements LocationListener{
                     .setCategory(category)
                     .setAction(action)
                     .setLabel(label)
+                    .build());
+        }
+    }
+
+    private void sendAnalyticsEvent(String category, String action, String label, long value){
+        if(getAnalyticsTracker() != null) {
+            getAnalyticsTracker().send(new HitBuilders.EventBuilder()
+                    .setCategory(category)
+                    .setAction(action)
+                    .setLabel(label)
+                    .setValue(value)
                     .build());
         }
     }
@@ -272,6 +307,7 @@ public class MainActivity extends ActionBarActivity implements LocationListener{
                 );
                 SharedPreferencesUtils.putLastLocation(this, currentLocation);
                 currentFragment.onLocationChanged(currentLocation);
+                sendLocationFoundEvent(new Date().getTime() - locationStartTime);
                 break;
         }
     }
