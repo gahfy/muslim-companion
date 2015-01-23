@@ -1,17 +1,10 @@
 package net.gahfy.muslimcompanion.fragment;
 
-
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
-import android.location.Location;
-import android.location.LocationListener;
-import android.location.LocationManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.util.TypedValue;
@@ -24,59 +17,33 @@ import android.view.ViewTreeObserver;
 import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.RotateAnimation;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.google.android.gms.analytics.HitBuilders;
-
 import net.gahfy.muslimcompanion.R;
+import net.gahfy.muslimcompanion.models.MuslimLocation;
 import net.gahfy.muslimcompanion.utils.LocationUtils;
+import net.gahfy.muslimcompanion.utils.MathUtils;
 import net.gahfy.muslimcompanion.utils.ViewUtils;
 import net.gahfy.muslimcompanion.view.CompassArrowView;
 
-import java.util.Date;
-import java.util.Locale;
-
-/**
- * The fragment with the Compass and the Qibla
- * @author Gahfy
- */
-public class CompassFragment extends AbstractFragment implements LocationListener, SensorEventListener{
-
-    /** The latitude in use for this Fragment */
-    private double currentLatitude = 300.0;
-    /** The longitude in use for this Fragment */
-    private double currentLongitude = 300.0;
-
-    /** The alert dialog shown to the user for requiring him to enable location providers */
-    private AlertDialog locationDisabledDialog;
-
+public class CompassFragment extends AbstractFragment implements ViewTreeObserver.OnGlobalLayoutListener, SensorEventListener {
     /** The layout that contains the compass with the text of the Qibla */
     private RelativeLayout lytCompassContainer;
 
-    /** The layout that contains the geolocating text with the progress bar */
-    private LinearLayout lytGeolocatingContainer;
-
+    /** The TextView which contains the Qibla label */
     private TextView lblQibla;
 
-    /** The TextView on which the Angle of the Qibla is written */
+    /** The TextView which contains the Angle of the Qibla */
     private TextView lblAngle;
 
     /** The ImageView that contains the arrow with the direction of the Qibla */
     private CompassArrowView imgCompassArrowDirection;
 
-
-    /** Whether the location listener is on (true) or off (false) */
-    private boolean isLocationListenerEnabled = false;
-
     /** Whether the compass is currently animating or not */
     private boolean isCompassAnimating = false;
     /** Whether the compass is currently working or not */
     private boolean isCompassWorking = false;
-
-    /** The Location manager of the fragment */
-    private LocationManager locationManager;
 
     /** The Sensor manager of the fragment */
     private SensorManager mSensorManager;
@@ -106,24 +73,27 @@ public class CompassFragment extends AbstractFragment implements LocationListene
     /** The current display of the screen */
     private Display mDisplay;
 
-    /** The time in ms when the user started Geolocation */
-    private long geolocationStartTime;
-
     /** The view of the fragment */
     private View fragmentView;
 
-    /**
-     * The status (enabled/disabled) of location listeners
-     * @see net.gahfy.muslimcompanion.utils.LocationUtils
-     */
-    int locationProvidersStatus = 0;
-
+    /** The current width of the fragment */
     float fragmentWidth = 0f;
+    /** The current height of the fragment */
     float fragmentHeight = 0f;
+
+    /** Whether the fragment has been resumed or not */
+    private boolean hasResumed = false;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         fragmentView = inflater.inflate(R.layout.fragment_compass, container, false);
+
+        return fragmentView;
+    }
+
+    @Override
+    public void onResume(){
+        super.onResume();
 
         WindowManager mWindowManager = (WindowManager) getMainActivity().getSystemService(Context.WINDOW_SERVICE);
         mDisplay = mWindowManager.getDefaultDisplay();
@@ -132,71 +102,39 @@ public class CompassFragment extends AbstractFragment implements LocationListene
         mAccelerometer = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         mMagnetometer = mSensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD);
 
-        lytCompassContainer = (RelativeLayout) fragmentView.findViewById(R.id.lyt_compass_container);
-        lytGeolocatingContainer = (LinearLayout) fragmentView.findViewById(R.id.lyt_geolocating_container);
+        if(mAccelerometer != null && mMagnetometer != null) {
+            isCompassWorking = true;
+            mSensorManager.registerListener(this, mAccelerometer, SensorManager.SENSOR_DELAY_GAME);
+            mSensorManager.registerListener(this, mMagnetometer, SensorManager.SENSOR_DELAY_GAME);
+            getMainActivity().sendCompassOnEvent();
+        }
+        else{
+            //TODO : Manage Error
+            getMainActivity().sendCompassErrorEvent();
+        }
 
-        TextView lblGeolocating = (TextView) fragmentView.findViewById(R.id.lbl_geolocating);
+        lytCompassContainer = (RelativeLayout) fragmentView.findViewById(R.id.lyt_compass_container);
+
         lblQibla = (TextView) fragmentView.findViewById(R.id.lbl_qibla);
         lblAngle = (TextView) fragmentView.findViewById(R.id.lbl_angle);
 
-        imgCompassArrowDirection = (CompassArrowView) fragmentView.findViewById(R.id.img_compass_arrow_direction);
-
-        ViewUtils.setTypefaceToTextView(getMainActivity(), lblGeolocating, ViewUtils.FONT_WEIGHT.LIGHT);
         ViewUtils.setTypefaceToTextView(getMainActivity(), lblQibla, ViewUtils.FONT_WEIGHT.LIGHT);
         ViewUtils.setTypefaceToTextView(getMainActivity(), lblAngle, ViewUtils.FONT_WEIGHT.MEDIUM);
-        fragmentView.getViewTreeObserver().addOnGlobalLayoutListener(layoutObserver);
 
-        lytCompassContainer.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-            @Override
-            public void onGlobalLayout() {
-                Log.i(CompassFragment.class.getSimpleName(), String.format(Locale.US, "CompassContainer width: %d / height: %d", lytCompassContainer.getMeasuredWidth(), lytCompassContainer.getMeasuredHeight()));
-            }
-        });
-        return fragmentView;
-    }
+        imgCompassArrowDirection = (CompassArrowView) fragmentView.findViewById(R.id.img_compass_arrow_direction);
 
-    @Override
-    public void onCreate(Bundle savedInstanceState){
-        super.onCreate(savedInstanceState);
+        fragmentView.getViewTreeObserver().addOnGlobalLayoutListener(this);
 
-        if(savedInstanceState != null){
-            currentLatitude = savedInstanceState.getDouble("latitude");
-            currentLongitude = savedInstanceState.getDouble("longitude");
+        hasResumed = true;
+
+        if(getMainActivity().getCurrentLocation() != null){
+            this.manageFoundLocation(getMainActivity().getCurrentLocation());
         }
     }
 
     @Override
-    public void onStart(){
-        super.onStart();
-
-        // Send a screen view.
-        getMainActivity().activityTracker.send(new HitBuilders.AppViewBuilder().build());
-
-        if(currentLatitude < 300.0) {
-            manageFoundLocation();
-        }
-        else{
-            lytCompassContainer.setVisibility(View.GONE);
-
-            locationProvidersStatus = LocationUtils.getLocationProvidersStatus(getMainActivity());
-            if (locationManager == null)
-                locationManager = (LocationManager) getMainActivity().getSystemService(Context.LOCATION_SERVICE);
-
-            checkLastKnownLocation();
-
-            if (currentLatitude < 300.0) {
-                manageFoundLocation();
-            } else {
-                checkLocationProviders();
-                enableLocationListeners();
-            }
-        }
-    }
-
-    @Override
-    public void onStop(){
-        super.onStop();
-        disableLocationListeners();
+    public void onPause(){
+        super.onPause();
         if(isCompassWorking){
             mSensorManager.unregisterListener(this, mAccelerometer);
             mSensorManager.unregisterListener(this, mMagnetometer);
@@ -205,73 +143,13 @@ public class CompassFragment extends AbstractFragment implements LocationListene
     }
 
     @Override
-    public void onSaveInstanceState(Bundle outState){
-        super.onSaveInstanceState(outState);
-        outState.putDouble("latitude", currentLatitude);
-        outState.putDouble("longitude", currentLongitude);
-    }
-
-    @Override
-    public void onLocationChanged(Location location) {
-        CompassFragment.this.currentLatitude = location.getLatitude();
-        CompassFragment.this.currentLongitude = location.getLongitude();
-
-
-        getMainActivity().activityTracker.send(new HitBuilders.TimingBuilder()
-                .setCategory("Listener")
-                .setValue(new Date().getTime() - geolocationStartTime)
-                .setVariable("Time to geolocate")
-                .setLabel("Geolocation")
-                .build());
-        disableLocationListeners();
-        manageFoundLocation();
-    }
-
-    @Override
-    public void onStatusChanged(String provider, int status, Bundle extras){
-
-    }
-
-    @Override
-    public void onProviderEnabled(String provider) {
-        switch(provider){
-            case LocationManager.GPS_PROVIDER:
-                locationProvidersStatus = locationProvidersStatus | LocationUtils.GPS_ENABLED;
-                break;
-            case LocationManager.NETWORK_PROVIDER:
-                locationProvidersStatus = locationProvidersStatus | LocationUtils.NETWORK_ENABLED;
-                break;
-            case LocationManager.PASSIVE_PROVIDER:
-                locationProvidersStatus = locationProvidersStatus | LocationUtils.PASSIVE_ENABLED;
-                break;
-        }
-        checkLocationProviders();
-    }
-
-    @Override
-    public void onProviderDisabled(String provider) {
-        switch(provider){
-            case LocationManager.GPS_PROVIDER:
-                locationProvidersStatus = locationProvidersStatus & LocationUtils.NOT_GPS_ENABLED;
-                break;
-            case LocationManager.NETWORK_PROVIDER:
-                locationProvidersStatus = locationProvidersStatus & LocationUtils.NOT_NETWORK_ENABLED;
-                break;
-            case LocationManager.PASSIVE_PROVIDER:
-                locationProvidersStatus = locationProvidersStatus & LocationUtils.NOT_PASSIVE_ENABLED;
-                break;
-        }
-        checkLocationProviders();
-    }
-
-    @Override
     public void onSensorChanged(SensorEvent event) {
         if (event.sensor == mAccelerometer) {
-            float[] temp = exponentialSmoothing(mLastAccelerometer, event.values, 0.5f);
+            float[] temp = MathUtils.exponentialSmoothing(mLastAccelerometer, event.values, 0.5f);
             System.arraycopy(temp, 0, mLastAccelerometer, 0, temp.length);
             mLastAccelerometerSet = true;
         } else if (event.sensor == mMagnetometer) {
-            float[] temp = exponentialSmoothing(mLastMagnetometer, event.values, 0.8f);
+            float[] temp = MathUtils.exponentialSmoothing(mLastMagnetometer, event.values, 0.8f);
             System.arraycopy(temp, 0, mLastMagnetometer, 0, temp.length);
             mLastMagnetometerSet = true;
         }
@@ -342,164 +220,6 @@ public class CompassFragment extends AbstractFragment implements LocationListene
 
     }
 
-    /**
-     * Checks whether location providers are on or off, and displays alert if there are off.
-     */
-    public void checkLocationProviders(){
-
-        if(locationDisabledDialog != null)
-            if(locationDisabledDialog.isShowing())
-                locationDisabledDialog.dismiss();
-
-        if((locationProvidersStatus & LocationUtils.GPS_ENABLED) == 0 && (locationProvidersStatus & LocationUtils.NETWORK_ENABLED) == 0)
-            showLocationDisabledAlert();
-    }
-
-    /**
-     * Called when a location is found
-     */
-    public void manageFoundLocation(){
-        int kaabaBearing = (int) LocationUtils.bearingToKaaba(currentLatitude, currentLongitude);
-        lblAngle.setText(getMainActivity().getString(R.string.angle, kaabaBearing));
-
-        Animation an = new RotateAnimation(0.0f, kaabaBearing, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
-
-        an.setDuration(0);
-        an.setRepeatCount(0);
-        an.setRepeatMode(Animation.REVERSE);
-        an.setFillAfter(true);
-
-        an.setAnimationListener(new Animation.AnimationListener() {
-            @Override
-            public void onAnimationStart(Animation animation) {
-                if(mAccelerometer != null && mMagnetometer != null) {
-                    isCompassWorking = true;
-                    mSensorManager.registerListener(CompassFragment.this, mAccelerometer, SensorManager.SENSOR_DELAY_GAME);
-                    mSensorManager.registerListener(CompassFragment.this, mMagnetometer, SensorManager.SENSOR_DELAY_GAME);
-                }
-            }
-
-            @Override
-            public void onAnimationEnd(Animation animation) {
-
-            }
-
-            @Override
-            public void onAnimationRepeat(Animation animation) {
-
-            }
-        });
-        // Aply animation to image view
-        imgCompassArrowDirection.startAnimation(an);
-
-        ViewUtils.crossFadeAnimation(getMainActivity(), lytCompassContainer, lytGeolocatingContainer);
-    }
-
-
-
-    /**
-     * Checks the last known locations
-     */
-    public void checkLastKnownLocation(){
-        Location lastKnownGpsLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-        Location lastKnownNetworkLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-
-        if(isLocationGoodEnough(lastKnownGpsLocation)){
-            currentLatitude = lastKnownGpsLocation.getLatitude();
-            currentLongitude = lastKnownGpsLocation.getLongitude();
-        }
-        else if(isLocationGoodEnough(lastKnownNetworkLocation)){
-            currentLatitude = lastKnownNetworkLocation.getLatitude();
-            currentLongitude = lastKnownNetworkLocation.getLongitude();
-        }
-    }
-
-    /**
-     * Enables location listeners
-     */
-    public void enableLocationListeners(){
-        if(!isLocationListenerEnabled) {
-            isLocationListenerEnabled = true;
-            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
-            try {
-                locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, this);
-            }
-            catch(IllegalArgumentException e){
-                e.printStackTrace();
-            }
-            locationManager.requestLocationUpdates(LocationManager.PASSIVE_PROVIDER, 0, 0, this);
-
-            geolocationStartTime = new Date().getTime();
-        }
-    }
-
-    /**
-     * Disable location listeners
-     */
-    public void disableLocationListeners(){
-        if(isLocationListenerEnabled){
-            isLocationListenerEnabled = false;
-            locationManager.removeUpdates(this);
-        }
-    }
-
-    /**
-     * Shows the location providers required alert
-     */
-    public void showLocationDisabledAlert(){
-        if(locationDisabledDialog != null){
-            if(locationDisabledDialog.isShowing())
-                locationDisabledDialog.dismiss();
-        }
-
-        AlertDialog.Builder builder = new AlertDialog.Builder(getMainActivity());
-
-        builder.setMessage(R.string.location_required_message)
-                .setTitle(R.string.location_required_title)
-                .setPositiveButton(R.string.location_go_to_settings, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        startActivity(new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS));
-                    }
-                })
-                .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        locationDisabledDialog.dismiss();
-                    }
-                });
-        locationDisabledDialog = builder.create();
-
-        locationDisabledDialog.show();
-    }
-
-    /**
-     * Returns whether a location is good for this fragment or not.
-     * @param location the location to check
-     * @return whether a location is good for this fragment or not
-     */
-    public static boolean isLocationGoodEnough(Location location){
-        return location != null && location.getTime()+3600000l >= new Date().getTime();
-    }
-
-    /**
-     * Calculate the exponentialSmoothing for a smoother rotation of the compass
-     * @param input the previous values
-     * @param output the gross values to go to
-     * @param alpha The coefficient of smoothness
-     * @return the array with exponential smoothing applied on it
-     * @link http://en.wikipedia.org/wiki/Exponential_smoothing
-     */
-    private float[] exponentialSmoothing( float[] input, float[] output, float alpha ) {
-        if ( output == null )
-            return input;
-        for ( int i=0; i<input.length; i++ ) {
-            output[i] = output[i] + alpha * (input[i] - output[i]);
-        }
-        return output;
-    }
-
-private ViewTreeObserver.OnGlobalLayoutListener layoutObserver = new ViewTreeObserver.OnGlobalLayoutListener() {
     @Override
     public void onGlobalLayout() {
         if(fragmentView.getMeasuredWidth() != fragmentWidth || fragmentView.getMeasuredHeight() != fragmentHeight) {
@@ -563,5 +283,34 @@ private ViewTreeObserver.OnGlobalLayoutListener layoutObserver = new ViewTreeObs
             }
         }
     }
-};
+
+    @Override
+    public GEOLOCATION_TYPE getGeolocationTypeNeeded(){
+        return GEOLOCATION_TYPE.ONCE;
+    }
+
+    @Override
+    public void onLocationChanged(MuslimLocation location){
+        manageFoundLocation(location);
+    }
+
+    /**
+     * Called when a location is found
+     */
+    public void manageFoundLocation(MuslimLocation location){
+        if(hasResumed) {
+            int kaabaBearing = (int) LocationUtils.bearingToKaaba(location.getLocationLatitude(), location.getLocationLongitude());
+            lblAngle.setText(getMainActivity().getString(R.string.angle, kaabaBearing));
+
+            Animation an = new RotateAnimation(0.0f, kaabaBearing, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+
+            an.setDuration(0);
+            an.setRepeatCount(0);
+            an.setRepeatMode(Animation.REVERSE);
+            an.setFillAfter(true);
+
+            // Aply animation to image view
+            imgCompassArrowDirection.startAnimation(an);
+        }
+    }
 }

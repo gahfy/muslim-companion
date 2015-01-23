@@ -7,8 +7,44 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="?attr/colorPrimaryDark"/>
-    <FrameLayout
+
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/lyt_fragment_container"></FrameLayout>
+        android:layout_height="match_parent">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/lyt_fragment_container"></FrameLayout>
+
+        <LinearLayout
+            android:id="@+id/lyt_geolocating_container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:orientation="vertical"
+            android:background="@color/white_93">
+
+            <TextView
+                android:id="@+id/lbl_geolocating"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:textColor="@color/black_87"
+                android:textSize="32sp"
+                android:text="@string/geolocating" />
+
+            <ProgressBar
+                android:id="@+id/prg_geolocating"
+                style="@style/HorizontalProgressBarStyle"
+                android:layout_marginTop="25dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:indeterminate="true"
+                android:layout_marginLeft="17.66dp"
+                android:layout_marginRight="17.66dp"
+                />
+        </LinearLayout>
+    </RelativeLayout>
+
 </LinearLayout>

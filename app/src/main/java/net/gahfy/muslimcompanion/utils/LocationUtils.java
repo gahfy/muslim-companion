@@ -1,7 +1,9 @@
 package net.gahfy.muslimcompanion.utils;
 
 import android.content.Context;
+import android.location.Location;
 import android.location.LocationManager;
+import android.os.Bundle;
 
 /**
  * This class is a library of useful methods for location
@@ -17,6 +19,23 @@ public class LocationUtils {
     public static final int PASSIVE_ENABLED = 4;
     public static final int NOT_NETWORK_ENABLED = 5;
     public static final int NOT_GPS_ENABLED = 6;
+
+    public static Location getLastKnownLocation(LocationManager locationManager){
+        Location gpsLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+        Location networkLocation = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+        Location passiveLocation = locationManager.getLastKnownLocation(LocationManager.PASSIVE_PROVIDER);
+
+        if(gpsLocation != null){
+            return gpsLocation;
+        }
+        else if(networkLocation != null){
+            return networkLocation;
+        }
+        else if(passiveLocation != null){
+            return passiveLocation;
+        }
+        return null;
+    }
 
     /**
      * Returns the current status of location providers.

@@ -6,14 +6,19 @@ import android.support.v4.app.Fragment;
 import com.google.android.gms.analytics.HitBuilders;
 
 import net.gahfy.muslimcompanion.MainActivity;
-
-import java.util.Date;
+import net.gahfy.muslimcompanion.models.MuslimLocation;
 
 /**
  * Abstract class that all fragments of the application should extend
  * @author Gahfy
  */
-public class AbstractFragment extends Fragment {
+public abstract class AbstractFragment extends Fragment {
+    public static enum GEOLOCATION_TYPE{
+        NONE,
+        ONCE,
+        CONTINUOUS
+    }
+
     /** The parent MainActivity of the Fragment */
     private MainActivity mainActivity;
 
@@ -32,10 +37,10 @@ public class AbstractFragment extends Fragment {
         super.onStart();
 
         // Set screen name.
-        getMainActivity().activityTracker.setScreenName(getClass().getSimpleName());
+        getMainActivity().getAnalyticsTracker().setScreenName(getClass().getSimpleName());
 
         // Send a screen view.
-        getMainActivity().activityTracker.send(new HitBuilders.AppViewBuilder().build());
+        getMainActivity().getAnalyticsTracker().send(new HitBuilders.AppViewBuilder().build());
     }
 
     @Override
@@ -49,5 +54,13 @@ public class AbstractFragment extends Fragment {
      */
     public MainActivity getMainActivity(){
         return this.mainActivity;
+    }
+
+    public GEOLOCATION_TYPE getGeolocationTypeNeeded(){
+        return GEOLOCATION_TYPE.NONE;
+    }
+
+    public void onLocationChanged(MuslimLocation location){
+
     }
 }

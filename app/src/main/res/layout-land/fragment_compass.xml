@@ -2,32 +2,6 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-    <LinearLayout
-        android:id="@+id/lyt_geolocating_container"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
-        android:orientation="vertical">
-        <TextView
-            android:id="@+id/lbl_geolocating"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:textSize="32sp"
-            android:text="@string/geolocating" />
-
-        <ProgressBar
-            android:id="@+id/prg_geolocating"
-            style="@style/HorizontalProgressBarStyle"
-            android:layout_marginTop="25dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:indeterminate="true"
-            android:layout_marginLeft="17.66dp"
-            android:layout_marginRight="17.66dp"
-            />
-    </LinearLayout>
-
     <RelativeLayout
         android:id="@+id/lyt_compass_container"
         android:layout_centerInParent="true"
