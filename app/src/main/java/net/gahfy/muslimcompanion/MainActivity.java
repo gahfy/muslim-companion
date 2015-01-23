@@ -207,7 +207,7 @@ public class MainActivity extends ActionBarActivity implements LocationListener{
         getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.lyt_fragment_container, currentFragment)
-                .commit();
+                .commitAllowingStateLoss();
     }
 
     public void manageNoGeolocationNeeded(){
