@@ -11,13 +11,19 @@
 
     <string name="geolocating">تحديد موقعك</string>
 
-    <string name="qibla">القبلة:&#160;</string>
+    <string name="qibla_below_compass">القبلة:&#160;</string>
+    <string name="qibla">القبلة</string>
     <string name="angle">%d°ش</string>
 
     <string name="north_abbreviation">ش</string>
     <string name="south_abbreviation">ج</string>
     <string name="east_abbreviation">ق</string>
     <string name="west_abbreviation">غ</string>
+
+
+    <string name="qibla_at">القبلة في %s</string>
+
+    <string name="language_name_for_database">\'ar\', \'ara\'</string>
 
 
     <string name="thin_path">font/NotoKufiArabic-Regular.ttf</string>

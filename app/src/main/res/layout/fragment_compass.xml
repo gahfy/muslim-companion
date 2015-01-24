@@ -52,7 +52,7 @@
                     android:textColor="@color/black_87"
                     android:textSize="0sp"
                     android:layout_centerVertical="true"
-                    android:text="@string/qibla" />
+                    android:text="@string/qibla_below_compass" />
             </RelativeLayout>
             <RelativeLayout
                 android:id="@+id/lyt_txt_angle_container"

@@ -4,6 +4,8 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -11,6 +13,7 @@ import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -29,7 +32,10 @@ import net.gahfy.muslimcompanion.utils.ViewUtils;
 
 import org.w3c.dom.Text;
 
+import java.io.IOException;
+import java.sql.SQLException;
 import java.util.Date;
+import java.util.Locale;
 
 public class MainActivity extends ActionBarActivity implements LocationListener{
     private AlertDialog locationDisabledDialog;
@@ -37,11 +43,17 @@ public class MainActivity extends ActionBarActivity implements LocationListener{
     /** The Category for analytics event about listeners */
     private static final String CATEGORY_LISTENER = "Listener";
 
+    /** The Category for analytics event about Database */
+    private static final String CATEGORY_DATABASE = "Database";
+
     /** The Action for analytics about compass */
     private static final String ACTION_COMPASS = "Compass";
 
     /** The Action for analytics about location */
     private static final String ACTION_LOCATION = "Location";
+
+    /** The Action for analytics about City */
+    private static final String ACTION_CITY = "City";
 
     /** The Label for analytics when compass is switched on */
     private static final String LABEL_COMPASS_ON = "CompassOn";
@@ -54,6 +66,12 @@ public class MainActivity extends ActionBarActivity implements LocationListener{
 
     /** The Label for analytics when user leave before finding location */
     private static final String LABEL_LOCATION_LEAVE = "LocationLeave";
+
+    /** The Label for analytics when retrieving the city */
+    private static final String LABEL_CITY_FOUND = "CityFound";
+
+    /** The Label for analytics when there is an error retrieving the city */
+    private static final String LABEL_CITY_ERROR = "CityError";
 
     /** The current Fragment */
     private AbstractFragment currentFragment;
@@ -161,11 +179,19 @@ public class MainActivity extends ActionBarActivity implements LocationListener{
         }
     }
 
+    public void setTitle(String title){
+        TextView textViewTitle = (TextView) findViewById(R.id.toolbar_title);
+        if(textViewTitle != null){
+            textViewTitle.setText(title);
+            ViewUtils.setTypefaceToTextView(this, textViewTitle, ViewUtils.FONT_WEIGHT.TOOLBAR_TITLE);
+        }
+    }
+
     @Override
     public void onPause(){
         super.onPause();
         if(isGeolocationWorking && currentLocation == null){
-            sendLocationFoundEvent(new Date().getTime() - locationStartTime);
+            sendLocationLeaveEvent(new Date().getTime() - locationStartTime);
         }
         switchOffLocationListeners();
     }
@@ -284,6 +310,14 @@ public class MainActivity extends ActionBarActivity implements LocationListener{
         if(muslimLocation != null && muslimLocation.getLocationTime() + muslimLocationValidityTime*1000 > new Date().getTime())
             return muslimLocation;
         return null;
+    }
+
+    public void sendCityFoundEvent(long timeTaken){
+        sendAnalyticsEvent(CATEGORY_DATABASE, ACTION_CITY, LABEL_CITY_FOUND, timeTaken);
+    }
+
+    public void sendCityErrorEvent(){
+        sendAnalyticsEvent(CATEGORY_DATABASE, ACTION_CITY, LABEL_CITY_ERROR);
     }
 
     public void sendLocationFoundEvent(long timeTaken){

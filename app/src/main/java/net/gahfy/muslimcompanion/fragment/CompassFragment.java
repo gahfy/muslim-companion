@@ -1,6 +1,8 @@
 package net.gahfy.muslimcompanion.fragment;
 
 import android.content.Context;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -20,6 +22,7 @@ import android.view.animation.RotateAnimation;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import net.gahfy.muslimcompanion.DbManager;
 import net.gahfy.muslimcompanion.R;
 import net.gahfy.muslimcompanion.models.MuslimLocation;
 import net.gahfy.muslimcompanion.utils.LocationUtils;
@@ -27,6 +30,7 @@ import net.gahfy.muslimcompanion.utils.MathUtils;
 import net.gahfy.muslimcompanion.utils.ViewUtils;
 import net.gahfy.muslimcompanion.view.CompassArrowView;
 
+import java.util.Date;
 import java.util.Locale;
 
 public class CompassFragment extends AbstractFragment implements ViewTreeObserver.OnGlobalLayoutListener, SensorEventListener {
@@ -128,6 +132,8 @@ public class CompassFragment extends AbstractFragment implements ViewTreeObserve
         fragmentView.getViewTreeObserver().addOnGlobalLayoutListener(this);
 
         hasResumed = true;
+
+        getMainActivity().setTitle(R.string.qibla);
 
         if(getMainActivity().getCurrentLocation() != null){
             this.manageFoundLocation(getMainActivity().getCurrentLocation());
@@ -326,6 +332,41 @@ public class CompassFragment extends AbstractFragment implements ViewTreeObserve
 
             // Aply animation to image view
             imgCompassArrowDirection.startAnimation(an);
+
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    applyCity();
+                }
+            }).start();
+        }
+    }
+
+    public void applyCity(){
+        try {
+            long start = new Date().getTime();
+            DbManager dbManager = new DbManager(getMainActivity());
+            SQLiteDatabase db = dbManager.getReadableDatabase();
+            Cursor c = db.rawQuery(String.format(Locale.US, "SELECT CASE WHEN (alternateNames.alternate_name IS NULL) THEN cities.name ELSE alternateNames.alternate_name END as cityName\n" +
+                    "FROM cities\n" +
+                    "LEFT OUTER JOIN (SELECT * FROM alternateNames WHERE isolanguage IN (".concat(getMainActivity().getString(R.string.language_name_for_database)).concat(")) alternateNames ON alternateNames.geonameid = cities._id\n" +
+                            "ORDER BY ((cities.latitude - %f)*(cities.latitude - %f)) + ((cities.longitude - %f)*(cities.longitude - %f))\n" +
+                            "LIMIT 0,1;"), getMainActivity().getCurrentLocation().getLocationLatitude(), getMainActivity().getCurrentLocation().getLocationLatitude(), getMainActivity().getCurrentLocation().getLocationLongitude(), getMainActivity().getCurrentLocation().getLocationLongitude()), null);
+            c.moveToFirst();
+            final String cityName = c.getString(0);
+            c.close();
+            db.close();
+            long end = new Date().getTime();
+            getMainActivity().sendCityFoundEvent(end - start);
+            getMainActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    getMainActivity().setTitle(getMainActivity().getString(R.string.qibla_at, cityName));
+                }
+            });
+        }
+        catch(Exception e){
+            getMainActivity().sendCityErrorEvent();
         }
     }
 }

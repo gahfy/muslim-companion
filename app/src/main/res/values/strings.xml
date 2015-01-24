@@ -8,13 +8,18 @@
     <string name="settings">Settings</string>
 
     <string name="geolocating">Geolocating</string>
-    <string name="qibla">Qibla:&#160;</string>
+    <string name="qibla_below_compass">Qibla:&#160;</string>
+    <string name="qibla">Qibla</string>
     <string name="angle">%d°N</string>
 
     <string name="north_abbreviation">N</string>
     <string name="south_abbreviation">S</string>
     <string name="east_abbreviation">E</string>
     <string name="west_abbreviation">W</string>
+
+    <string name="qibla_at">Qibla at %s</string>
+
+    <string name="language_name_for_database">\'en\', \'eng\'</string>
 
     <string name="thin_path">font/Roboto-Thin.ttf</string>
     <string name="thin_italic_path">font/Roboto-ThinItalic.ttf</string>
