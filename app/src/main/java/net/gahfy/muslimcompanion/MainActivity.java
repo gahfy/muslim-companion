@@ -4,8 +4,6 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -13,7 +11,6 @@ import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -29,13 +26,7 @@ import net.gahfy.muslimcompanion.models.MuslimLocation;
 import net.gahfy.muslimcompanion.utils.LocationUtils;
 import net.gahfy.muslimcompanion.utils.SharedPreferencesUtils;
 import net.gahfy.muslimcompanion.utils.ViewUtils;
-
-import org.w3c.dom.Text;
-
-import java.io.IOException;
-import java.sql.SQLException;
 import java.util.Date;
-import java.util.Locale;
 
 public class MainActivity extends ActionBarActivity implements LocationListener{
     private AlertDialog locationDisabledDialog;
@@ -76,17 +67,8 @@ public class MainActivity extends ActionBarActivity implements LocationListener{
     /** The current Fragment */
     private AbstractFragment currentFragment;
 
-    /** The Geolocating TextView */
-    private TextView lblGeolocating;
-
-    /** The Settings TextView */
-    private TextView lblMenuSettings;
-
     /** The Geolocating layout */
     private LinearLayout lytGeolocatingContainer;
-
-    /** The menu icon for the drawer layout */
-    private RelativeLayout lytIcMenuContainer;
 
     /** The drawer layout */
     private DrawerLayout drawerLayout;
@@ -96,9 +78,6 @@ public class MainActivity extends ActionBarActivity implements LocationListener{
 
     /** The Google Analytics Tracker */
     private Tracker analyticsTracker;
-
-    /** The toolbar */
-    private Toolbar toolbar;
 
     /** Whether location listeners are on or not */
     private boolean isGeolocationWorking = false;
@@ -139,13 +118,13 @@ public class MainActivity extends ActionBarActivity implements LocationListener{
     public void onResume() {
         super.onResume();
 
-        lblGeolocating = (TextView) findViewById(R.id.lbl_geolocating);
+        TextView lblGeolocating = (TextView) findViewById(R.id.lbl_geolocating);
         lytGeolocatingContainer = (LinearLayout) findViewById(R.id.lyt_geolocating_container);
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        lytIcMenuContainer = (RelativeLayout) findViewById(R.id.lyt_ic_menu_container);
+        RelativeLayout lytIcMenuContainer = (RelativeLayout) findViewById(R.id.lyt_ic_menu_container);
         scrollDrawerView = (ScrollView) findViewById(R.id.scroll_drawer_view);
 
-        lblMenuSettings = (TextView) findViewById(R.id.lbl_menu_settings);
+        TextView lblMenuSettings = (TextView) findViewById(R.id.lbl_menu_settings);
 
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         locationProvidersStatus = LocationUtils.getLocationProvidersStatus(this);
@@ -286,30 +265,32 @@ public class MainActivity extends ActionBarActivity implements LocationListener{
     public void manageNoGeolocationNeeded(){
         lytGeolocatingContainer.setVisibility(View.GONE);
 
-        MuslimLocation lastKnownMuslimLocation = getLastValidMuslimLocation();
-        if(lastKnownMuslimLocation != null)
-            switchOffLocationListeners();
+        MuslimLocation lastKnownMuslimLocation = getLastMuslimLocation();
+        if(lastKnownMuslimLocation != null) {
+            if(lastKnownMuslimLocation.getLocationTime() + (SharedPreferencesUtils.getLocationValidityTime(this)*1000) > new Date().getTime()) {
+                switchOffLocationListeners();
+            }
+        }
     }
 
     public void manageOnceGeolocationNeeded(){
-        MuslimLocation lastKnownMuslimLocation = getLastValidMuslimLocation();
+        MuslimLocation lastKnownMuslimLocation = getLastMuslimLocation();
         if(lastKnownMuslimLocation != null){
             currentLocation = lastKnownMuslimLocation;
             lytGeolocatingContainer.setVisibility(View.GONE);
             switchOffLocationListeners();
             currentFragment.onLocationChanged(currentLocation);
+            if(lastKnownMuslimLocation.getLocationTime() + (SharedPreferencesUtils.getLocationValidityTime(this)*1000) < new Date().getTime()) {
+                switchOnLocationListeners();
+            }
         }
         else{
             switchOnLocationListeners();
         }
     }
 
-    public MuslimLocation getLastValidMuslimLocation(){
-        MuslimLocation muslimLocation = SharedPreferencesUtils.getLastLocation(this);
-        long muslimLocationValidityTime = SharedPreferencesUtils.getLocationValidityTime(this);
-        if(muslimLocation != null && muslimLocation.getLocationTime() + muslimLocationValidityTime*1000 > new Date().getTime())
-            return muslimLocation;
-        return null;
+    public MuslimLocation getLastMuslimLocation(){
+        return SharedPreferencesUtils.getLastLocation(this);
     }
 
     public void sendCityFoundEvent(long timeTaken){
