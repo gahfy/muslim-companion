@@ -34,7 +34,7 @@
                         android:paddingRight="16dp"
                         android:layout_alignParentRight="true"
                         android:background="@drawable/toolbar_button_background">
-                        <ImageButton
+                        <ImageView
                             android:id="@+id/bt_menu"
                             android:layout_width="24dp"
                             android:layout_height="24dp"
