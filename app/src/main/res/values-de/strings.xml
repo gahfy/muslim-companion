@@ -8,7 +8,7 @@
     <string name="location_required_message">Die Anwendung benötigt Standort aktiviert sein</string>
     <string name="settings">Einstellungen</string>
 
-    <string name="geolocating">Geolocating</string>
+    <string name="geolocating">Geolocation</string>
     <string name="qibla_below_compass">Qibla:&#160;</string>
     <string name="qibla">Qibla</string>
     <string name="angle">%d°N</string>
