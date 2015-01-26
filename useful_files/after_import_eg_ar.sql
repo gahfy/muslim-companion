@@ -121,3 +121,9 @@ INSERT INTO alternateNames (geonameid, isolanguage, alternate_name, isPreferredN
 INSERT INTO alternateNames (geonameid, isolanguage, alternate_name, isPreferredName, isShortName, isColloquial, isHistoric) VALUES (354105, 'ar', 'كفر صقر', NULL, NULL, NULL, NULL);
 INSERT INTO alternateNames (geonameid, isolanguage, alternate_name, isPreferredName, isShortName, isColloquial, isHistoric) VALUES (352733, 'ar', 'مرسى مطروح', NULL, NULL, NULL, NULL);
 INSERT INTO alternateNames (geonameid, isolanguage, alternate_name, isPreferredName, isShortName, isColloquial, isHistoric) VALUES (352344, 'ar', 'منية النصر', NULL, NULL, NULL, NULL);
+
+UPDATE cities
+SET alternate_names = (SELECT CASE WHEN (instr(citiesInside.alternate_names, alternateNames.alternate_name) > 0) THEN (citiesInside.alternate_names) ELSE (CASE WHEN (citiesInside.alternate_names IS NOT NULL) THEN (citiesInside.alternate_names || ',' || alternateNames.alternate_name) ELSE alternateNames.alternate_name END) END as alternate_names
+FROM cities citiesInside
+LEFT OUTER JOIN alternateNames ON cities._id = alternateNames.geonameid AND alternateNames.isolanguage IN ('ar', 'ara') WHERE citiesInside._id = cities._id)
+WHERE cities.iso = 'EG';
