@@ -18,6 +18,9 @@
     <string name="west_abbreviation">W</string>
 
     <string name="qibla_at">Qibla at %s</string>
+    <string name="last_geolocation_on">Last geolocation on %1$s at %2$s</string>
+    <string name="short_date_format">MM/dd/yyyy</string>
+    <string name="hour_format">HH:mm</string>
 
     <string name="language_name_for_database">\'en\', \'eng\'</string>
 

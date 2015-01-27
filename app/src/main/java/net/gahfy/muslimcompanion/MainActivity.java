@@ -97,6 +97,8 @@ public class MainActivity extends ActionBarActivity implements LocationListener{
      */
     int locationProvidersStatus = 0;
 
+    boolean shouldDisplayAlert = false;
+
     /**
      * Returns the Google Analytics Tracker
      * @return the Google Analytics Tracker
@@ -166,6 +168,28 @@ public class MainActivity extends ActionBarActivity implements LocationListener{
         }
     }
 
+    public void setSubTitle(int subtitleResId){
+        TextView textViewSubTitle = (TextView) findViewById(R.id.toolbar_subtitle);
+        if(textViewSubTitle != null){
+            textViewSubTitle.setText(subtitleResId);
+            ViewUtils.setTypefaceToTextView(this, textViewSubTitle, ViewUtils.FONT_WEIGHT.REGULAR_ITALIC);
+        }
+    }
+
+    public void setSubTitle(String subtitle){
+        TextView textViewSubTitle = (TextView) findViewById(R.id.toolbar_subtitle);
+        if(subtitle != null) {
+            textViewSubTitle.setVisibility(View.VISIBLE);
+            if (textViewSubTitle != null) {
+                textViewSubTitle.setText(subtitle);
+                ViewUtils.setTypefaceToTextView(this, textViewSubTitle, ViewUtils.FONT_WEIGHT.REGULAR_ITALIC);
+            }
+        }
+        else{
+            textViewSubTitle.setVisibility(View.GONE);
+        }
+    }
+
     @Override
     public void onPause(){
         super.onPause();
@@ -201,8 +225,9 @@ public class MainActivity extends ActionBarActivity implements LocationListener{
             if(locationDisabledDialog.isShowing())
                 locationDisabledDialog.dismiss();
 
-        if((locationProvidersStatus & LocationUtils.GPS_ENABLED) == 0 && (locationProvidersStatus & LocationUtils.NETWORK_ENABLED) == 0)
+        if(shouldDisplayAlert && (locationProvidersStatus & LocationUtils.GPS_ENABLED) == 0 && (locationProvidersStatus & LocationUtils.NETWORK_ENABLED) == 0) {
             showLocationDisabledAlert();
+        }
     }
 
     /**
@@ -243,6 +268,7 @@ public class MainActivity extends ActionBarActivity implements LocationListener{
     }
 
     private void redirectToFragment(AbstractFragment fragment){
+        this.setSubTitle(null);
         currentFragment = fragment;
 
         switch(currentFragment.getGeolocationTypeNeeded()) {
@@ -264,7 +290,6 @@ public class MainActivity extends ActionBarActivity implements LocationListener{
 
     public void manageNoGeolocationNeeded(){
         lytGeolocatingContainer.setVisibility(View.GONE);
-
         MuslimLocation lastKnownMuslimLocation = getLastMuslimLocation();
         if(lastKnownMuslimLocation != null) {
             if(lastKnownMuslimLocation.getLocationTime() + (SharedPreferencesUtils.getLocationValidityTime(this)*1000) > new Date().getTime()) {
@@ -278,13 +303,16 @@ public class MainActivity extends ActionBarActivity implements LocationListener{
         if(lastKnownMuslimLocation != null){
             currentLocation = lastKnownMuslimLocation;
             lytGeolocatingContainer.setVisibility(View.GONE);
-            switchOffLocationListeners();
             currentFragment.onLocationChanged(currentLocation);
             if(lastKnownMuslimLocation.getLocationTime() + (SharedPreferencesUtils.getLocationValidityTime(this)*1000) < new Date().getTime()) {
                 switchOnLocationListeners();
             }
+            else{
+                switchOffLocationListeners();
+            }
         }
         else{
+            shouldDisplayAlert = true;
             switchOnLocationListeners();
         }
     }

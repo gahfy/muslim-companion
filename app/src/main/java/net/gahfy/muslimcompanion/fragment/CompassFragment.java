@@ -30,6 +30,7 @@ import net.gahfy.muslimcompanion.utils.MathUtils;
 import net.gahfy.muslimcompanion.utils.ViewUtils;
 import net.gahfy.muslimcompanion.view.CompassArrowView;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
@@ -362,6 +363,11 @@ public class CompassFragment extends AbstractFragment implements ViewTreeObserve
                 @Override
                 public void run() {
                     getMainActivity().setTitle(getMainActivity().getString(R.string.qibla_at, cityName));
+                    if(getMainActivity().getCurrentLocation().getLocationMode() == MuslimLocation.MODE.MODE_PROVIDER) {
+                        String date = new SimpleDateFormat(getMainActivity().getString(R.string.short_date_format)).format(getMainActivity().getCurrentLocation().getLocationTime());
+                        String hour = new SimpleDateFormat(getMainActivity().getString(R.string.hour_format)).format(getMainActivity().getCurrentLocation().getLocationTime());
+                        getMainActivity().setSubTitle(getMainActivity().getString(R.string.last_geolocation_on, date, hour));
+                    }
                 }
             });
         }

@@ -18,6 +18,9 @@
     <string name="west_abbreviation">O</string>
 
     <string name="qibla_at">Qibla à %s</string>
+    <string name="last_geolocation_on">Dernière géolocalisation le %1$s à %2$s</string>
+    <string name="short_date_format">dd/MM/yyyy</string>
+    <string name="hour_format">HH:mm</string>
 
     <string name="language_name_for_database">\'fr\', \'fra\', \'fre\'</string>
 
@@ -79,7 +82,7 @@
     <string name="country_cf">République centrafricaine</string>
     <string name="country_cg">République du Congo</string>
     <string name="country_ch">Suisse</string>
-    <string name="country_ci">Côte d'Ivoire</string>
+    <string name="country_ci">Côte d\'Ivoire</string>
     <string name="country_ck">Îles Cook</string>
     <string name="country_cl">Chili</string>
     <string name="country_cm">Cameroun</string>
@@ -141,7 +144,7 @@
     <string name="country_il">Israël</string>
     <string name="country_im">Île de Man</string>
     <string name="country_in">Inde</string>
-    <string name="country_io">Territoire britannique de l'océan Indien</string>
+    <string name="country_io">Territoire britannique de l\'océan Indien</string>
     <string name="country_iq">Irak</string>
     <string name="country_ir">Iran</string>
     <string name="country_is">Islande</string>
