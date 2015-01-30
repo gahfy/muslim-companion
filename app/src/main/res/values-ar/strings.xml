@@ -27,6 +27,12 @@
 
     <string name="language_name_for_database">\'ar\', \'ara\'</string>
 
+    <string name="geolocation">تحديد المواقع</string>
+    <string name="enabled">مشغل</string>
+    <string name="disabled">موقف</string>
+    <string name="city_chosen">مدينة</string>
+    <string name="no_city_chosen">غير محددة بعد</string>
+    <string name="search">البحث</string>
 
     <string name="thin_path">font/NotoKufiArabic-Regular.ttf</string>
     <string name="thin_italic_path">font/NotoKufiArabic-Regular.ttf</string>

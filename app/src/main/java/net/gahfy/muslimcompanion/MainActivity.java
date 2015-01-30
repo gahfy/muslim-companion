@@ -8,6 +8,7 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
@@ -22,6 +23,7 @@ import com.google.android.gms.analytics.Tracker;
 
 import net.gahfy.muslimcompanion.fragment.AbstractFragment;
 import net.gahfy.muslimcompanion.fragment.CompassFragment;
+import net.gahfy.muslimcompanion.fragment.SettingsFragment;
 import net.gahfy.muslimcompanion.models.MuslimLocation;
 import net.gahfy.muslimcompanion.utils.LocationUtils;
 import net.gahfy.muslimcompanion.utils.SharedPreferencesUtils;
@@ -70,17 +72,20 @@ public class MainActivity extends ActionBarActivity implements LocationListener{
     /** The Geolocating layout */
     private LinearLayout lytGeolocatingContainer;
 
+    /** */
+    // TODO: re-enable
+    //private RelativeLayout lytIcMenuContainer;
+
     /** The drawer layout */
-    private DrawerLayout drawerLayout;
+    // TODO : re-enable
+    //private DrawerLayout drawerLayout;
 
     /** The scrollview with the navigation drawer */
-    private ScrollView scrollDrawerView;
+    // TODO : re-enable
+    //private ScrollView scrollDrawerView;
 
     /** The Google Analytics Tracker */
     private Tracker analyticsTracker;
-
-    /** Whether location listeners are on or not */
-    private boolean isGeolocationWorking = false;
 
     /** The Location Manager of the activity */
     private LocationManager locationManager;
@@ -90,6 +95,12 @@ public class MainActivity extends ActionBarActivity implements LocationListener{
 
     /** The microtime when the location is switched on */
     private long locationStartTime;
+
+    /** Whether location listeners are on or not */
+    private boolean isGeolocationWorking = false;
+
+    /** The toolbar of the activity */
+    private Toolbar toolbar;
 
     /**
      * The status (enabled/disabled) of location listeners
@@ -111,9 +122,50 @@ public class MainActivity extends ActionBarActivity implements LocationListener{
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        this.setContentView(R.layout.activity_main);
+
+        initMembers();
+        initToolbar();
+
+        if(savedInstanceState != null){
+            restoreState(savedInstanceState);
+        }
+        else {
+            setTitle(R.string.app_name);
+            redirectToFragment(new CompassFragment(), false);
+        }
+    }
+
+    public void initMembers(){
         analyticsTracker = ((MuslimCompanionApplication) getApplication()).getTracker(MuslimCompanionApplication.TrackerName.GLOBAL_TRACKER);
 
-        this.setContentView(R.layout.activity_main);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+
+        // TODO: re-enable
+        //lytIcMenuContainer = (RelativeLayout) findViewById(R.id.lyt_ic_menu_container);
+        lytGeolocatingContainer = (LinearLayout) findViewById(R.id.lyt_geolocating_container);
+        // TODO: re-enable
+        //drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        //scrollDrawerView = (ScrollView) findViewById(R.id.scroll_drawer_view);
+
+        locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        locationProvidersStatus = LocationUtils.getLocationProvidersStatus(this);
+    }
+
+    public void initToolbar(){
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+
+        /*
+        TODO: re-enable
+        lytIcMenuContainer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                drawerLayout.openDrawer(scrollDrawerView);
+            }
+        });
+        */
+
     }
 
     @Override
@@ -121,34 +173,22 @@ public class MainActivity extends ActionBarActivity implements LocationListener{
         super.onResume();
 
         TextView lblGeolocating = (TextView) findViewById(R.id.lbl_geolocating);
-        lytGeolocatingContainer = (LinearLayout) findViewById(R.id.lyt_geolocating_container);
-        drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        RelativeLayout lytIcMenuContainer = (RelativeLayout) findViewById(R.id.lyt_ic_menu_container);
-        scrollDrawerView = (ScrollView) findViewById(R.id.scroll_drawer_view);
-
-        TextView lblMenuSettings = (TextView) findViewById(R.id.lbl_menu_settings);
-
-        locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-        locationProvidersStatus = LocationUtils.getLocationProvidersStatus(this);
-
-
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
-
-        lytIcMenuContainer.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                drawerLayout.openDrawer(scrollDrawerView);
-            }
-        });
-
-        setTitle(R.string.app_name);
+        // TODO re-enable
+        // TextView lblMenuSettings = (TextView) findViewById(R.id.lbl_menu_settings);
 
         ViewUtils.setTypefaceToTextView(this, lblGeolocating, ViewUtils.FONT_WEIGHT.LIGHT);
-        ViewUtils.setTypefaceToTextView(this, lblMenuSettings, ViewUtils.FONT_WEIGHT.MEDIUM);
+        // TODO re-enable
+        // ViewUtils.setTypefaceToTextView(this, lblMenuSettings, ViewUtils.FONT_WEIGHT.MEDIUM);
 
-        redirectToFragment(new CompassFragment());
+        /*
+        TODO: re-enable
+        findViewById(R.id.lbl_menu_settings).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                redirectToFragment(new SettingsFragment());
+            }
+        });
+        */
     }
 
     @Override
@@ -166,6 +206,16 @@ public class MainActivity extends ActionBarActivity implements LocationListener{
             textViewTitle.setText(title);
             ViewUtils.setTypefaceToTextView(this, textViewTitle, ViewUtils.FONT_WEIGHT.TOOLBAR_TITLE);
         }
+    }
+
+    public void hideToolbar(){
+        findViewById(R.id.lyt_status_bar_container).setBackgroundColor(getResources().getColor(R.color.white_93));
+        findViewById(R.id.toolbar).setVisibility(View.GONE);
+    }
+
+    public void showToolbar(){
+        findViewById(R.id.lyt_status_bar_container).setBackgroundColor(getResources().getColor(R.color.primary));
+        findViewById(R.id.toolbar).setVisibility(View.VISIBLE);
     }
 
     public void setSubTitle(int subtitleResId){
@@ -268,7 +318,18 @@ public class MainActivity extends ActionBarActivity implements LocationListener{
     }
 
     private void redirectToFragment(AbstractFragment fragment){
+        redirectToFragment(fragment, true);
+    }
+
+    private void redirectToFragment(AbstractFragment fragment, boolean addToBackStack){
+        showToolbar();
         this.setSubTitle(null);
+        /*
+        TODO: re-enable
+
+        if(drawerLayout.isDrawerOpen(scrollDrawerView))
+            drawerLayout.closeDrawers();
+        */
         currentFragment = fragment;
 
         switch(currentFragment.getGeolocationTypeNeeded()) {
@@ -276,16 +337,20 @@ public class MainActivity extends ActionBarActivity implements LocationListener{
                 manageNoGeolocationNeeded();
                 break;
             case ONCE:
-                manageOnceGeolocationNeeded();
+                manageOnceGeolocationNeeded(true);
                 break;
             case CONTINUOUS:
                 break;
         }
 
-        getSupportFragmentManager()
+        FragmentTransaction fragmentTransaction = getSupportFragmentManager()
                 .beginTransaction()
-                .replace(R.id.lyt_fragment_container, currentFragment)
-                .commitAllowingStateLoss();
+                .add(R.id.lyt_fragment_container, currentFragment);
+
+        if (addToBackStack)
+            fragmentTransaction.addToBackStack(null);
+
+        fragmentTransaction.commitAllowingStateLoss();
     }
 
     public void manageNoGeolocationNeeded(){
@@ -298,12 +363,13 @@ public class MainActivity extends ActionBarActivity implements LocationListener{
         }
     }
 
-    public void manageOnceGeolocationNeeded(){
+    public void manageOnceGeolocationNeeded(boolean communicateToFragment){
         MuslimLocation lastKnownMuslimLocation = getLastMuslimLocation();
         if(lastKnownMuslimLocation != null){
             currentLocation = lastKnownMuslimLocation;
             lytGeolocatingContainer.setVisibility(View.GONE);
-            currentFragment.onLocationChanged(currentLocation);
+            if(communicateToFragment)
+                currentFragment.onLocationChanged(currentLocation);
             if(lastKnownMuslimLocation.getLocationTime() + (SharedPreferencesUtils.getLocationValidityTime(this)*1000) < new Date().getTime()) {
                 switchOnLocationListeners();
             }
@@ -421,5 +487,43 @@ public class MainActivity extends ActionBarActivity implements LocationListener{
                 break;
         }
         checkLocationProviders();
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState){
+        outState.putBoolean("isCurrentLocationNull", currentLocation == null);
+        if(currentLocation != null){
+            outState.putString("currentLocationLatitude", String.valueOf(currentLocation.getLocationLatitude()));
+            outState.putString("currentLocationLongitude", String.valueOf(currentLocation.getLocationLongitude()));
+            outState.putLong("currentLocationTime", currentLocation.getLocationTime());
+            outState.putInt("currentLocationMode", currentLocation.getLocationModeInt());
+        }
+
+        // Always call the superclass so it can save the view hierarchy state
+        super.onSaveInstanceState(outState);
+    }
+
+    private void restoreState(Bundle savedInstanceState){
+        if(!savedInstanceState.getBoolean("isCurrentLocationNull")){
+            currentLocation = new MuslimLocation(
+                    Double.valueOf(savedInstanceState.getString("currentLocationLatitude")),
+                    Double.valueOf(savedInstanceState.getString("currentLocationLongitude")),
+                    savedInstanceState.getLong("currentLocationTime"),
+                    savedInstanceState.getInt("currentLocationMode")
+            );
+        }
+
+        currentFragment = (AbstractFragment) getSupportFragmentManager().findFragmentById(R.id.lyt_fragment_container);
+
+        switch(currentFragment.getGeolocationTypeNeeded()) {
+            case NONE:
+                manageNoGeolocationNeeded();
+                break;
+            case ONCE:
+                manageOnceGeolocationNeeded(false);
+                break;
+            case CONTINUOUS:
+                break;
+        }
     }
 }

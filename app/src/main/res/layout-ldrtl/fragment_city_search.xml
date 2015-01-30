@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="57.67dp"
+        android:layout_marginTop="5.17dp"
+        android:layout_marginLeft="5.17dp"
+        android:layout_marginRight="5.17dp"
+        android:layout_marginBottom="6.66dp"
+        android:paddingTop="1.5dp"
+        android:paddingBottom="5.5dp"
+        android:paddingLeft="3.5dp"
+        android:paddingRight="3.5dp"
+        android:background="@drawable/search_bar_background"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:id="@+id/lyt_arrow_back"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true">
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:src="@drawable/ic_arrow_back_grey600" />
+        </RelativeLayout>
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_centerVertical="true"
+            android:textCursorDrawable="@drawable/edittext_cursor"
+            android:textColor="@color/black_87"
+            android:textColorHint="@color/white_74"
+            android:gravity="right|center_vertical"
+            android:hint="@string/search"
+            android:background="@android:color/transparent"
+            android:layout_toLeftOf="@id/lyt_arrow_back" />
+    </RelativeLayout>
+
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="5.17dp"
+        android:layout_marginRight="5.17dp"
+        android:background="@drawable/search_bar_background" />
+</LinearLayout>

@@ -6,6 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
     <RelativeLayout
+        android:id="@+id/lyt_status_bar_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fitsSystemWindows="true"
@@ -25,13 +26,13 @@
                 app:contentInsetStart="0dp">
                 <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-                    <RelativeLayout
+                    android:layout_height="match_parent"
+                    android:paddingLeft="16dp">
+                    <!--RelativeLayout
                         android:id="@+id/lyt_ic_menu_container"
                         android:layout_centerVertical="true"
                         android:layout_width="56dp"
                         android:layout_height="56dp"
-                        android:paddingLeft="16dp"
                         android:layout_marginRight="16dp"
                         android:layout_alignParentLeft="true"
                         android:background="@drawable/toolbar_button_background">
@@ -43,11 +44,11 @@
                             android:layout_centerVertical="true"
                             android:layout_alignParentLeft="true"
                             android:background="@android:color/transparent" />
-                    </RelativeLayout>
+                    </RelativeLayout-->
                     <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_toRightOf="@id/lyt_ic_menu_container"
+                        android:layout_alignParentLeft="true"
                         android:layout_gravity="left|center_vertical"
                         android:layout_centerVertical="true"
                         android:orientation="vertical"
@@ -121,7 +122,7 @@
         </RelativeLayout>
     </RelativeLayout>
 
-    <ScrollView
+    <!--ScrollView
         android:id="@+id/scroll_drawer_view"
         android:layout_width="304dp"
         android:layout_height="match_parent"
@@ -169,5 +170,5 @@
                 </RelativeLayout>
             </LinearLayout>
         </LinearLayout>
-    </ScrollView>
+    </ScrollView-->
 </android.support.v4.widget.DrawerLayout>

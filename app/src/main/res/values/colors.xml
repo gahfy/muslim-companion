@@ -7,7 +7,9 @@
     <color name="red_accent_700">#D50000</color>
 
     <color name="white_93">#eeeeee</color>
+    <color name="white_74">#bdbdbd</color>
     <color name="black_87">#212121</color>
+    <color name="black_54">#757575</color>
 
     <color name="primary">@color/green_primary_700</color>
     <color name="primary_dark">@color/green_primary_900</color>

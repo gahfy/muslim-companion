@@ -8,7 +8,6 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.Display;
 import android.view.LayoutInflater;
@@ -91,23 +90,14 @@ public class CompassFragment extends AbstractFragment implements ViewTreeObserve
     /** Whether the fragment has been resumed or not */
     private boolean hasResumed = false;
 
+    /** The name of the current city */
+    private String cityName;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         fragmentView = inflater.inflate(R.layout.fragment_compass, container, false);
 
-        return fragmentView;
-    }
-
-    @Override
-    public void onResume(){
-        super.onResume();
-
-        WindowManager mWindowManager = (WindowManager) getMainActivity().getSystemService(Context.WINDOW_SERVICE);
-        mDisplay = mWindowManager.getDefaultDisplay();
-
-        mSensorManager = (SensorManager) getMainActivity().getSystemService(Context.SENSOR_SERVICE);
-        mAccelerometer = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
-        mMagnetometer = mSensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD);
+        initMembers();
 
         if(mAccelerometer != null && mMagnetometer != null) {
             isCompassWorking = true;
@@ -120,30 +110,50 @@ public class CompassFragment extends AbstractFragment implements ViewTreeObserve
             getMainActivity().sendCompassErrorEvent();
         }
 
+        ViewUtils.setTypefaceToTextView(getMainActivity(), lblQibla, ViewUtils.FONT_WEIGHT.LIGHT);
+        ViewUtils.setTypefaceToTextView(getMainActivity(), lblAngle, ViewUtils.FONT_WEIGHT.MEDIUM);
+
+        if(savedInstanceState == null) {
+            getMainActivity().setTitle(R.string.qibla);
+            if (getMainActivity().getCurrentLocation() != null) {
+                this.manageFoundLocation(getMainActivity().getCurrentLocation());
+            }
+        }
+        else{
+            restoreState(savedInstanceState);
+        }
+
+        return fragmentView;
+    }
+
+    public void initMembers(){
+        WindowManager mWindowManager = (WindowManager) getMainActivity().getSystemService(Context.WINDOW_SERVICE);
+        mDisplay = mWindowManager.getDefaultDisplay();
+
+        mSensorManager = (SensorManager) getMainActivity().getSystemService(Context.SENSOR_SERVICE);
+        mAccelerometer = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+        mMagnetometer = mSensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD);
+
         lytCompassContainer = (RelativeLayout) fragmentView.findViewById(R.id.lyt_compass_container);
 
         lblQibla = (TextView) fragmentView.findViewById(R.id.lbl_qibla);
         lblAngle = (TextView) fragmentView.findViewById(R.id.lbl_angle);
-
-        ViewUtils.setTypefaceToTextView(getMainActivity(), lblQibla, ViewUtils.FONT_WEIGHT.LIGHT);
-        ViewUtils.setTypefaceToTextView(getMainActivity(), lblAngle, ViewUtils.FONT_WEIGHT.MEDIUM);
 
         imgCompassArrowDirection = (CompassArrowView) fragmentView.findViewById(R.id.img_compass_arrow_direction);
 
         fragmentView.getViewTreeObserver().addOnGlobalLayoutListener(this);
 
         hasResumed = true;
-
-        getMainActivity().setTitle(R.string.qibla);
-
-        if(getMainActivity().getCurrentLocation() != null){
-            this.manageFoundLocation(getMainActivity().getCurrentLocation());
-        }
     }
 
     @Override
-    public void onPause(){
-        super.onPause();
+    public void onResume(){
+        super.onResume();
+    }
+
+    @Override
+    public void onDestroyView(){
+        super.onDestroyView();
         if(isCompassWorking){
             mSensorManager.unregisterListener(this, mAccelerometer);
             mSensorManager.unregisterListener(this, mMagnetometer);
@@ -260,9 +270,6 @@ public class CompassFragment extends AbstractFragment implements ViewTreeObserve
                 lytCompassLytParams.setMargins((int) (compassWidth / 20f), (int) (compassWidth / 20f), (int) (compassWidth / 20f), (int) (compassWidth / 20f));
                 fragmentView.findViewById(R.id.lyt_compass).setLayoutParams(lytCompassLytParams);
 
-                Log.i(CompassFragment.class.getSimpleName(), String.format(Locale.US, "Width: %d / Height: %d", lytCompassLytParams.width, lytCompassLytParams.height));
-                Log.i(CompassFragment.class.getSimpleName(), String.format(Locale.US, "(int) (compassWidth * 0.9f) = %d", (int) (compassWidth * 0.9f)));
-
                 lblQibla.setTextSize(TypedValue.COMPLEX_UNIT_PX, compassWidth * 0.107f);
                 lblAngle.setTextSize(TypedValue.COMPLEX_UNIT_PX, compassWidth * 0.16f);
             } else {
@@ -290,16 +297,6 @@ public class CompassFragment extends AbstractFragment implements ViewTreeObserve
                 lytCompassLytParams.setMargins((int) (compassHeight / 20f), (int) (compassHeight / 20f), (int) (compassHeight / 20f), (int) (compassHeight / 20f));
                 fragmentView.findViewById(R.id.lyt_compass).setLayoutParams(lytCompassLytParams);
 
-                Log.i(CompassFragment.class.getSimpleName(), String.format(Locale.US, "Width: %d / Height: %d", lytCompassLytParams.width, lytCompassLytParams.height));
-                Log.i(CompassFragment.class.getSimpleName(), String.format(Locale.US, "(int) (compassHeight * 0.9f) = %d", (int) (compassHeight * 0.9f)));
-
-                fragmentView.findViewById(R.id.lyt_compass).getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-                    @Override
-                    public void onGlobalLayout() {
-                        Log.i(CompassFragment.class.getSimpleName(), String.format(Locale.US, "Measured Width: %d / Measured Height: %d", fragmentView.findViewById(R.id.lyt_compass).getMeasuredWidth(), fragmentView.findViewById(R.id.lyt_compass).getMeasuredHeight()));
-                    }
-                });
-
                 lblQibla.setTextSize(TypedValue.COMPLEX_UNIT_PX, compassHeight * 0.13f);
                 lblAngle.setTextSize(TypedValue.COMPLEX_UNIT_PX, compassHeight * 0.19f);
             }
@@ -313,7 +310,7 @@ public class CompassFragment extends AbstractFragment implements ViewTreeObserve
 
     @Override
     public void onLocationChanged(MuslimLocation location){
-        manageFoundLocation(location);
+            manageFoundLocation(location);
     }
 
     /**
@@ -354,7 +351,7 @@ public class CompassFragment extends AbstractFragment implements ViewTreeObserve
                             "ORDER BY ((cities.latitude - %f)*(cities.latitude - %f)) + ((cities.longitude - %f)*(cities.longitude - %f))\n" +
                             "LIMIT 0,1;"), getMainActivity().getCurrentLocation().getLocationLatitude(), getMainActivity().getCurrentLocation().getLocationLatitude(), getMainActivity().getCurrentLocation().getLocationLongitude(), getMainActivity().getCurrentLocation().getLocationLongitude()), null);
             c.moveToFirst();
-            final String cityName = c.getString(0);
+            cityName = c.getString(0);
             c.close();
             db.close();
             long end = new Date().getTime();
@@ -373,6 +370,40 @@ public class CompassFragment extends AbstractFragment implements ViewTreeObserve
         }
         catch(Exception e){
             getMainActivity().sendCityErrorEvent();
+        }
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState){
+        outState.putString("cityName", cityName);
+
+        super.onSaveInstanceState(outState);
+    }
+
+    public void restoreState(Bundle savedInstanceState){
+        cityName = savedInstanceState.getString("cityName");
+        if(cityName != null){
+            getMainActivity().setTitle(getMainActivity().getString(R.string.qibla_at, cityName));
+            if(getMainActivity().getCurrentLocation() != null){
+                if(getMainActivity().getCurrentLocation().getLocationMode() == MuslimLocation.MODE.MODE_PROVIDER) {
+                    String date = new SimpleDateFormat(getMainActivity().getString(R.string.short_date_format)).format(getMainActivity().getCurrentLocation().getLocationTime());
+                    String hour = new SimpleDateFormat(getMainActivity().getString(R.string.hour_format)).format(getMainActivity().getCurrentLocation().getLocationTime());
+                    getMainActivity().setSubTitle(getMainActivity().getString(R.string.last_geolocation_on, date, hour));
+                }
+
+                int kaabaBearing = (int) LocationUtils.bearingToKaaba(getMainActivity().getCurrentLocation().getLocationLatitude(), getMainActivity().getCurrentLocation().getLocationLongitude());
+                lblAngle.setText(getMainActivity().getString(R.string.angle, kaabaBearing));
+
+                Animation an = new RotateAnimation(0.0f, kaabaBearing, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+
+                an.setDuration(0);
+                an.setRepeatCount(0);
+                an.setRepeatMode(Animation.REVERSE);
+                an.setFillAfter(true);
+
+                // Aply animation to image view
+                imgCompassArrowDirection.startAnimation(an);
+            }
         }
     }
 }
