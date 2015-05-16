@@ -1,44 +1,121 @@
 package net.gahfy.muslimcompanion.utils;
 
 public class PrayerTimesUtils {
+    /**
+     * All the possible conventions for prayer time calculation
+     */
+    public enum Convention{
+        /** Muslim World League */
+        MUSLIM_WORLD_LEAGUE,
+        /** Islamic Society of North America (ISNA) */
+        ISLAMIC_SOCIETY_OF_NORTH_AMERICA,
+        /** Egyptian General Authority of Survey */
+        EGYPTIAN_GENERAL_AUTHORITY_OF_SURVEY,
+        /** Umm al-Qura University, Makkah */
+        UMM_AL_QURA_UNIVERSITY_MAKKAH,
+        /** University of Islamic Sciences, Karachi */
+        UNIVERSITY_OF_ISLAMIC_SCIENCES_KARACHI,
+        /** Institute of Geophysics, University of Tehran */
+        INSTITUTE_OF_GEOPHYSICS_UNIVERSITY_OF_TEHRAN,
+        /** Shia Ithna Ashari, Leva Research Institute, Qum */
+        SHIA_ITHNA_ASHARI_LEVA_RESEARCH_INSTITUTE_QUM
+    }
+
+    /** The year that should be used for the calculation */
+    private int year;
+    /** The month that should be used for the calculation */
+    private int month;
+    /** The day that should be used for the calculation */
+    private int day;
     /** Time as the centuries ellapsed since January 1, 2000 at 12:00 GMT. */
     private double time;
     /** The latitude for which the prayer times should be calculated */
     private double latitude;
     /** The longitude for which the prayer times should be calculated */
     private double longitude;
+    /** The angle for calculation of Fajr */
+    private double fajrAngle;
+    /** The angle for calculation of Isha */
+    private double ishaAngle;
+    /** The delay to add for calculation of Isha */
+    private double ishaDelayNormal = 0.0;
+    /** The delay to add for calculation of Isha on Ramadhan */
+    private double ishaDelayOnRamadhan = 0.0;
+    /** The number of times the shadow should be bigger than an object for calculation of Asr */
+    private double asrTime;
+    /** The angle for calculation of Sunrise */
+    private double sunriseAngle = 5.0/6.0;
+    /** The angle for calculation of Maghrib */
+    private double maghribAngle = 5.0/6.0;
 
     /**
-     * Instantiates a new Prayer Time Utils
+     * Instantiates a new Prayer Time Utils.
      * @param year the year of the date to calculate prayer times
      * @param month the month of the date to calculate prayer times
      * @param day the day of the date to calculate prayer times
      * @param latitude the latitude to calculate prayer times
      * @param longitude the longitude to calculate prayer times
+     * @param convention the convention to use to calculate prayer times
      */
-    public PrayerTimesUtils(int year, int month, int day, double latitude, double longitude){
+    public PrayerTimesUtils(int year, int month, int day, double latitude, double longitude, Convention convention){
         super();
-        initMembers(year, month, day, latitude, longitude);
+        initMembers(year, month, day, latitude, longitude, convention);
     }
 
     /**
-     * Initializes the properties of the object
+     * Initializes the properties of the object.
      * @param year the year of the date to calculate prayer times
      * @param month the month of the date to calculate prayer times
      * @param day the day of the date to calculate prayer times
      * @param latitude the latitude to calculate prayer times
      * @param longitude the longitude to calculate prayer times
+     * @param convention the convention to use to calculate prayer times
      */
-    public void initMembers(int year, int month, int day, double latitude, double longitude){
-
+    public void initMembers(int year, int month, int day, double latitude, double longitude, Convention convention){
         double julianDay = DateUtils.dateToJulian(year, month, day);
+        this.year        = year;
+        this.month       = month;
+        this.day         = day;
         this.latitude    = latitude;
         this.longitude   = longitude;
         time             = (julianDay-2451545)/36525;
+        switch(convention){
+            case MUSLIM_WORLD_LEAGUE:
+                fajrAngle = 18.0;
+                ishaAngle = 17.0;
+                break;
+            case ISLAMIC_SOCIETY_OF_NORTH_AMERICA:
+                fajrAngle = 15.0;
+                ishaAngle = 15.0;
+                break;
+            case EGYPTIAN_GENERAL_AUTHORITY_OF_SURVEY:
+                fajrAngle = 19.5;
+                ishaAngle = 17.5;
+                break;
+            case UMM_AL_QURA_UNIVERSITY_MAKKAH:
+                fajrAngle = 18.5;
+                ishaAngle = maghribAngle;
+                ishaDelayNormal = 1.5;
+                ishaDelayOnRamadhan = 2.0;
+                break;
+            case UNIVERSITY_OF_ISLAMIC_SCIENCES_KARACHI:
+                fajrAngle = 18.0;
+                ishaAngle = 18.0;
+                break;
+            case INSTITUTE_OF_GEOPHYSICS_UNIVERSITY_OF_TEHRAN:
+                fajrAngle = 17.7;
+                ishaAngle = 14.0;
+                break;
+            case SHIA_ITHNA_ASHARI_LEVA_RESEARCH_INSTITUTE_QUM:
+                fajrAngle = 16.0;
+                ishaAngle = 14.0;
+                maghribAngle = 4.0;
+                break;
+        }
     }
 
     /**
-     * Returns the time of Dhuhr (UTC time in decimal hour)
+     * Returns the time of Dhuhr (UTC time in decimal hour).
      * @return the time of Dhuhr (UTC time in decimal hour)
      */
     public double getDhuhr(){
@@ -46,28 +123,59 @@ public class PrayerTimesUtils {
     }
 
     /**
-     * Returns the time of Sunrise (UTC time in decimal hour)
-     * @return the time of Sunrise (UTC time in decimal hour)
+     * Returns the timestamp of Dhuhr.
+     * @return the timestamp of Dhuhr
      */
-    public double getSunrise(){
-        return getDhuhr() + getTimeBelowHorizonDifference(5.0/6.0);
+    public long getDhuhrTimestamp(){
+        return DateUtils.utcTimeToTimestamp(year, month, day, getDhuhr());
     }
 
     /**
-     * Returns the time of Maghrib (UTC time in decimal hour)
-     * @return the time of Maghrib (UTC time in decimal hour)
+     * Returns the timestamp of Sunrise.
+     * @return the timestamp of Sunrise
      */
-    public double getMaghrib(){
-        return getDhuhr() + getTimeBelowHorizonDifference(5.0/6.0);
+    public long getSunriseTimestamp(){
+        double hoursInTheDay = getDhuhr() - getTimeBelowHorizonDifference(sunriseAngle);
+        return DateUtils.utcTimeToTimestamp(year, month, day, hoursInTheDay);
     }
 
+    /**
+     * Returns the timestamp of Maghrib.
+     * @return the timestamp of Maghrib
+     */
+    public long getMaghribTimestamp(){
+        double hoursInTheDay = getDhuhr() + getTimeBelowHorizonDifference(maghribAngle);
+        return DateUtils.utcTimeToTimestamp(year, month, day, hoursInTheDay);
+    }
 
     /**
-     * Returns the time of Asr (UTC time in decimal hour)
-     * @return the time of Asr (UTC time in decimal hour)
+     * Returns the timestamp of Fajr.
+     * @return the timestamp of Fajr
      */
-    public double getAsr(double times){
-        return getDhuhr() + getTimeShadowSizeDifference(times);
+    public long getFajrTimestamp(){
+        double hoursInTheDay = getDhuhr() - getTimeBelowHorizonDifference(fajrAngle);
+        return DateUtils.utcTimeToTimestamp(year, month, day, hoursInTheDay);
+    }
+
+    /**
+     * Returns the timestamp of Isha.
+     * @return the timestamp of Isha
+     */
+    public long getIshaTimestamp(){
+        int[] hijri = DateUtils.getHijriFromJulianDay(DateUtils.dateToJulian(year, month, day));
+        double delayToAdd = hijri[1] == 9 ? ishaDelayOnRamadhan : ishaDelayNormal;
+        double hoursInTheDay = getDhuhr() - getTimeBelowHorizonDifference(ishaAngle) + delayToAdd;
+
+        return DateUtils.utcTimeToTimestamp(year, month, day, hoursInTheDay);
+    }
+
+    /**
+     * Returns the timestamp of Asr
+     * @return the timestamp of Asr
+     */
+    public long getAsrTimestamp(){
+        double hoursInTheDay = getDhuhr() + getTimeShadowSizeDifference(asrTime);
+        return DateUtils.utcTimeToTimestamp(year, month, day, hoursInTheDay);
     }
 
     /**
