@@ -19,8 +19,9 @@ public class SettingsFragment extends AbstractFragment{
     public void onStart(){
         super.onStart();
 
-        TextView lblTitleActivateGeolocation = (TextView) getView().findViewById(R.id.lbl_title_activate_geolocation);
+        getMainActivity().setTitle(R.string.settings);
 
+        TextView lblTitleActivateGeolocation = (TextView) getView().findViewById(R.id.lbl_title_activate_geolocation);
         ViewUtils.setTypefaceToTextView(getMainActivity(), lblTitleActivateGeolocation, ViewUtils.FONT_WEIGHT.REGULAR);
     }
 }

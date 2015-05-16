@@ -72,17 +72,14 @@ public class MainActivity extends ActionBarActivity implements LocationListener{
     /** The Geolocating layout */
     private LinearLayout lytGeolocatingContainer;
 
-    /** */
-    // TODO: re-enable
-    //private RelativeLayout lytIcMenuContainer;
+    /** The Menu container */
+    private RelativeLayout lytIcMenuContainer;
 
     /** The drawer layout */
-    // TODO : re-enable
-    //private DrawerLayout drawerLayout;
+    private DrawerLayout drawerLayout;
 
     /** The scrollview with the navigation drawer */
-    // TODO : re-enable
-    //private ScrollView scrollDrawerView;
+    private ScrollView scrollDrawerView;
 
     /** The Google Analytics Tracker */
     private Tracker analyticsTracker;
@@ -141,12 +138,10 @@ public class MainActivity extends ActionBarActivity implements LocationListener{
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
 
-        // TODO: re-enable
-        //lytIcMenuContainer = (RelativeLayout) findViewById(R.id.lyt_ic_menu_container);
+        lytIcMenuContainer = (RelativeLayout) findViewById(R.id.lyt_ic_menu_container);
         lytGeolocatingContainer = (LinearLayout) findViewById(R.id.lyt_geolocating_container);
-        // TODO: re-enable
-        //drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        //scrollDrawerView = (ScrollView) findViewById(R.id.scroll_drawer_view);
+        drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        scrollDrawerView = (ScrollView) findViewById(R.id.scroll_drawer_view);
 
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         locationProvidersStatus = LocationUtils.getLocationProvidersStatus(this);
@@ -156,15 +151,12 @@ public class MainActivity extends ActionBarActivity implements LocationListener{
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
-        /*
-        TODO: re-enable
         lytIcMenuContainer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 drawerLayout.openDrawer(scrollDrawerView);
             }
         });
-        */
 
     }
 
@@ -173,22 +165,19 @@ public class MainActivity extends ActionBarActivity implements LocationListener{
         super.onResume();
 
         TextView lblGeolocating = (TextView) findViewById(R.id.lbl_geolocating);
-        // TODO re-enable
-        // TextView lblMenuSettings = (TextView) findViewById(R.id.lbl_menu_settings);
+        TextView lblMenuSettings = (TextView) findViewById(R.id.lbl_menu_settings);
+        TextView lblMenuPrayerTimes = (TextView) findViewById(R.id.lbl_menu_prayer_time);
 
         ViewUtils.setTypefaceToTextView(this, lblGeolocating, ViewUtils.FONT_WEIGHT.LIGHT);
-        // TODO re-enable
-        // ViewUtils.setTypefaceToTextView(this, lblMenuSettings, ViewUtils.FONT_WEIGHT.MEDIUM);
+        ViewUtils.setTypefaceToTextView(this, lblMenuSettings, ViewUtils.FONT_WEIGHT.MEDIUM);
+        ViewUtils.setTypefaceToTextView(this, lblMenuPrayerTimes, ViewUtils.FONT_WEIGHT.MEDIUM);
 
-        /*
-        TODO: re-enable
         findViewById(R.id.lbl_menu_settings).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 redirectToFragment(new SettingsFragment());
             }
         });
-        */
     }
 
     @Override
@@ -324,12 +313,9 @@ public class MainActivity extends ActionBarActivity implements LocationListener{
     private void redirectToFragment(AbstractFragment fragment, boolean addToBackStack){
         showToolbar();
         this.setSubTitle(null);
-        /*
-        TODO: re-enable
 
         if(drawerLayout.isDrawerOpen(scrollDrawerView))
             drawerLayout.closeDrawers();
-        */
         currentFragment = fragment;
 
         switch(currentFragment.getGeolocationTypeNeeded()) {
@@ -345,7 +331,7 @@ public class MainActivity extends ActionBarActivity implements LocationListener{
 
         FragmentTransaction fragmentTransaction = getSupportFragmentManager()
                 .beginTransaction()
-                .add(R.id.lyt_fragment_container, currentFragment);
+                .replace(R.id.lyt_fragment_container, currentFragment);
 
         if (addToBackStack)
             fragmentTransaction.addToBackStack(null);

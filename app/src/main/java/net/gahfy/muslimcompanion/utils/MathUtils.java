@@ -17,4 +17,8 @@ public class MathUtils {
         }
         return output;
     }
+
+    public static double acot ( double value ){
+        return Math.atan( 1.0 / value );
+    }
 }

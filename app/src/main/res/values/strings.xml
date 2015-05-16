@@ -45,4 +45,6 @@
     <string name="black_italic_path">font/Roboto-Black-Italic.ttf</string>
 
     <string name="toolbat_title_path">font/Roboto-Medium.ttf</string>
+
+    <string name="prayer_times">Prayer times</string>
 </resources>

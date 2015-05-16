@@ -27,12 +27,11 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:paddingRight="16dp">
-                    <!--RelativeLayout
+                    <RelativeLayout
                         android:id="@+id/lyt_ic_menu_container"
                         android:layout_centerVertical="true"
                         android:layout_width="56dp"
                         android:layout_height="56dp"
-                        android:layout_marginLeft="16dp"
                         android:layout_alignParentRight="true"
                         android:background="@drawable/toolbar_button_background">
                         <ImageView
@@ -44,16 +43,16 @@
                             android:layout_alignParentRight="true"
                             android:background="@android:color/transparent"
                             android:clickable="false" />
-                    </RelativeLayout-->
+                    </RelativeLayout>
 
                     <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
-                        android:layout_gravity="right|center_vertical"
+                        android:layout_gravity="center_vertical"
                         android:layout_centerVertical="true"
                         android:orientation="vertical"
-                        android:gravity="right|center_vertical">
+                        android:gravity="right|center_vertical"
+                        android:layout_toLeftOf="@id/lyt_ic_menu_container">
                         <TextView
                             android:id="@+id/toolbar_title"
                             android:layout_width="wrap_content"
@@ -123,7 +122,7 @@
         </RelativeLayout>
     </RelativeLayout>
 
-    <!--ScrollView
+    <ScrollView
         android:id="@+id/scroll_drawer_view"
         android:layout_width="304dp"
         android:layout_height="match_parent"
@@ -171,5 +170,5 @@
                 </RelativeLayout>
             </LinearLayout>
         </LinearLayout>
-    </ScrollView-->
+    </ScrollView>
 </android.support.v4.widget.DrawerLayout>

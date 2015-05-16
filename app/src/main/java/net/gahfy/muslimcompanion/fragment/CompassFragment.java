@@ -8,6 +8,7 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.Display;
 import android.view.LayoutInflater;
@@ -26,6 +27,7 @@ import net.gahfy.muslimcompanion.R;
 import net.gahfy.muslimcompanion.models.MuslimLocation;
 import net.gahfy.muslimcompanion.utils.LocationUtils;
 import net.gahfy.muslimcompanion.utils.MathUtils;
+import net.gahfy.muslimcompanion.utils.PrayerTimesUtils;
 import net.gahfy.muslimcompanion.utils.ViewUtils;
 import net.gahfy.muslimcompanion.view.CompassArrowView;
 
@@ -127,6 +129,10 @@ public class CompassFragment extends AbstractFragment implements ViewTreeObserve
     }
 
     public void initMembers(){
+        isCompassAnimating = false;
+        fragmentWidth = 0;
+        fragmentHeight = 0;
+
         WindowManager mWindowManager = (WindowManager) getMainActivity().getSystemService(Context.WINDOW_SERVICE);
         mDisplay = mWindowManager.getDefaultDisplay();
 
