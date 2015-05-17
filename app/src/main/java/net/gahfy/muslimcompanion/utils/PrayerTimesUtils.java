@@ -42,7 +42,7 @@ public class PrayerTimesUtils {
     /** The delay to add for calculation of Isha on Ramadhan */
     private double ishaDelayOnRamadhan = 0.0;
     /** The number of times the shadow should be bigger than an object for calculation of Asr */
-    private double asrTime;
+    private double asrTime = 1.0;
     /** The angle for calculation of Sunrise */
     private double sunriseAngle = 5.0/6.0;
     /** The angle for calculation of Maghrib */
@@ -164,7 +164,7 @@ public class PrayerTimesUtils {
     public long getIshaTimestamp(){
         int[] hijri = DateUtils.getHijriFromJulianDay(DateUtils.dateToJulian(year, month, day));
         double delayToAdd = hijri[1] == 9 ? ishaDelayOnRamadhan : ishaDelayNormal;
-        double hoursInTheDay = getDhuhr() - getTimeBelowHorizonDifference(ishaAngle) + delayToAdd;
+        double hoursInTheDay = getDhuhr() + getTimeBelowHorizonDifference(ishaAngle) + delayToAdd;
 
         return DateUtils.utcTimeToTimestamp(year, month, day, hoursInTheDay);
     }
