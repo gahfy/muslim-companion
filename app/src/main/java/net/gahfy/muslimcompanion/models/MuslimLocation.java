@@ -2,7 +2,7 @@ package net.gahfy.muslimcompanion.models;
 
 public class MuslimLocation {
     /** List of available modes for Muslim location */
-    public static enum MODE {
+    public enum MODE {
         MODE_PROVIDER,
         MODE_MANUAL
     }

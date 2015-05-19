@@ -13,7 +13,7 @@ import net.gahfy.muslimcompanion.models.MuslimLocation;
  * @author Gahfy
  */
 public abstract class AbstractFragment extends Fragment {
-    public static enum GEOLOCATION_TYPE{
+    public enum GEOLOCATION_TYPE{
         NONE,
         ONCE,
         CONTINUOUS

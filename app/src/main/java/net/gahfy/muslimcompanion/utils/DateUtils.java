@@ -3,8 +3,8 @@ package net.gahfy.muslimcompanion.utils;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.Locale;
 
 public class DateUtils {
     /**
@@ -68,7 +68,7 @@ public class DateUtils {
             String dateFormatted = String.format("%04d/%02d/%02d %02d:%02d:%02d +0000", year, month, day, hour, minute, second);
 
             String dateFormat = "yyyy/MM/dd HH:mm:ss z";
-            SimpleDateFormat format = new SimpleDateFormat(dateFormat);
+            SimpleDateFormat format = new SimpleDateFormat(dateFormat, Locale.getDefault());
 
             return format.parse(dateFormatted).getTime();
         }

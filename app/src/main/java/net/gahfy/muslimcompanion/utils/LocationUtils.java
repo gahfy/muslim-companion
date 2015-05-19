@@ -3,10 +3,8 @@ package net.gahfy.muslimcompanion.utils;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteException;
 import android.location.Location;
 import android.location.LocationManager;
-import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.telephony.TelephonyManager;
 
@@ -95,11 +93,9 @@ public class LocationUtils {
      * @return the bearing from one point to another
      */
     private static double bearingTo(double latFrom, double lonFrom, double latTo, double lonTo){
-        double longitude1 = lonFrom;
-        double longitude2 = lonTo;
         double latitude1 = Math.toRadians(latFrom);
         double latitude2 = Math.toRadians(latTo);
-        double longDiff= Math.toRadians(longitude2-longitude1);
+        double longDiff= Math.toRadians(lonFrom-lonTo);
         double y= Math.sin(longDiff)*Math.cos(latitude2);
         double x=Math.cos(latitude1)*Math.sin(latitude2)-Math.sin(latitude1)*Math.cos(latitude2)*Math.cos(longDiff);
 
@@ -142,11 +138,13 @@ public class LocationUtils {
             dbManager.createDataBase();
             dbManager.openDataBase();
             SQLiteDatabase db = dbManager.getDb();
-            Cursor c = db.rawQuery(String.format(Locale.US, "SELECT cities.iso, CASE WHEN (alternateNames.alternate_name IS NULL) THEN cities.name ELSE alternateNames.alternate_name END as cityName\n" +
-                    "FROM cities\n" +
-                    "LEFT OUTER JOIN (SELECT * FROM alternateNames WHERE isolanguage IN (".concat(context.getString(R.string.language_name_for_database)).concat(")) alternateNames ON alternateNames.geonameid = cities._id\n" +
+            String query = String.format(Locale.US,
+                    "SELECT cities.iso, CASE WHEN (alternateNames.alternate_name IS NULL) THEN cities.name ELSE alternateNames.alternate_name END as cityName\n" +
+                            "FROM cities\n" +
+                            "LEFT OUTER JOIN (SELECT * FROM alternateNames WHERE isolanguage IN (" + context.getString(R.string.language_name_for_database) + ")) alternateNames ON alternateNames.geonameid = cities._id\n" +
                             "ORDER BY ((cities.latitude - %f)*(cities.latitude - %f)) + ((cities.longitude - %f)*(cities.longitude - %f))\n" +
-                            "LIMIT 0,1;"), latitude, longitude, longitude), null);
+                            "LIMIT 0,1;", latitude, latitude, longitude, longitude);
+            Cursor c = db.rawQuery(query, null);
             c.moveToFirst();
             String[] result = new String[]{c.getString(0), c.getString(1)};
             c.close();
@@ -154,9 +152,11 @@ public class LocationUtils {
             return result;
         }
         catch(IOException e){
+            e.printStackTrace();
             return null;
         }
         catch(SQLException e){
+            e.printStackTrace();
             return null;
         }
     }

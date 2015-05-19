@@ -1,8 +1,6 @@
 package net.gahfy.muslimcompanion.fragment;
 
 import android.content.Context;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -21,7 +19,6 @@ import android.view.animation.RotateAnimation;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import net.gahfy.muslimcompanion.DbManager;
 import net.gahfy.muslimcompanion.R;
 import net.gahfy.muslimcompanion.models.MuslimLocation;
 import net.gahfy.muslimcompanion.utils.LocationUtils;
@@ -30,7 +27,6 @@ import net.gahfy.muslimcompanion.utils.ViewUtils;
 import net.gahfy.muslimcompanion.view.CompassArrowView;
 
 import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.Locale;
 
 public class CompassFragment extends AbstractFragment implements ViewTreeObserver.OnGlobalLayoutListener, SensorEventListener {
@@ -356,8 +352,8 @@ public class CompassFragment extends AbstractFragment implements ViewTreeObserve
                 public void run() {
                     getMainActivity().setTitle(getMainActivity().getString(R.string.qibla_at, cityName));
                     if(getMainActivity().getCurrentLocation().getLocationMode() == MuslimLocation.MODE.MODE_PROVIDER) {
-                        String date = new SimpleDateFormat(getMainActivity().getString(R.string.short_date_format)).format(getMainActivity().getCurrentLocation().getLocationTime());
-                        String hour = new SimpleDateFormat(getMainActivity().getString(R.string.hour_format)).format(getMainActivity().getCurrentLocation().getLocationTime());
+                        String date = new SimpleDateFormat(getMainActivity().getString(R.string.short_date_format), Locale.getDefault()).format(getMainActivity().getCurrentLocation().getLocationTime());
+                        String hour = new SimpleDateFormat(getMainActivity().getString(R.string.hour_format), Locale.getDefault()).format(getMainActivity().getCurrentLocation().getLocationTime());
                         getMainActivity().setSubTitle(getMainActivity().getString(R.string.last_geolocation_on, date, hour));
                     }
                 }
@@ -379,26 +375,29 @@ public class CompassFragment extends AbstractFragment implements ViewTreeObserve
         cityName = savedInstanceState.getString("cityName");
         if(cityName != null){
             getMainActivity().setTitle(getMainActivity().getString(R.string.qibla_at, cityName));
-            if(getMainActivity().getCurrentLocation() != null){
-                if(getMainActivity().getCurrentLocation().getLocationMode() == MuslimLocation.MODE.MODE_PROVIDER) {
-                    String date = new SimpleDateFormat(getMainActivity().getString(R.string.short_date_format)).format(getMainActivity().getCurrentLocation().getLocationTime());
-                    String hour = new SimpleDateFormat(getMainActivity().getString(R.string.hour_format)).format(getMainActivity().getCurrentLocation().getLocationTime());
-                    getMainActivity().setSubTitle(getMainActivity().getString(R.string.last_geolocation_on, date, hour));
-                }
-
-                int kaabaBearing = (int) LocationUtils.bearingToKaaba(getMainActivity().getCurrentLocation().getLocationLatitude(), getMainActivity().getCurrentLocation().getLocationLongitude());
-                lblAngle.setText(getMainActivity().getString(R.string.angle, kaabaBearing));
-
-                Animation an = new RotateAnimation(0.0f, kaabaBearing, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
-
-                an.setDuration(0);
-                an.setRepeatCount(0);
-                an.setRepeatMode(Animation.REVERSE);
-                an.setFillAfter(true);
-
-                // Aply animation to image view
-                imgCompassArrowDirection.startAnimation(an);
+        }
+        else{
+            getMainActivity().setTitle(R.string.qibla);
+        }
+        if(getMainActivity().getCurrentLocation() != null){
+            if(getMainActivity().getCurrentLocation().getLocationMode() == MuslimLocation.MODE.MODE_PROVIDER) {
+                String date = new SimpleDateFormat(getMainActivity().getString(R.string.short_date_format), Locale.getDefault()).format(getMainActivity().getCurrentLocation().getLocationTime());
+                String hour = new SimpleDateFormat(getMainActivity().getString(R.string.hour_format), Locale.getDefault()).format(getMainActivity().getCurrentLocation().getLocationTime());
+                getMainActivity().setSubTitle(getMainActivity().getString(R.string.last_geolocation_on, date, hour));
             }
+
+            int kaabaBearing = (int) LocationUtils.bearingToKaaba(getMainActivity().getCurrentLocation().getLocationLatitude(), getMainActivity().getCurrentLocation().getLocationLongitude());
+            lblAngle.setText(getMainActivity().getString(R.string.angle, kaabaBearing));
+
+            Animation an = new RotateAnimation(0.0f, kaabaBearing, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+
+            an.setDuration(0);
+            an.setRepeatCount(0);
+            an.setRepeatMode(Animation.REVERSE);
+            an.setFillAfter(true);
+
+            // Aply animation to image view
+            imgCompassArrowDirection.startAnimation(an);
         }
     }
 }

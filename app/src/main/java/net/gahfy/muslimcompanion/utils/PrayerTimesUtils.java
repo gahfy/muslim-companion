@@ -548,23 +548,15 @@ public class PrayerTimesUtils {
             return convention;
         }
 
-        public void setConvention(Convention convention) {
-            this.convention = convention;
-        }
-
         public School getSchool() {
             return school;
-        }
-
-        public void setSchool(School school) {
-            this.school = school;
         }
     }
 
     private static final HashMap<String, Pair> COUNTRY_DEFAULT_CONVENTION;
     static
     {
-        COUNTRY_DEFAULT_CONVENTION = new HashMap<String, Pair>();
+        COUNTRY_DEFAULT_CONVENTION = new HashMap<>();
         // Andorra
         COUNTRY_DEFAULT_CONVENTION.put("ad", new Pair(Convention.MUSLIM_WORLD_LEAGUE, School.NOT_HANAFI));
         // United Arab Emirates

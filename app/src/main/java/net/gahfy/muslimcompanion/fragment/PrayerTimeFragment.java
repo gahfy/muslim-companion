@@ -14,9 +14,8 @@ import net.gahfy.muslimcompanion.utils.PrayerTimesUtils;
 import net.gahfy.muslimcompanion.utils.ViewUtils;
 
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
+import java.util.Locale;
 
 public class PrayerTimeFragment extends AbstractFragment{
     private View fragmentView;
@@ -129,7 +128,7 @@ public class PrayerTimeFragment extends AbstractFragment{
                     long timeStamp = new Date().getTime() + ((long) dayDifference * 24l * 3600l * 1000l);
                     int[] calendarDatas = DateUtils.getDayMonthYear(timeStamp);
 
-                    PrayerTimesUtils prayerTimesUtils = new PrayerTimesUtils(calendarDatas[0], calendarDatas[1], calendarDatas[3], getMainActivity().getCurrentLocation().getLocationLatitude(), getMainActivity().getCurrentLocation().getLocationLongitude(), PrayerTimesUtils.Convention.MUSLIM_WORLD_LEAGUE, PrayerTimesUtils.School.NOT_HANAFI);
+                    PrayerTimesUtils prayerTimesUtils = new PrayerTimesUtils(calendarDatas[0], calendarDatas[1], calendarDatas[2], getMainActivity().getCurrentLocation().getLocationLatitude(), getMainActivity().getCurrentLocation().getLocationLongitude(), PrayerTimesUtils.Convention.MUSLIM_WORLD_LEAGUE, PrayerTimesUtils.School.NOT_HANAFI);
                     if(countryIso != null)
                         prayerTimesUtils.changeCountry(countryIso);
 
@@ -146,16 +145,19 @@ public class PrayerTimeFragment extends AbstractFragment{
         cityName = savedInstanceState.getString("cityName");
         if(cityName != null){
             getMainActivity().setTitle(getMainActivity().getString(R.string.salat_at, cityName));
-            if(getMainActivity().getCurrentLocation() != null){
-                long timeStamp = new Date().getTime() + ((long) dayDifference * 24l * 3600l * 1000l);
-                int[] calendarDatas = DateUtils.getDayMonthYear(timeStamp);
+        }
+        else{
+            getMainActivity().setTitle(R.string.salat);
+        }
+        if(getMainActivity().getCurrentLocation() != null){
+            long timeStamp = new Date().getTime() + ((long) dayDifference * 24l * 3600l * 1000l);
+            int[] calendarDatas = DateUtils.getDayMonthYear(timeStamp);
 
-                PrayerTimesUtils prayerTimesUtils = new PrayerTimesUtils(calendarDatas[0], calendarDatas[1], calendarDatas[3], getMainActivity().getCurrentLocation().getLocationLatitude(), getMainActivity().getCurrentLocation().getLocationLongitude(), PrayerTimesUtils.Convention.MUSLIM_WORLD_LEAGUE, PrayerTimesUtils.School.NOT_HANAFI);
-                if(countryIso != null)
-                    prayerTimesUtils.changeCountry(countryIso);
+            PrayerTimesUtils prayerTimesUtils = new PrayerTimesUtils(calendarDatas[0], calendarDatas[1], calendarDatas[2], getMainActivity().getCurrentLocation().getLocationLatitude(), getMainActivity().getCurrentLocation().getLocationLongitude(), PrayerTimesUtils.Convention.MUSLIM_WORLD_LEAGUE, PrayerTimesUtils.School.NOT_HANAFI);
+            if(countryIso != null)
+                prayerTimesUtils.changeCountry(countryIso);
 
-                updatePrayerTimes(prayerTimesUtils);
-            }
+            updatePrayerTimes(prayerTimesUtils);
         }
     }
 
@@ -170,7 +172,7 @@ public class PrayerTimeFragment extends AbstractFragment{
         int month = prayerTimesUtils.getMonth();
         int day = prayerTimesUtils.getDay();
 
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm");
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(getActivity().getString(R.string.time_format), Locale.getDefault());
 
         String[] islamicMonths = getActivity().getResources().getStringArray(R.array.islamic_month);
         String[] gregorianMonths = getActivity().getResources().getStringArray(R.array.gregorian_month);
