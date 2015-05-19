@@ -4,6 +4,8 @@ import android.content.Context;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.telephony.TelephonyManager;
 
 /**
  * This class is a library of useful methods for location
@@ -91,5 +93,18 @@ public class LocationUtils {
         double x=Math.cos(latitude1)*Math.sin(latitude2)-Math.sin(latitude1)*Math.cos(latitude2)*Math.cos(longDiff);
 
         return (Math.toDegrees(Math.atan2(y, x))+360)%360;
+    }
+
+    /**
+     * Returns the ISO code of the current country
+     * @param context Context in which the application is running
+     * @return the ISO code of the current country, or null if not found
+     */
+    @Nullable
+    public static String getCountryIso(Context context){
+        TelephonyManager telephonyManager = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
+        if(telephonyManager != null)
+            return telephonyManager.getNetworkCountryIso().toLowerCase();
+        return null;
     }
 }

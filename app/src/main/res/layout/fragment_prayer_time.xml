@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="16dp">
+        <LinearLayout android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1">
+                <TextView
+                    android:id="@+id/lbl_prayer_fajr"
+                    android:layout_alignParentLeft="true"
+                    android:layout_marginLeft="16dp"
+                    android:textSize="25sp"
+                    android:textColor="@color/black_87"
+                    android:layout_centerVertical="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/prayer_name_fajr" />
+                <TextView
+                    android:id="@+id/lbl_time_fajr"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="16dp"
+                    android:textSize="25sp"
+                    android:textColor="@color/black_87"
+                    android:layout_centerVertical="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.6dp"
+                    android:background="#e0e0e0"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentBottom="true" />
+            </RelativeLayout>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1">
+                <TextView
+                    android:id="@+id/lbl_prayer_sunrise"
+                    android:layout_alignParentLeft="true"
+                    android:layout_marginLeft="16dp"
+                    android:textSize="25sp"
+                    android:textColor="@color/black_87"
+                    android:layout_centerVertical="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/prayer_name_sunrise" />
+                <TextView
+                    android:id="@+id/lbl_time_sunrise"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="16dp"
+                    android:textSize="25sp"
+                    android:textColor="@color/black_87"
+                    android:layout_centerVertical="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.6dp"
+                    android:background="#e0e0e0"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentBottom="true" />
+            </RelativeLayout>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1">
+                <TextView
+                    android:id="@+id/lbl_prayer_dhuhr"
+                    android:layout_alignParentLeft="true"
+                    android:layout_marginLeft="16dp"
+                    android:textSize="25sp"
+                    android:textColor="@color/black_87"
+                    android:layout_centerVertical="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/prayer_name_dhuhr" />
+                <TextView
+                    android:id="@+id/lbl_time_dhuhr"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="16dp"
+                    android:textSize="25sp"
+                    android:textColor="@color/black_87"
+                    android:layout_centerVertical="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.6dp"
+                    android:background="#e0e0e0"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentBottom="true" />
+            </RelativeLayout>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1">
+                <TextView
+                    android:id="@+id/lbl_prayer_asr"
+                    android:layout_alignParentLeft="true"
+                    android:layout_marginLeft="16dp"
+                    android:textSize="25sp"
+                    android:textColor="@color/black_87"
+                    android:layout_centerVertical="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/prayer_name_asr" />
+                <TextView
+                    android:id="@+id/lbl_time_asr"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="16dp"
+                    android:textSize="25sp"
+                    android:textColor="@color/black_87"
+                    android:layout_centerVertical="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.6dp"
+                    android:background="#e0e0e0"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentBottom="true" />
+            </RelativeLayout>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1">
+                <TextView
+                    android:id="@+id/lbl_prayer_maghrib"
+                    android:layout_alignParentLeft="true"
+                    android:layout_marginLeft="16dp"
+                    android:textSize="25sp"
+                    android:textColor="@color/black_87"
+                    android:layout_centerVertical="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/prayer_name_maghrib" />
+                <TextView
+                    android:id="@+id/lbl_time_maghrib"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="16dp"
+                    android:textSize="25sp"
+                    android:textColor="@color/black_87"
+                    android:layout_centerVertical="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.6dp"
+                    android:background="#e0e0e0"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentBottom="true" />
+            </RelativeLayout>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1">
+                <TextView
+                    android:id="@+id/lbl_prayer_isha"
+                    android:layout_alignParentLeft="true"
+                    android:layout_marginLeft="16dp"
+                    android:textSize="25sp"
+                    android:textColor="@color/black_87"
+                    android:layout_centerVertical="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/prayer_name_isha" />
+                <TextView
+                    android:id="@+id/lbl_time_isha"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="16dp"
+                    android:textSize="25sp"
+                    android:textColor="@color/black_87"
+                    android:layout_centerVertical="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </RelativeLayout>
+        </LinearLayout>
+    </android.support.v7.widget.CardView>
+</LinearLayout>

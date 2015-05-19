@@ -8,6 +8,7 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
@@ -23,6 +24,7 @@ import com.google.android.gms.analytics.Tracker;
 
 import net.gahfy.muslimcompanion.fragment.AbstractFragment;
 import net.gahfy.muslimcompanion.fragment.CompassFragment;
+import net.gahfy.muslimcompanion.fragment.PrayerTimeFragment;
 import net.gahfy.muslimcompanion.fragment.SettingsFragment;
 import net.gahfy.muslimcompanion.models.MuslimLocation;
 import net.gahfy.muslimcompanion.utils.LocationUtils;
@@ -129,7 +131,7 @@ public class MainActivity extends ActionBarActivity implements LocationListener{
         }
         else {
             setTitle(R.string.app_name);
-            redirectToFragment(new CompassFragment(), false);
+            redirectToFragment(new PrayerTimeFragment(), false);
         }
     }
 
@@ -167,15 +169,31 @@ public class MainActivity extends ActionBarActivity implements LocationListener{
         TextView lblGeolocating = (TextView) findViewById(R.id.lbl_geolocating);
         TextView lblMenuSettings = (TextView) findViewById(R.id.lbl_menu_settings);
         TextView lblMenuPrayerTimes = (TextView) findViewById(R.id.lbl_menu_prayer_time);
+        TextView lblMenuQibla = (TextView) findViewById(R.id.lbl_menu_qibla);
 
         ViewUtils.setTypefaceToTextView(this, lblGeolocating, ViewUtils.FONT_WEIGHT.LIGHT);
         ViewUtils.setTypefaceToTextView(this, lblMenuSettings, ViewUtils.FONT_WEIGHT.MEDIUM);
         ViewUtils.setTypefaceToTextView(this, lblMenuPrayerTimes, ViewUtils.FONT_WEIGHT.MEDIUM);
+        ViewUtils.setTypefaceToTextView(this, lblMenuQibla, ViewUtils.FONT_WEIGHT.MEDIUM);
 
-        findViewById(R.id.lbl_menu_settings).setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.lyt_menu_settings_container).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 redirectToFragment(new SettingsFragment());
+            }
+        });
+
+        findViewById(R.id.lyt_menu_prayer_time_container).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                redirectToFragment(new PrayerTimeFragment(), false);
+            }
+        });
+
+        findViewById(R.id.lyt_menu_qibla_container).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                redirectToFragment(new CompassFragment(), false);
             }
         });
     }
@@ -333,8 +351,15 @@ public class MainActivity extends ActionBarActivity implements LocationListener{
                 .beginTransaction()
                 .replace(R.id.lyt_fragment_container, currentFragment);
 
-        if (addToBackStack)
+        if (addToBackStack) {
             fragmentTransaction.addToBackStack(null);
+        }
+        else{
+            FragmentManager fm = getSupportFragmentManager();
+            for(int i = 0; i < fm.getBackStackEntryCount(); ++i) {
+                fm.popBackStack();
+            }
+        }
 
         fragmentTransaction.commitAllowingStateLoss();
     }

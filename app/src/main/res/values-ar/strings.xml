@@ -21,6 +21,7 @@
     <string name="west_abbreviation">غ</string>
 
     <string name="qibla_at">القبلة في %s</string>
+
     <string name="last_geolocation_on">آخر تحديد للموقع في %1$s على %2$s</string>
     <string name="short_date_format">yyyy/MM/dd</string>
     <string name="hour_format">HH:mm</string>
@@ -33,6 +34,52 @@
     <string name="city_chosen">مدينة</string>
     <string name="no_city_chosen">غير محددة بعد</string>
     <string name="search">البحث</string>
+
+    <string name="prayer_times">مواقيت الصلاة</string>
+    <string name="salat">الصلاة</string>
+    <string name="salat_at">الصلاة في %s</string>
+
+    <string name="prayer_name_fajr">فجر</string>
+    <string name="prayer_name_sunrise">شروق</string>
+    <string name="prayer_name_dhuhr">ظهر</string>
+    <string name="prayer_name_asr">عصر</string>
+    <string name="prayer_name_maghrib">مغرب</string>
+    <string name="prayer_name_isha">عشاء</string>
+
+    <string-array name="islamic_month">
+        <item></item>
+        <item>مُحَرَّم</item>
+        <item>صَفَر</item>
+        <item>رَبيع الأوّل</item>
+        <item>ربيع الآخر</item>
+        <item>جُمادى الأولى</item>
+        <item>جُمادى الآخرة</item>
+        <item>رَجَب</item>
+        <item>شَعْبان</item>
+        <item>رَمَضان</item>
+        <item>شَوّال</item>
+        <item>ذو القَعْدة</item>
+        <item>ذو الحِجّة</item>
+    </string-array>
+
+    <string-array name="gregorian_month">
+        <item></item>
+        <item>يناير</item>
+        <item>فبراير</item>
+        <item>مارس</item>
+        <item>أبريل</item>
+        <item>ماي</item>
+        <item>يونيو</item>
+        <item>يوليوز</item>
+        <item>غشت</item>
+        <item>شتنبر</item>
+        <item>أكتوبر</item>
+        <item>نونبر</item>
+        <item>دجنبر</item>
+    </string-array>
+
+    <string name="gregorian_date_format" formatted="false">%2$d %1$s %3$d</string>
+    <string name="islamic_date_format" formatted="false">%1$d %2$s %3$d</string>
 
     <string name="thin_path">font/NotoKufiArabic-Regular.ttf</string>
     <string name="thin_italic_path">font/NotoKufiArabic-Regular.ttf</string>

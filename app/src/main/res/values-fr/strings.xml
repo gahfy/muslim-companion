@@ -31,6 +31,53 @@
     <string name="no_city_chosen">Aucune</string>
     <string name="search">Rechercher</string>
 
+
+    <string name="prayer_times">Heures de prière</string>
+    <string name="salat">Salat</string>
+    <string name="salat_at">Salat à %s</string>
+
+    <string name="gregorian_date_format" formatted="false">%2$d %1$s %3$d</string>
+    <string name="islamic_date_format" formatted="false">%1$d %2$s %3$d</string>
+
+    <string name="prayer_name_fajr">Fajr</string>
+    <string name="prayer_name_sunrise">Shorouq</string>
+    <string name="prayer_name_dhuhr">Dohr</string>
+    <string name="prayer_name_asr">Asr</string>
+    <string name="prayer_name_maghrib">Maghreb</string>
+    <string name="prayer_name_isha">Icha</string>
+
+    <string-array name="islamic_month">
+        <item></item>
+        <item>Mouharram</item>
+        <item>Safar</item>
+        <item>Rabia al awal</item>
+        <item>Rabia ath-thani</item>
+        <item>Joumada al oula</item>
+        <item>Joumada ath-thania</item>
+        <item>Rajab</item>
+        <item>Chaabane</item>
+        <item>Ramadan</item>
+        <item>Chawwal</item>
+        <item>Dhou al qi`da</item>
+        <item>Dhou al-hijja</item>
+    </string-array>
+
+    <string-array name="gregorian_month">
+        <item></item>
+        <item>Janvier</item>
+        <item>Février</item>
+        <item>Mars</item>
+        <item>Avril</item>
+        <item>Mai</item>
+        <item>Juin</item>
+        <item>Juillet</item>
+        <item>Août</item>
+        <item>Septembre</item>
+        <item>Octobre</item>
+        <item>Novembre</item>
+        <item>Décembre</item>
+    </string-array>
+
     <string name="thin_path">font/Roboto-Thin.ttf</string>
     <string name="thin_italic_path">font/Roboto-ThinItalic.ttf</string>
     <string name="light_path">font/Roboto-Light.ttf</string>

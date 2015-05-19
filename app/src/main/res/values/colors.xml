@@ -11,6 +11,8 @@
     <color name="black_87">#212121</color>
     <color name="black_54">#757575</color>
 
+    <color name="black_opacity_25">#3F000000</color>
+
     <color name="primary">@color/green_primary_700</color>
     <color name="primary_dark">@color/green_primary_900</color>
     <color name="accent">@color/red_accent_700</color>

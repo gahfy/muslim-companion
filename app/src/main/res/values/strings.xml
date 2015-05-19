@@ -31,6 +31,53 @@
     <string name="no_city_chosen">No one</string>
     <string name="search">Search</string>
 
+
+    <string name="prayer_times">Prayer times</string>
+    <string name="salat">Salat</string>
+    <string name="salat_at">Salat at %s</string>
+
+    <string name="gregorian_date_format" formatted="false">%1$s %2$d %3$d</string>
+    <string name="islamic_date_format" formatted="false">%1$d %2$s %3$d</string>
+
+    <string name="prayer_name_fajr">Fajr</string>
+    <string name="prayer_name_sunrise">Sunrise</string>
+    <string name="prayer_name_dhuhr">Dhuhr</string>
+    <string name="prayer_name_asr">Asr</string>
+    <string name="prayer_name_maghrib">Maghrib</string>
+    <string name="prayer_name_isha">Isha\'a</string>
+
+    <string-array name="islamic_month">
+        <item></item>
+        <item>Muḥarram</item>
+        <item>Ṣafar</item>
+        <item>Rabī‘ I</item>
+        <item>Rabī‘ II</item>
+        <item>Jumādá I</item>
+        <item>Jumādá II</item>
+        <item>Rajab</item>
+        <item>Sha‘bān</item>
+        <item>Ramaḍān</item>
+        <item>Shawwāl</item>
+        <item>Dhū al-Qa‘dah</item>
+        <item>Dhū al-Ḥijjah</item>
+    </string-array>
+
+    <string-array name="gregorian_month">
+        <item></item>
+        <item>Janurary</item>
+        <item>February</item>
+        <item>March</item>
+        <item>April</item>
+        <item>May</item>
+        <item>June</item>
+        <item>July</item>
+        <item>August</item>
+        <item>September</item>
+        <item>October</item>
+        <item>November</item>
+        <item>December</item>
+    </string-array>
+
     <string name="thin_path">font/Roboto-Thin.ttf</string>
     <string name="thin_italic_path">font/Roboto-ThinItalic.ttf</string>
     <string name="light_path">font/Roboto-Light.ttf</string>
@@ -45,6 +92,4 @@
     <string name="black_italic_path">font/Roboto-Black-Italic.ttf</string>
 
     <string name="toolbat_title_path">font/Roboto-Medium.ttf</string>
-
-    <string name="prayer_times">Prayer times</string>
 </resources>

@@ -143,8 +143,10 @@
                 android:paddingLeft="16dp"
                 android:paddingRight="16dp">
                 <RelativeLayout
+                    android:id="@+id/lyt_menu_prayer_time_container"
                     android:layout_width="match_parent"
-                    android:layout_height="48dp">
+                    android:layout_height="48dp"
+                    android:background="@drawable/menu_item_background">
                     <LinearLayout
                         android:id="@+id/lyt_menu_prayer_time_image_container"
                         android:layout_alignParentLeft="true"
@@ -168,8 +170,37 @@
                         android:textSize="14sp" />
                 </RelativeLayout>
                 <RelativeLayout
+                    android:id="@+id/lyt_menu_qibla_container"
                     android:layout_width="match_parent"
-                    android:layout_height="48dp">
+                    android:layout_height="48dp"
+                    android:background="@drawable/menu_item_background">
+                    <LinearLayout
+                        android:id="@+id/lyt_menu_qibla_image_container"
+                        android:layout_alignParentLeft="true"
+                        android:paddingRight="16dp"
+                        android:layout_width="56dp"
+                        android:layout_height="match_parent">
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="left|center_vertical"
+                            android:src="@drawable/ic_navigation_grey600_24dp" />
+                    </LinearLayout>
+                    <TextView
+                        android:id="@+id/lbl_menu_qibla"
+                        android:layout_toRightOf="@id/lyt_menu_qibla_image_container"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:text="@string/qibla"
+                        android:textColor="@color/black_87"
+                        android:gravity="left|center_vertical"
+                        android:textSize="14sp" />
+                </RelativeLayout>
+                <RelativeLayout
+                    android:id="@+id/lyt_menu_settings_container"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:background="@drawable/menu_item_background">
                     <LinearLayout
                         android:id="@+id/lyt_menu_settings_image_container"
                         android:layout_alignParentLeft="true"

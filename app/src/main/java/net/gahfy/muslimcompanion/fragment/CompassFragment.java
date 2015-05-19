@@ -346,9 +346,10 @@ public class CompassFragment extends AbstractFragment implements ViewTreeObserve
 
     public void applyCity(){
         try {
-            long start = new Date().getTime();
-            DbManager dbManager = new DbManager(getMainActivity());
-            SQLiteDatabase db = dbManager.getReadableDatabase();
+            DbManager dbManager = new DbManager(getActivity());
+            dbManager.createDataBase();
+            dbManager.openDataBase();
+            SQLiteDatabase db = dbManager.getDb();
             Cursor c = db.rawQuery(String.format(Locale.US, "SELECT CASE WHEN (alternateNames.alternate_name IS NULL) THEN cities.name ELSE alternateNames.alternate_name END as cityName\n" +
                     "FROM cities\n" +
                     "LEFT OUTER JOIN (SELECT * FROM alternateNames WHERE isolanguage IN (".concat(getMainActivity().getString(R.string.language_name_for_database)).concat(")) alternateNames ON alternateNames.geonameid = cities._id\n" +
@@ -358,8 +359,6 @@ public class CompassFragment extends AbstractFragment implements ViewTreeObserve
             cityName = c.getString(0);
             c.close();
             db.close();
-            long end = new Date().getTime();
-            getMainActivity().sendCityFoundEvent(end - start);
             getMainActivity().runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
