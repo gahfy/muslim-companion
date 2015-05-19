@@ -2,6 +2,9 @@ package net.gahfy.muslimcompanion.utils;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 
 public class DateUtils {
     /**
@@ -32,7 +35,6 @@ public class DateUtils {
         long r1 = r2-((325l*month-320l)/11l);
         long day = r1+1l;
         return new int[]{(int) year, (int) month, (int) day};
-
     }
 
     /**
@@ -74,5 +76,21 @@ public class DateUtils {
             e.printStackTrace();
             return 0;
         }
+    }
+
+    /**
+     * Returns the year (index 0), month (index 1) and day (index 2) of the given timestamp.
+     * @param timestamp the timestamp
+     * @return the year (index 0), month (index 1) and day (index 2) of the given timestamp
+     */
+    public static int[] getDayMonthYear(long timestamp){
+        GregorianCalendar gregorianCalendar = new GregorianCalendar();
+        gregorianCalendar.setTimeInMillis(timestamp);
+
+        int day = gregorianCalendar.get(Calendar.DAY_OF_MONTH);
+        int month = gregorianCalendar.get(Calendar.MONTH)+1;
+        int year = gregorianCalendar.get(Calendar.YEAR);
+
+        return new int[]{year, month, day};
     }
 }

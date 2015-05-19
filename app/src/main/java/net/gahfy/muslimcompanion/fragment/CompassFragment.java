@@ -346,19 +346,11 @@ public class CompassFragment extends AbstractFragment implements ViewTreeObserve
 
     public void applyCity(){
         try {
-            DbManager dbManager = new DbManager(getActivity());
-            dbManager.createDataBase();
-            dbManager.openDataBase();
-            SQLiteDatabase db = dbManager.getDb();
-            Cursor c = db.rawQuery(String.format(Locale.US, "SELECT CASE WHEN (alternateNames.alternate_name IS NULL) THEN cities.name ELSE alternateNames.alternate_name END as cityName\n" +
-                    "FROM cities\n" +
-                    "LEFT OUTER JOIN (SELECT * FROM alternateNames WHERE isolanguage IN (".concat(getMainActivity().getString(R.string.language_name_for_database)).concat(")) alternateNames ON alternateNames.geonameid = cities._id\n" +
-                            "ORDER BY ((cities.latitude - %f)*(cities.latitude - %f)) + ((cities.longitude - %f)*(cities.longitude - %f))\n" +
-                            "LIMIT 0,1;"), getMainActivity().getCurrentLocation().getLocationLatitude(), getMainActivity().getCurrentLocation().getLocationLatitude(), getMainActivity().getCurrentLocation().getLocationLongitude(), getMainActivity().getCurrentLocation().getLocationLongitude()), null);
-            c.moveToFirst();
-            cityName = c.getString(0);
-            c.close();
-            db.close();
+            String[] locationDatas = LocationUtils.getCountryIsoAndCityName(getActivity(), getMainActivity().getCurrentLocation());
+
+            if(locationDatas != null)
+                cityName = locationDatas[1];
+
             getMainActivity().runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
