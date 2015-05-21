@@ -1,4 +1,7 @@
 <resources>
+    <!-- Si vous utilisez l'alphabet latin, merci de ne pas traduire -->
+    <!-- Si vous utilisez un alphabet non latin, merci de traduire le son muslim companion dans votre alphabet -->
+    <!-- Par exemple, la traduction en arabe est : مسلم كومبانيون -->
     <string name="app_name">Muslim Companion</string>
 
     <string name="cancel">Annuler</string>
