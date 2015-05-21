@@ -26,15 +26,6 @@
     <string name="short_date_format">yyyy/MM/dd</string>
     <string name="hour_format">HH:mm</string>
 
-    <string name="language_name_for_database">\'ar\', \'ara\'</string>
-
-    <string name="geolocation">تحديد المواقع</string>
-    <string name="enabled">مشغل</string>
-    <string name="disabled">موقف</string>
-    <string name="city_chosen">مدينة</string>
-    <string name="no_city_chosen">غير محددة بعد</string>
-    <string name="search">البحث</string>
-
     <string name="prayer_times">مواقيت الصلاة</string>
     <string name="salat">الصلاة</string>
     <string name="salat_at">الصلاة في %s</string>

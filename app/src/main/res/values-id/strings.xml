@@ -18,6 +18,4 @@
     <string name="west_abbreviation">B</string>
 
     <string name="qibla_at">Kiblat di %s</string>
-
-    <string name="language_name_for_database">\'id\', \'ind\'</string>
 </resources>

@@ -27,15 +27,6 @@
     <string name="short_date_format">MM/dd/yyyy</string>
     <string name="hour_format">HH:mm</string>
 
-    <string name="language_name_for_database">\'en\', \'eng\'</string>
-
-    <string name="geolocation">Geolocation</string>
-    <string name="enabled">Enabled</string>
-    <string name="disabled">Disabled</string>
-    <string name="city_chosen">City</string>
-    <string name="no_city_chosen">No one</string>
-    <string name="search">Search</string>
-
     <string name="prayer_times">Prayer times</string>
     <string name="salat">Salat</string>
     <string name="salat_at">Salat at %s</string>

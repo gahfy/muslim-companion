@@ -15,33 +15,48 @@
     <string name="geolocating">Geolocalisation</string>
     <string name="qibla_below_compass">Qibla :&#160;</string>
     <string name="qibla">Qibla</string>
+
+    <!-- %d est à garder tel quel: c'est l'angle de la Qibla affiché -->
+    <!-- %d°N produira l'affichage 35°N -->
     <string name="angle">%d°N</string>
 
+    <!-- Abbreviation de Nord : destiné à être affiché sur une boussole -->
     <string name="north_abbreviation">N</string>
+    <!-- Abbreviation de Sud : destiné à être affiché sur une boussole -->
     <string name="south_abbreviation">S</string>
+    <!-- Abbreviation de Est : destiné à être affiché sur une boussole -->
     <string name="east_abbreviation">E</string>
+    <!-- Abbreviation de Ouest : destiné à être affiché sur une boussole -->
     <string name="west_abbreviation">O</string>
 
     <string name="qibla_at">Qibla à %s</string>
+    <!-- %1$s est pour le jour de la date, %2$s est pour l'heure -->
     <string name="last_geolocation_on">Dernière géolocalisation le %1$s à %2$s</string>
+    <!-- Format de la date: dd pour le jour sur 2 chiffres, MM pour le mois sur 2 chiffres, yyyy pour l'année sur 4 chiffres -->
     <string name="short_date_format">dd/MM/yyyy</string>
+    <!-- Format de l'heure -->
     <string name="hour_format">HH:mm</string>
-
-    <string name="language_name_for_database">\'fr\', \'fra\', \'fre\'</string>
-
-    <string name="geolocation">Geolocalisation</string>
-    <string name="enabled">Activée</string>
-    <string name="disabled">Désactivée</string>
-    <string name="city_chosen">Ville</string>
-    <string name="no_city_chosen">Aucune</string>
-    <string name="search">Rechercher</string>
-
 
     <string name="prayer_times">Heures de prière</string>
     <string name="salat">Salat</string>
     <string name="salat_at">Salat à %s</string>
 
+    <!-- Format de date grégorienne -->
+    <!-- %2$d est pour le numéro du jour -->
+    <!-- %1$s est pour le nom du mois -->
+    <!-- %3$d est pour le numéro de l'année -->
+    <!-- %2$d %1$s %3$d => 2 Mai 2015 -->
+    <!-- %1$s %2$d %3$d => Mai 2 2015 -->
+    <!-- %3$d %1$s %2$d => 2015 Mai 2 -->
     <string name="gregorian_date_format" formatted="false">%2$d %1$s %3$d</string>
+
+    <!-- Format de date islamique -->
+    <!-- %1$d est pour le numéro du jour -->
+    <!-- %2$s est pour le nom du mois -->
+    <!-- %3$d est pour le numéro de l'année -->
+    <!-- %1$d %2$s %3$d => 2 Chaabane 1436 -->
+    <!-- %2$s %1$d %3$d => Chaabane 2 2015 -->
+    <!-- %3$d %2$s %1$d => 2015 Mai 2 -->
     <string name="islamic_date_format" formatted="false">%1$d %2$s %3$d</string>
 
     <string name="prayer_name_fajr">Fajr</string>

@@ -19,6 +19,4 @@
     <string name="west_abbreviation">B</string>
 
     <string name="qibla_at">%s için Kıble Yönü</string>
-
-    <string name="language_name_for_database">\'tr\', \'tur\'</string>
 </resources>
