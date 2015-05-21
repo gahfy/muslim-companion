@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="thin_path">font/NotoKufiArabic-Regular.ttf</string>
+    <string name="thin_italic_path">font/NotoKufiArabic-Regular.ttf</string>
+    <string name="light_path">font/NotoKufiArabic-Regular.ttf</string>
+    <string name="light_italic_path">font/NotoKufiArabic-Regular.ttf</string>
+    <string name="regular_path">font/NotoKufiArabic-Regular.ttf</string>
+    <string name="regular_italic_path">font/NotoKufiArabic-Regular.ttf</string>
+    <string name="medium_path">font/NotoKufiArabic-Bold.ttf</string>
+    <string name="medium_italic_path">font/NotoKufiArabic-Bold.ttf</string>
+    <string name="bold_path">font/NotoKufiArabic-Bold.ttf</string>
+    <string name="bold_italic_path">font/NotoKufiArabic-Bold.ttf</string>
+    <string name="black_path">font/NotoKufiArabic-Bold.ttf</string>
+    <string name="black_italic_path">font/NotoKufiArabic-Bold.ttf</string>
+
+    <string name="toolbat_title_path">font/NotoKufiArabic-Regular.ttf</string>
+</resources>

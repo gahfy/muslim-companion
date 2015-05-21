@@ -120,19 +120,4 @@
     <string name="method_angle_based">Angle Based</string>
     <string name="method_middle_of_night">Middle of the Night</string>
     <string name="method_seventh">One Seventh of the Night</string>
-
-    <string name="thin_path">font/Roboto-Thin.ttf</string>
-    <string name="thin_italic_path">font/Roboto-ThinItalic.ttf</string>
-    <string name="light_path">font/Roboto-Light.ttf</string>
-    <string name="light_italic_path">font/Roboto-LightItalic.ttf</string>
-    <string name="regular_path">font/Roboto-Regular.ttf</string>
-    <string name="regular_italic_path">font/Roboto-Italic.ttf</string>
-    <string name="medium_path">font/Roboto-Medium.ttf</string>
-    <string name="medium_italic_path">font/Roboto-MediumItalic.ttf</string>
-    <string name="bold_path">font/Roboto-Bold.ttf</string>
-    <string name="bold_italic_path">font/Roboto-BoldItalic.ttf</string>
-    <string name="black_path">font/Roboto-Black.ttf</string>
-    <string name="black_italic_path">font/Roboto-Black-Italic.ttf</string>
-
-    <string name="toolbat_title_path">font/Roboto-Medium.ttf</string>
 </resources>
