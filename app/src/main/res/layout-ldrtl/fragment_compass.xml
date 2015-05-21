@@ -12,7 +12,6 @@
             android:id="@+id/lyt_compass_shadow"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:background="@drawable/compass_background_shadow"
             android:layout_centerHorizontal="true">
             <net.gahfy.muslimcompanion.view.CompassShadowView
                 android:id="@+id/compass_shadow"
@@ -39,6 +38,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
+            android:layout_below="@id/lyt_compass_shadow"
             android:layout_centerHorizontal="true">
             <RelativeLayout
                 android:id="@+id/lyt_txt_qibla_container"
