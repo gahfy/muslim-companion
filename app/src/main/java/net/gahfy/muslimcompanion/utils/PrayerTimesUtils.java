@@ -1,8 +1,17 @@
 package net.gahfy.muslimcompanion.utils;
 
+import android.content.Context;
+
+import net.gahfy.muslimcompanion.R;
+
 import java.util.HashMap;
 
 public class PrayerTimesUtils {
+    /**
+     * Number of milliseconds in a day.
+     */
+    private static final int DAY_MILLIS = 24*60*60*1000;
+
     /**
      * All the possible schools for Asr calculation
      */
@@ -11,6 +20,21 @@ public class PrayerTimesUtils {
         NOT_HANAFI,
         /** Hanafi school */
         HANAFI
+    }
+
+    /**
+     * List of possible mode of calculation in abnormal periods at higher latitudes for Fajr and
+     * Isha
+     */
+    public enum HigherLatitudeMode{
+        /** Middle of the night (Fajr and Isha are at the middle of the night) */
+        MIDDLE_OF_THE_NIGHT,
+        /** One seventh (Isha is at one seventh of the night, Fajr at six seventh of the night) */
+        SEVENTH,
+        /** Night is divided into (fajrAngle/60) parts and fajr starts at the last period.
+         * Similar calculation for Isha
+         */
+        ANGLE_BASED
     }
 
     /**
@@ -37,6 +61,7 @@ public class PrayerTimesUtils {
         MINISTRY_HABOUS_AND_ISLAMIC_AFFAIRS_MOROCCO,
         /** Ministry of Religious affairs, Tunisia*/
         MINISTRY_RELIGIOUS_AFFAIRS_TUNISIA,
+        /** Calculation rules in South East Asia */
         SOUTH_EAST_ASIA,
         /** Union of Islamic Organisations of France */
         UNION_OF_ISLAMIC_ORGANISATIONS_OF_FRANCE,
@@ -46,6 +71,8 @@ public class PrayerTimesUtils {
         MINISTRY_OF_ENDOWMENTS_AND_RELIGIOUS_AFFAIRS_OMAN,
         /** General Authority of Islamic Affairs & Endowments, U.A.E. */
         GENERAL_AUTHORITY_OF_ISLAMIC_AFFAIRS_AND_ENDOWMENTS_UAE,
+        /** Department of Islamic Affairs and charitable activities, Dubai */
+        DEPARTMENT_OF_ISLAMIC_AFFAIRS_AND_CHARITABLE_ACTIVITIES_DUBAI,
         /** Ministry of Awqaf Islamic Affairs and Holy Places, Jordan */
         MINISTRY_OF_AWQAF_ISLAMIC_AFFAIRS_AND_HOLY_PLACES_JORDAN,
         /** Ministry of Awqaf and Islamic Affairs, Kuwait */
@@ -57,9 +84,52 @@ public class PrayerTimesUtils {
         /** Ministry of Islamic Affairs, Maldives*/
         MINISTRY_OF_ISLAMIC_AFFAIRS_MALDIVES,
         /** Birmingham Central Mosque */
-        BIRMINGHAM_CENTRAL_MOSQUE
+        BIRMINGHAM_CENTRAL_MOSQUE,
+        /** London Central Mosque */
+        LONDON_CENTRAL_MOSQUE,
+        /** Munich, Germany */
+        MUNICH_GERMANY,
+        /** Grand Mosque of Paris */
+        GRAND_MOSQUE_OF_PARIS,
+        /** Islamic Centre of Quebec */
+        ISLAMIC_CENTRE_OF_QUEBEC
     }
 
+    public static final int MUSLIM_WORLD_LEAGUE_VALUE = 0;
+    public static final int ISLAMIC_SOCIETY_OF_NORTH_AMERICA_VALUE = 1;
+    public static final int EGYPTIAN_GENERAL_AUTHORITY_OF_SURVEY_VALUE = 2;
+    public static final int UMM_AL_QURA_UNIVERSITY_MAKKAH_VALUE = 3;
+    public static final int UNIVERSITY_OF_ISLAMIC_SCIENCES_KARACHI_VALUE = 4;
+    public static final int INSTITUTE_OF_GEOPHYSICS_UNIVERSITY_OF_TEHRAN_VALUE = 5;
+    public static final int SHIA_ITHNA_ASHARI_LEVA_RESEARCH_INSTITUTE_QUM_VALUE = 6;
+    public static final int MINISTRY_RELIGIOUS_AFFAIRS_AND_WAKFS_ALGERIA_VALUE = 7;
+    public static final int MINISTRY_HABOUS_AND_ISLAMIC_AFFAIRS_MOROCCO_VALUE = 8;
+    public static final int MINISTRY_RELIGIOUS_AFFAIRS_TUNISIA_VALUE = 9;
+    public static final int SOUTH_EAST_ASIA_VALUE = 10;
+    public static final int UNION_OF_ISLAMIC_ORGANISATIONS_OF_FRANCE_VALUE = 11;
+    public static final int PRESIDENCY_OF_RELIGIOUS_AFFAIRS_TURKEY_VALUE = 12;
+    public static final int MINISTRY_OF_ENDOWMENTS_AND_RELIGIOUS_AFFAIRS_OMAN_VALUE = 13;
+    public static final int GENERAL_AUTHORITY_OF_ISLAMIC_AFFAIRS_AND_ENDOWMENTS_UAE_VALUE = 14;
+    public static final int DEPARTMENT_OF_ISLAMIC_AFFAIRS_AND_CHARITABLE_ACTIVITIES_DUBAI_VALUE = 15;
+    public static final int MINISTRY_OF_AWQAF_ISLAMIC_AFFAIRS_AND_HOLY_PLACES_JORDAN_VALUE = 16;
+    public static final int MINISTRY_OF_AWQAF_AND_ISLAMIC_AFFAIRS_KUWAIT_VALUE = 17;
+    public static final int QATAR_CALENDAR_HOUSE_VALUE = 18;
+    public static final int MINISTRY_OF_ENDOWMENTS_AND_ISLAMIC_AFFAIRS_LYBIA_VALUE = 19;
+    public static final int MINISTRY_OF_ISLAMIC_AFFAIRS_MALDIVES_VALUE = 20;
+    public static final int BIRMINGHAM_CENTRAL_MOSQUE_VALUE = 21;
+    public static final int LONDON_CENTRAL_MOSQUE_VALUE = 22;
+    public static final int MUNICH_GERMANY_VALUE = 23;
+    public static final int GRAND_MOSQUE_OF_PARIS_VALUE = 24;
+    public static final int ISLAMIC_CENTRE_OF_QUEBEC_VALUE = 25;
+
+    public static final int HANAFI_VALUE = 0;
+    public static final int NOT_HANAFI_VALUE = 1;
+
+    public static final int MIDDLE_OF_THE_NIGHT_VALUE = 0;
+    public static final int SEVENTH_VALUE = 1;
+    public static final int ANGLE_BASED_VALUE = 2;
+
+    private Context context;
     /** The year that should be used for the calculation */
     private int year;
     /** The month that should be used for the calculation */
@@ -98,6 +168,8 @@ public class PrayerTimesUtils {
     private double maghribAngle = 5.0/6.0;
     /** The delay to add for calculation of Dhuhr */
     private double dhuhrDelay = 0.0;
+    /** The calculation mode for Fajr and Isha at abnormal periods*/
+    private HigherLatitudeMode higherLatitudeMode = HigherLatitudeMode.ANGLE_BASED;
 
     /**
      * Instantiates a new Prayer Time Utils.
@@ -108,9 +180,9 @@ public class PrayerTimesUtils {
      * @param longitude the longitude to calculate prayer times
      * @param convention the convention to use to calculate prayer times
      */
-    public PrayerTimesUtils(int year, int month, int day, double latitude, double longitude, Convention convention, School school){
+    public PrayerTimesUtils(Context context, int year, int month, int day, double latitude, double longitude, Convention convention, School school){
         super();
-        initMembers(year, month, day, latitude, longitude, convention, school);
+        initMembers(context, year, month, day, latitude, longitude, convention, school);
     }
 
     /**
@@ -122,15 +194,16 @@ public class PrayerTimesUtils {
      * @param longitude the longitude to calculate prayer times
      * @param convention the convention to use to calculate prayer times
      */
-    public void initMembers(int year, int month, int day, double latitude, double longitude, Convention convention, School school){
+    public void initMembers(Context context, int year, int month, int day, double latitude, double longitude, Convention convention, School school){
         double julianDay = DateUtils.dateToJulian(year, month, day);
+        this.context     = context;
         this.year        = year;
         this.month       = month;
         this.day         = day;
         this.latitude    = latitude;
-        this.longitude   = longitude;
+        this.longitude = longitude;
         time             = (julianDay-2451545)/36525;
-        changeConvention(convention, school);
+        changeConvention(convention, school, HigherLatitudeMode.ANGLE_BASED);
     }
 
     public int getYear() {
@@ -148,11 +221,23 @@ public class PrayerTimesUtils {
     public void changeCountry(String countryIso){
         Pair pair = COUNTRY_DEFAULT_CONVENTION.get(countryIso);
         if(pair != null){
-            changeConvention(pair.getConvention(), pair.getSchool());
+            changeConvention(pair.getConvention(), pair.getSchool(), HigherLatitudeMode.ANGLE_BASED);
         }
     }
 
-    public void changeConvention(Convention convention, School school){
+    public void changeConvention(Convention convention, School school, HigherLatitudeMode mode){
+        if(SharedPreferencesUtils.getConventionValue(context) != -1){
+            convention = getConventionFromPreferenceValue(SharedPreferencesUtils.getConventionValue(context));
+        }
+        if(SharedPreferencesUtils.getSchoolValue(context) != -1){
+            school = getSchoolFromPreferenceValue(SharedPreferencesUtils.getSchoolValue(context));
+        }
+        if(SharedPreferencesUtils.getHigherLatitudeModeValue(context) != -1){
+            mode = getHigherLatitudeModeFromPreferenceValue(SharedPreferencesUtils.getHigherLatitudeModeValue(context));
+        }
+
+        higherLatitudeMode = mode;
+
         switch (school){
             case HANAFI:
                 asrTime = 2.0;
@@ -161,6 +246,7 @@ public class PrayerTimesUtils {
                 asrTime = 1.0;
                 break;
         }
+
         switch(convention){
             case MUSLIM_WORLD_LEAGUE:
                 fajrAngle = 18.0;
@@ -192,6 +278,15 @@ public class PrayerTimesUtils {
                 fajrAngle = 16.0;
                 ishaAngle = 14.0;
                 maghribAngle = 4.0;
+                break;
+            case DEPARTMENT_OF_ISLAMIC_AFFAIRS_AND_CHARITABLE_ACTIVITIES_DUBAI:
+                fajrAngle = 18.5;
+                ishaAngle = maghribAngle;
+                ishaDelayNormal = 1.5;
+                ishaDelayOnRamadhan = 2.0;
+                dhuhrDelay = 4.0/60.0;
+                asrDelay = 5.0/60.0;
+                maghribDelay = 2.0/60.0;
                 break;
             case MINISTRY_RELIGIOUS_AFFAIRS_AND_WAKFS_ALGERIA:
                 fajrAngle = 18.0;
@@ -293,9 +388,30 @@ public class PrayerTimesUtils {
                 break;
             case BIRMINGHAM_CENTRAL_MOSQUE:
                 fajrAngle = 5.0;
-                ishaAngle = 5.0/6.0;
+                ishaAngle = maghribAngle;
                 fajrDelay = -1.0;
                 ishaDelay = 1.0;
+                break;
+            case LONDON_CENTRAL_MOSQUE:
+                fajrAngle = 5.0;
+                ishaAngle = maghribAngle;
+                fajrDelay = -1.0;
+                ishaDelay = 1.0;
+                break;
+            case MUNICH_GERMANY:
+                fajrAngle = 18.0;
+                ishaAngle = 17.0;
+                break;
+            case GRAND_MOSQUE_OF_PARIS:
+                fajrAngle = 18.0;
+                ishaAngle = 17.0;
+                break;
+            case ISLAMIC_CENTRE_OF_QUEBEC:
+                fajrAngle = 17.79;
+                ishaAngle = 17.6;
+                asrDelay = 5.0/60.0;
+                maghribDelay = 5.0/60.0;
+                break;
         }
     }
 
@@ -307,12 +423,28 @@ public class PrayerTimesUtils {
         return 12.0 - (longitude/15.0) - (equationOfTime(time)/60.0);
     }
 
+    public double getDhuhrOfPreviousDay(){
+        return 12.0 - (longitude/15.0) - (equationOfTime(time-(1.0/36525.0))/60.0);
+    }
+
+    public double getDhuhrOfNextDay(){
+        return 12.0 - (longitude/15.0) - (equationOfTime(time+(1.0/36525.0))/60.0);
+    }
+
     /**
      * Returns the timestamp of Dhuhr.
      * @return the timestamp of Dhuhr
      */
     public long getDhuhrTimestamp(){
         return DateUtils.utcTimeToTimestamp(year, month, day, getDhuhr() + dhuhrDelay);
+    }
+
+    public long getDhuhrOfPreviousDayTimestamp(){
+        return DateUtils.utcTimeToTimestamp(year, month, day, getDhuhrOfPreviousDay() + dhuhrDelay) - (24l*3600l*1000l);
+    }
+
+    public long getDhuhrOfNextDayTimestamp(){
+        return DateUtils.utcTimeToTimestamp(year, month, day, getDhuhrOfNextDay() + dhuhrDelay) + (24l*3600l*1000l);
     }
 
     /**
@@ -324,6 +456,16 @@ public class PrayerTimesUtils {
         return DateUtils.utcTimeToTimestamp(year, month, day, hoursInTheDay);
     }
 
+    public long getSunriseOfNextDayTimestamp(){
+        double hoursInTheDay = getDhuhrOfNextDay() - getTimeBelowHorizonDifference(sunriseAngle, time + (1.0/36525.0)) + sunriseDelay;
+        return DateUtils.utcTimeToTimestamp(year, month, day, hoursInTheDay) + 24l*3600l*1000l;
+    }
+
+    public long getSunriseOfPreviousDayTimestamp(){
+        double hoursInTheDay = getDhuhrOfPreviousDay() - getTimeBelowHorizonDifference(sunriseAngle, time - (1.0/36525.0)) + sunriseDelay;
+        return DateUtils.utcTimeToTimestamp(year, month, day, hoursInTheDay) - 24l*3600l*1000l;
+    }
+
     /**
      * Returns the timestamp of Maghrib.
      * @return the timestamp of Maghrib
@@ -333,12 +475,34 @@ public class PrayerTimesUtils {
         return DateUtils.utcTimeToTimestamp(year, month, day, hoursInTheDay);
     }
 
+    public long getMaghribOfNextDayTimestamp(){
+        double hoursInTheDay = getDhuhrOfNextDay() + getTimeBelowHorizonDifference(maghribAngle, time + (1.0/36525.0)) + maghribDelay;
+        return DateUtils.utcTimeToTimestamp(year, month, day, hoursInTheDay) + 24l*3600l*1000l;
+    }
+
+    public long getMaghribOfPreviousDayTimestamp(){
+        double hoursInTheDay = getDhuhrOfPreviousDay() + getTimeBelowHorizonDifference(maghribAngle, time - (1.0/36525.0)) + maghribDelay;
+        return DateUtils.utcTimeToTimestamp(year, month, day, hoursInTheDay) - 24l*3600l*1000l;
+    }
+
     /**
      * Returns the timestamp of Fajr.
      * @return the timestamp of Fajr
      */
     public long getFajrTimestamp(){
-        double hoursInTheDay = getDhuhr() - getTimeBelowHorizonDifference(fajrAngle) + fajrDelay;
+        double timeBelowHorizonDifference = getTimeBelowHorizonDifference(fajrAngle);
+        if(Double.isNaN(timeBelowHorizonDifference)){
+            switch (higherLatitudeMode){
+                case MIDDLE_OF_THE_NIGHT:
+                    return getSunriseTimestamp() - (long)(((double)(getSunriseTimestamp() - getMaghribOfPreviousDayTimestamp()))/2.0) + (long)(fajrDelay*3600.0*1000.0);
+                case SEVENTH:
+                    return getSunriseTimestamp() - (long)(((double)(getSunriseTimestamp() - getMaghribOfPreviousDayTimestamp()))/7.0) + (long)(fajrDelay*3600.0*1000.0);
+                case ANGLE_BASED:
+                    double t = 60.0/fajrAngle;
+                    return getSunriseTimestamp() - (long)(((double)(getSunriseTimestamp() - getMaghribOfPreviousDayTimestamp()))/t) + (long)(fajrDelay*3600.0*1000.0);
+            }
+        }
+        double hoursInTheDay = getDhuhr() - timeBelowHorizonDifference + fajrDelay;
         return DateUtils.utcTimeToTimestamp(year, month, day, hoursInTheDay);
     }
 
@@ -347,10 +511,23 @@ public class PrayerTimesUtils {
      * @return the timestamp of Isha
      */
     public long getIshaTimestamp(){
+        double timeBelowHorizonDifference = getTimeBelowHorizonDifference(ishaAngle);
+
         int[] hijri = DateUtils.getHijriFromJulianDay(DateUtils.dateToJulian(year, month, day));
         double delayToAdd = hijri[1] == 9 ? ishaDelayOnRamadhan : ishaDelayNormal;
-        double hoursInTheDay = getDhuhr() + getTimeBelowHorizonDifference(ishaAngle) + delayToAdd + ishaDelay;
 
+        if(Double.isNaN(timeBelowHorizonDifference)) {
+            switch (higherLatitudeMode){
+                case MIDDLE_OF_THE_NIGHT:
+                    return getMaghribTimestamp() + (long)(((double)(getSunriseOfNextDayTimestamp() - getMaghribTimestamp()))/2.0) + (long)((ishaDelay + delayToAdd)*3600.0*1000.0);
+                case SEVENTH:
+                    return getMaghribTimestamp() + (long)(((double)(getSunriseOfNextDayTimestamp() - getMaghribTimestamp())) / 7.0) + (long)((ishaDelay + delayToAdd)*3600.0*1000.0);
+                case ANGLE_BASED:
+                    double t = 60.0/ishaAngle;
+                    return getMaghribTimestamp() + (long)(((double)(getSunriseOfNextDayTimestamp() - getMaghribTimestamp())) / t) + (long)((ishaDelay + delayToAdd)*3600.0*1000.0);
+            }
+        }
+        double hoursInTheDay = getDhuhr() + timeBelowHorizonDifference + delayToAdd + ishaDelay;
         return DateUtils.utcTimeToTimestamp(year, month, day, hoursInTheDay);
     }
 
@@ -369,9 +546,22 @@ public class PrayerTimesUtils {
      * @return the time difference between dhuhr and the time when the sun is at the given angle
      */
     public double getTimeBelowHorizonDifference(double angle){
+        return getTimeBelowHorizonDifference(angle, time);
+    }
+
+    /**
+     * Returns the time difference between dhuhr and the time when the sun is at the given angle
+     * @param angle the angle for which to calculate the time
+     * @param time the time for which to calculate the value
+     * @return the time difference between dhuhr and the time when the sun is at the given angle
+     */
+    public double getTimeBelowHorizonDifference(double angle, double time){
         double topOperand = (-Math.sin(Math.toRadians(angle)))-Math.sin(Math.toRadians(latitude))*Math.sin(Math.toRadians(sunDeclination(time)));
         double bottomOperand = Math.cos(Math.toRadians(latitude))*Math.cos(Math.toRadians(sunDeclination(time)));
-        return (1.0/15.0)*Math.toDegrees(Math.acos(topOperand / bottomOperand));
+        double acos = Math.acos(topOperand / bottomOperand);
+        if (Double.isNaN(acos))
+            return acos;
+        return (1.0/15.0)*Math.toDegrees(acos);
     }
 
     /**
@@ -382,6 +572,263 @@ public class PrayerTimesUtils {
     public double getTimeShadowSizeDifference(double times) {
         double sunAngleForAsr = -1.0 * Math.toDegrees(MathUtils.acot(times + Math.tan(Math.toRadians(Math.abs(latitude - sunDeclination(time))))));
         return getTimeBelowHorizonDifference(sunAngleForAsr);
+    }
+
+    public static HigherLatitudeMode getHigherLatitudeModeFromPreferenceValue(int preferenceValue){
+        switch(preferenceValue){
+            case ANGLE_BASED_VALUE:
+                return HigherLatitudeMode.ANGLE_BASED;
+            case SEVENTH_VALUE:
+                return HigherLatitudeMode.SEVENTH;
+            case MIDDLE_OF_THE_NIGHT_VALUE:
+                return HigherLatitudeMode.MIDDLE_OF_THE_NIGHT;
+        }
+        return null;
+    }
+
+    public static School getSchoolFromPreferenceValue(int preferenceValue){
+        switch(preferenceValue){
+            case HANAFI_VALUE:
+                return School.HANAFI;
+            case NOT_HANAFI_VALUE:
+                return School.NOT_HANAFI;
+        }
+        return null;
+    }
+
+    public static Convention getConventionFromPreferenceValue(int preferenceValue){
+        switch(preferenceValue){
+            case MUSLIM_WORLD_LEAGUE_VALUE:
+                return Convention.MUSLIM_WORLD_LEAGUE;
+            case ISLAMIC_SOCIETY_OF_NORTH_AMERICA_VALUE:
+                return Convention.ISLAMIC_SOCIETY_OF_NORTH_AMERICA;
+            case EGYPTIAN_GENERAL_AUTHORITY_OF_SURVEY_VALUE:
+                return Convention.EGYPTIAN_GENERAL_AUTHORITY_OF_SURVEY;
+            case UMM_AL_QURA_UNIVERSITY_MAKKAH_VALUE:
+                return Convention.UMM_AL_QURA_UNIVERSITY_MAKKAH;
+            case UNIVERSITY_OF_ISLAMIC_SCIENCES_KARACHI_VALUE:
+                return Convention.UNIVERSITY_OF_ISLAMIC_SCIENCES_KARACHI;
+            case INSTITUTE_OF_GEOPHYSICS_UNIVERSITY_OF_TEHRAN_VALUE:
+                return Convention.INSTITUTE_OF_GEOPHYSICS_UNIVERSITY_OF_TEHRAN;
+            case SHIA_ITHNA_ASHARI_LEVA_RESEARCH_INSTITUTE_QUM_VALUE:
+                return Convention.SHIA_ITHNA_ASHARI_LEVA_RESEARCH_INSTITUTE_QUM;
+            case MINISTRY_RELIGIOUS_AFFAIRS_AND_WAKFS_ALGERIA_VALUE:
+                return Convention.MINISTRY_RELIGIOUS_AFFAIRS_AND_WAKFS_ALGERIA;
+            case MINISTRY_HABOUS_AND_ISLAMIC_AFFAIRS_MOROCCO_VALUE:
+                return Convention.MINISTRY_HABOUS_AND_ISLAMIC_AFFAIRS_MOROCCO;
+            case MINISTRY_RELIGIOUS_AFFAIRS_TUNISIA_VALUE:
+                return Convention.MINISTRY_RELIGIOUS_AFFAIRS_TUNISIA;
+            case SOUTH_EAST_ASIA_VALUE:
+                return Convention.SOUTH_EAST_ASIA;
+            case UNION_OF_ISLAMIC_ORGANISATIONS_OF_FRANCE_VALUE:
+                return Convention.UNION_OF_ISLAMIC_ORGANISATIONS_OF_FRANCE;
+            case PRESIDENCY_OF_RELIGIOUS_AFFAIRS_TURKEY_VALUE:
+                return Convention.PRESIDENCY_OF_RELIGIOUS_AFFAIRS_TURKEY;
+            case MINISTRY_OF_ENDOWMENTS_AND_RELIGIOUS_AFFAIRS_OMAN_VALUE:
+                return Convention.MINISTRY_OF_ENDOWMENTS_AND_RELIGIOUS_AFFAIRS_OMAN;
+            case GENERAL_AUTHORITY_OF_ISLAMIC_AFFAIRS_AND_ENDOWMENTS_UAE_VALUE:
+                return Convention.GENERAL_AUTHORITY_OF_ISLAMIC_AFFAIRS_AND_ENDOWMENTS_UAE;
+            case DEPARTMENT_OF_ISLAMIC_AFFAIRS_AND_CHARITABLE_ACTIVITIES_DUBAI_VALUE:
+                return Convention.DEPARTMENT_OF_ISLAMIC_AFFAIRS_AND_CHARITABLE_ACTIVITIES_DUBAI;
+            case MINISTRY_OF_AWQAF_ISLAMIC_AFFAIRS_AND_HOLY_PLACES_JORDAN_VALUE:
+                return Convention.MINISTRY_OF_AWQAF_ISLAMIC_AFFAIRS_AND_HOLY_PLACES_JORDAN;
+            case MINISTRY_OF_AWQAF_AND_ISLAMIC_AFFAIRS_KUWAIT_VALUE:
+                return Convention.MINISTRY_OF_AWQAF_AND_ISLAMIC_AFFAIRS_KUWAIT;
+            case QATAR_CALENDAR_HOUSE_VALUE:
+                return Convention.QATAR_CALENDAR_HOUSE;
+            case MINISTRY_OF_ENDOWMENTS_AND_ISLAMIC_AFFAIRS_LYBIA_VALUE:
+                return Convention.MINISTRY_OF_ENDOWMENTS_AND_ISLAMIC_AFFAIRS_LYBIA;
+            case MINISTRY_OF_ISLAMIC_AFFAIRS_MALDIVES_VALUE:
+                return Convention.MINISTRY_OF_ISLAMIC_AFFAIRS_MALDIVES;
+            case BIRMINGHAM_CENTRAL_MOSQUE_VALUE:
+                return Convention.BIRMINGHAM_CENTRAL_MOSQUE;
+            case LONDON_CENTRAL_MOSQUE_VALUE:
+                return Convention.LONDON_CENTRAL_MOSQUE;
+            case MUNICH_GERMANY_VALUE:
+                return Convention.MUNICH_GERMANY;
+            case GRAND_MOSQUE_OF_PARIS_VALUE:
+                return Convention.GRAND_MOSQUE_OF_PARIS;
+            case ISLAMIC_CENTRE_OF_QUEBEC_VALUE:
+                return Convention.ISLAMIC_CENTRE_OF_QUEBEC;
+        }
+        return null;
+    }
+
+    public static int getHigherLatitudeModePreferenceValue(HigherLatitudeMode higherLatitudeMode){
+        if(higherLatitudeMode == null)
+            return -1;
+        switch(higherLatitudeMode){
+            case ANGLE_BASED:
+                return ANGLE_BASED_VALUE;
+            case SEVENTH:
+                return SEVENTH_VALUE;
+            case MIDDLE_OF_THE_NIGHT:
+                return MIDDLE_OF_THE_NIGHT_VALUE;
+        }
+        return -1;
+    }
+
+    public static int getSchoolPreferenceValue(School school){
+        if(school == null)
+            return -1;
+        switch(school){
+            case HANAFI:
+                return HANAFI_VALUE;
+            case NOT_HANAFI:
+                return NOT_HANAFI_VALUE;
+        }
+        return -1;
+    }
+
+    public static int getConventionPreferenceValue(Convention convention){
+        if(convention == null)
+            return -1;
+        switch(convention){
+            case MUSLIM_WORLD_LEAGUE:
+                return MUSLIM_WORLD_LEAGUE_VALUE;
+            case ISLAMIC_SOCIETY_OF_NORTH_AMERICA:
+                return ISLAMIC_SOCIETY_OF_NORTH_AMERICA_VALUE;
+            case EGYPTIAN_GENERAL_AUTHORITY_OF_SURVEY:
+                return EGYPTIAN_GENERAL_AUTHORITY_OF_SURVEY_VALUE;
+            case UMM_AL_QURA_UNIVERSITY_MAKKAH:
+                return UMM_AL_QURA_UNIVERSITY_MAKKAH_VALUE;
+            case UNIVERSITY_OF_ISLAMIC_SCIENCES_KARACHI:
+                return UNIVERSITY_OF_ISLAMIC_SCIENCES_KARACHI_VALUE;
+            case INSTITUTE_OF_GEOPHYSICS_UNIVERSITY_OF_TEHRAN:
+                return INSTITUTE_OF_GEOPHYSICS_UNIVERSITY_OF_TEHRAN_VALUE;
+            case SHIA_ITHNA_ASHARI_LEVA_RESEARCH_INSTITUTE_QUM:
+                return SHIA_ITHNA_ASHARI_LEVA_RESEARCH_INSTITUTE_QUM_VALUE;
+            case MINISTRY_RELIGIOUS_AFFAIRS_AND_WAKFS_ALGERIA:
+                return MINISTRY_RELIGIOUS_AFFAIRS_AND_WAKFS_ALGERIA_VALUE;
+            case MINISTRY_HABOUS_AND_ISLAMIC_AFFAIRS_MOROCCO:
+                return MINISTRY_HABOUS_AND_ISLAMIC_AFFAIRS_MOROCCO_VALUE;
+            case MINISTRY_RELIGIOUS_AFFAIRS_TUNISIA:
+                return MINISTRY_RELIGIOUS_AFFAIRS_TUNISIA_VALUE;
+            case SOUTH_EAST_ASIA:
+                return SOUTH_EAST_ASIA_VALUE;
+            case UNION_OF_ISLAMIC_ORGANISATIONS_OF_FRANCE:
+                return UNION_OF_ISLAMIC_ORGANISATIONS_OF_FRANCE_VALUE;
+            case PRESIDENCY_OF_RELIGIOUS_AFFAIRS_TURKEY:
+                return PRESIDENCY_OF_RELIGIOUS_AFFAIRS_TURKEY_VALUE;
+            case MINISTRY_OF_ENDOWMENTS_AND_RELIGIOUS_AFFAIRS_OMAN:
+                return MINISTRY_OF_ENDOWMENTS_AND_RELIGIOUS_AFFAIRS_OMAN_VALUE;
+            case GENERAL_AUTHORITY_OF_ISLAMIC_AFFAIRS_AND_ENDOWMENTS_UAE:
+                return GENERAL_AUTHORITY_OF_ISLAMIC_AFFAIRS_AND_ENDOWMENTS_UAE_VALUE;
+            case DEPARTMENT_OF_ISLAMIC_AFFAIRS_AND_CHARITABLE_ACTIVITIES_DUBAI:
+                return DEPARTMENT_OF_ISLAMIC_AFFAIRS_AND_CHARITABLE_ACTIVITIES_DUBAI_VALUE;
+            case MINISTRY_OF_AWQAF_ISLAMIC_AFFAIRS_AND_HOLY_PLACES_JORDAN:
+                return MINISTRY_OF_AWQAF_ISLAMIC_AFFAIRS_AND_HOLY_PLACES_JORDAN_VALUE;
+            case MINISTRY_OF_AWQAF_AND_ISLAMIC_AFFAIRS_KUWAIT:
+                return MINISTRY_OF_AWQAF_AND_ISLAMIC_AFFAIRS_KUWAIT_VALUE;
+            case QATAR_CALENDAR_HOUSE:
+                return QATAR_CALENDAR_HOUSE_VALUE;
+            case MINISTRY_OF_ENDOWMENTS_AND_ISLAMIC_AFFAIRS_LYBIA:
+                return MINISTRY_OF_ENDOWMENTS_AND_ISLAMIC_AFFAIRS_LYBIA_VALUE;
+            case MINISTRY_OF_ISLAMIC_AFFAIRS_MALDIVES:
+                return MINISTRY_OF_ISLAMIC_AFFAIRS_MALDIVES_VALUE;
+            case BIRMINGHAM_CENTRAL_MOSQUE:
+                return BIRMINGHAM_CENTRAL_MOSQUE_VALUE;
+            case LONDON_CENTRAL_MOSQUE:
+                return LONDON_CENTRAL_MOSQUE_VALUE;
+            case MUNICH_GERMANY:
+                return MUNICH_GERMANY_VALUE;
+            case GRAND_MOSQUE_OF_PARIS:
+                return GRAND_MOSQUE_OF_PARIS_VALUE;
+            case ISLAMIC_CENTRE_OF_QUEBEC:
+                return ISLAMIC_CENTRE_OF_QUEBEC_VALUE;
+        }
+        return -1;
+    }
+
+    public static int getHigherLatitudeModeResId(HigherLatitudeMode higherLatitudeMode){
+        if(higherLatitudeMode == null)
+            return -1;
+        switch(higherLatitudeMode){
+            case ANGLE_BASED:
+                return R.string.method_angle_based;
+            case SEVENTH:
+                return R.string.method_seventh;
+            case MIDDLE_OF_THE_NIGHT:
+                return R.string.method_middle_of_night;
+        }
+        return -1;
+    }
+
+    public static int getSchoolResId(School school){
+        if(school == null)
+            return -1;
+        switch(school){
+            case HANAFI:
+                return R.string.asr_hanafi;
+            case NOT_HANAFI:
+                return R.string.asr_not_hanafi;
+        }
+        return -1;
+    }
+
+    /**
+     * Returns the res id of the name of a convention.
+     * @param convention the convention from which to get the name
+     * @return the res id of the name of a convention
+     */
+    public static int getConventionNameResId(Convention convention){
+        if(convention == null)
+            return 0;
+        switch (convention){
+            case MUSLIM_WORLD_LEAGUE:
+                return R.string.convention_name_mwl;
+            case ISLAMIC_SOCIETY_OF_NORTH_AMERICA:
+                return R.string.convention_name_isna;
+            case EGYPTIAN_GENERAL_AUTHORITY_OF_SURVEY:
+                return R.string.convention_name_egypt;
+            case UMM_AL_QURA_UNIVERSITY_MAKKAH:
+                return R.string.convention_name_makkah;
+            case UNIVERSITY_OF_ISLAMIC_SCIENCES_KARACHI:
+                return R.string.convention_name_karachi;
+            case INSTITUTE_OF_GEOPHYSICS_UNIVERSITY_OF_TEHRAN:
+                return R.string.convention_name_tehran;
+            case SHIA_ITHNA_ASHARI_LEVA_RESEARCH_INSTITUTE_QUM:
+                return R.string.convention_name_jafari;
+            case DEPARTMENT_OF_ISLAMIC_AFFAIRS_AND_CHARITABLE_ACTIVITIES_DUBAI:
+                return R.string.convention_name_dubai;
+            case MINISTRY_RELIGIOUS_AFFAIRS_AND_WAKFS_ALGERIA:
+                return R.string.convention_name_algeria;
+            case MINISTRY_HABOUS_AND_ISLAMIC_AFFAIRS_MOROCCO:
+                return R.string.convention_name_morocco;
+            case MINISTRY_RELIGIOUS_AFFAIRS_TUNISIA:
+                return R.string.convention_name_tunisia;
+            case SOUTH_EAST_ASIA:
+                return R.string.convention_name_south_east_asia;
+            case UNION_OF_ISLAMIC_ORGANISATIONS_OF_FRANCE:
+                return R.string.convention_name_uoif;
+            case PRESIDENCY_OF_RELIGIOUS_AFFAIRS_TURKEY:
+                return R.string.convention_name_turkey;
+            case MINISTRY_OF_ENDOWMENTS_AND_RELIGIOUS_AFFAIRS_OMAN:
+                return R.string.convention_name_oman;
+            case GENERAL_AUTHORITY_OF_ISLAMIC_AFFAIRS_AND_ENDOWMENTS_UAE:
+                return R.string.convention_name_emirates;
+            case MINISTRY_OF_AWQAF_ISLAMIC_AFFAIRS_AND_HOLY_PLACES_JORDAN:
+                return R.string.convention_name_jordan;
+            case MINISTRY_OF_AWQAF_AND_ISLAMIC_AFFAIRS_KUWAIT:
+                return R.string.convention_name_kuwait;
+            case QATAR_CALENDAR_HOUSE:
+                return R.string.convention_name_qatar;
+            case MINISTRY_OF_ENDOWMENTS_AND_ISLAMIC_AFFAIRS_LYBIA:
+                return R.string.convention_name_lybia;
+            case MINISTRY_OF_ISLAMIC_AFFAIRS_MALDIVES:
+                return R.string.convention_name_maldives;
+            case BIRMINGHAM_CENTRAL_MOSQUE:
+                return R.string.convention_name_birmingham;
+            case LONDON_CENTRAL_MOSQUE:
+                return R.string.convention_name_london;
+            case MUNICH_GERMANY:
+                return R.string.convention_name_munich;
+            case GRAND_MOSQUE_OF_PARIS:
+                return R.string.convention_name_paris;
+            case ISLAMIC_CENTRE_OF_QUEBEC:
+                return R.string.convention_name_quebec;
+        }
+        return -1;
     }
 
     /**
@@ -453,7 +900,7 @@ public class PrayerTimesUtils {
      */
     private static double obliquityCorrected(final double t) {
         final double e0 = meanObliquityOfEcliptic(t);
-        final double omega = Math.toRadians(125.04 - 1934.136*t);
+        final double omega = Math.toRadians(125.04 - 1934.136 * t);
         return e0 + 0.00256 * Math.cos(omega);
     }
 
@@ -585,7 +1032,7 @@ public class PrayerTimesUtils {
         COUNTRY_DEFAULT_CONVENTION.put("au", new Pair(Convention.MUSLIM_WORLD_LEAGUE, School.NOT_HANAFI));
         // Aruba
         COUNTRY_DEFAULT_CONVENTION.put("aw", new Pair(Convention.ISLAMIC_SOCIETY_OF_NORTH_AMERICA, School.NOT_HANAFI));
-        // Åland Islands
+        // Aland Islands
         COUNTRY_DEFAULT_CONVENTION.put("ax", new Pair(Convention.MUSLIM_WORLD_LEAGUE, School.NOT_HANAFI));
         // Azerbaijan
         COUNTRY_DEFAULT_CONVENTION.put("az", new Pair(Convention.UNIVERSITY_OF_ISLAMIC_SCIENCES_KARACHI, School.HANAFI));
@@ -643,7 +1090,7 @@ public class PrayerTimesUtils {
         COUNTRY_DEFAULT_CONVENTION.put("cg", new Pair(Convention.EGYPTIAN_GENERAL_AUTHORITY_OF_SURVEY, School.NOT_HANAFI));
         // Switzerland
         COUNTRY_DEFAULT_CONVENTION.put("ch", new Pair(Convention.MUSLIM_WORLD_LEAGUE, School.NOT_HANAFI));
-        // Côte d'Ivoire
+        // Cote d'Ivoire
         COUNTRY_DEFAULT_CONVENTION.put("ci", new Pair(Convention.EGYPTIAN_GENERAL_AUTHORITY_OF_SURVEY, School.NOT_HANAFI));
         // Cook Islands
         COUNTRY_DEFAULT_CONVENTION.put("ck", new Pair(Convention.MUSLIM_WORLD_LEAGUE, School.NOT_HANAFI));
@@ -661,7 +1108,7 @@ public class PrayerTimesUtils {
         COUNTRY_DEFAULT_CONVENTION.put("cu", new Pair(Convention.ISLAMIC_SOCIETY_OF_NORTH_AMERICA, School.NOT_HANAFI));
         // Cabo Verde
         COUNTRY_DEFAULT_CONVENTION.put("cv", new Pair(Convention.MUSLIM_WORLD_LEAGUE, School.NOT_HANAFI));
-        // Curaçao
+        // Curacao
         COUNTRY_DEFAULT_CONVENTION.put("cw", new Pair(Convention.ISLAMIC_SOCIETY_OF_NORTH_AMERICA, School.NOT_HANAFI));
         // Christmas Islands
         COUNTRY_DEFAULT_CONVENTION.put("cx", new Pair(Convention.MUSLIM_WORLD_LEAGUE, School.NOT_HANAFI));
@@ -930,7 +1377,7 @@ public class PrayerTimesUtils {
         COUNTRY_DEFAULT_CONVENTION.put("py", new Pair(Convention.ISLAMIC_SOCIETY_OF_NORTH_AMERICA, School.NOT_HANAFI));
         // Qatar
         COUNTRY_DEFAULT_CONVENTION.put("qa", new Pair(Convention.QATAR_CALENDAR_HOUSE, School.NOT_HANAFI));
-        // Réunion
+        // Reunion
         COUNTRY_DEFAULT_CONVENTION.put("re", new Pair(Convention.EGYPTIAN_GENERAL_AUTHORITY_OF_SURVEY, School.NOT_HANAFI));
         // Romania
         COUNTRY_DEFAULT_CONVENTION.put("ro", new Pair(Convention.MUSLIM_WORLD_LEAGUE, School.NOT_HANAFI));

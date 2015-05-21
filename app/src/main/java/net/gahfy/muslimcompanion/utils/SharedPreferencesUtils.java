@@ -27,6 +27,13 @@ public class SharedPreferencesUtils{
     /** The name of the key for the validity time of a location */
     private static final String LOCATION_VALIDITY_TIME = "locationValidityTime";
 
+    /** The convention that has been saved */
+    private static final String CONVENTION = "convention";
+
+    private static final String SCHOOL = "school";
+
+    private static final String HIGHER_LATITUDE_MODE = "higher_latitude_mode";
+
     /**
      * Saves a MuslimLocation as the last location in Shared Preferences.
      * @param context Context in which the application is running
@@ -69,6 +76,42 @@ public class SharedPreferencesUtils{
             return new MuslimLocation(locationLatitude, locationLongitude, locationTime, locationMode);
         }
         return null;
+    }
+
+    public static void putHigherLatitudeMode(Context context, int higherLatitudeModeValue){
+        SharedPreferences sharedPreferences = context.getSharedPreferences(PREFERENCES_NAME, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putInt(HIGHER_LATITUDE_MODE, higherLatitudeModeValue);
+        editor.commit();
+    }
+
+    public static int getHigherLatitudeModeValue(Context context){
+        SharedPreferences sharedPreferences = context.getSharedPreferences(PREFERENCES_NAME, Context.MODE_PRIVATE);
+        return sharedPreferences.getInt(HIGHER_LATITUDE_MODE, -1);
+    }
+
+    public static void putSchool(Context context, int schoolValue){
+        SharedPreferences sharedPreferences = context.getSharedPreferences(PREFERENCES_NAME, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putInt(SCHOOL, schoolValue);
+        editor.commit();
+    }
+
+    public static int getSchoolValue(Context context){
+        SharedPreferences sharedPreferences = context.getSharedPreferences(PREFERENCES_NAME, Context.MODE_PRIVATE);
+        return sharedPreferences.getInt(SCHOOL, -1);
+    }
+
+    public static void putConvention(Context context, int conventionValue){
+        SharedPreferences sharedPreferences = context.getSharedPreferences(PREFERENCES_NAME, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putInt(CONVENTION, conventionValue);
+        editor.commit();
+    }
+
+    public static int getConventionValue(Context context){
+        SharedPreferences sharedPreferences = context.getSharedPreferences(PREFERENCES_NAME, Context.MODE_PRIVATE);
+        return sharedPreferences.getInt(CONVENTION, -1);
     }
 
     public static void putLocationValidityDate(Context context, long locationValidityTime){

@@ -24,7 +24,10 @@ import com.google.android.gms.analytics.Tracker;
 
 import net.gahfy.muslimcompanion.fragment.AbstractFragment;
 import net.gahfy.muslimcompanion.fragment.CompassFragment;
+import net.gahfy.muslimcompanion.fragment.ConventionListFragment;
+import net.gahfy.muslimcompanion.fragment.HigherLatitudeModeListFragment;
 import net.gahfy.muslimcompanion.fragment.PrayerTimeFragment;
+import net.gahfy.muslimcompanion.fragment.SchoolListFragment;
 import net.gahfy.muslimcompanion.fragment.SettingsFragment;
 import net.gahfy.muslimcompanion.models.MuslimLocation;
 import net.gahfy.muslimcompanion.utils.LocationUtils;
@@ -159,7 +162,18 @@ public class MainActivity extends ActionBarActivity implements LocationListener{
                 drawerLayout.openDrawer(scrollDrawerView);
             }
         });
+    }
 
+    public void redirectToConventionList(){
+        redirectToFragment(new ConventionListFragment(), true);
+    }
+
+    public void redirectToHigherLatitudeList(){
+        redirectToFragment(new HigherLatitudeModeListFragment(), true);
+    }
+
+    public void redirectToSchoolList(){
+        redirectToFragment(new SchoolListFragment(), true);
     }
 
     @Override

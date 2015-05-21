@@ -13,9 +13,13 @@ import net.gahfy.muslimcompanion.models.MuslimLocation;
  * @author Gahfy
  */
 public abstract class AbstractFragment extends Fragment {
+    /** List of all possible geolocation modes */
     public enum GEOLOCATION_TYPE{
+        /** No geolocation needed */
         NONE,
+        /** Geolocation needed only once, when entering the fragment */
         ONCE,
+        /** Geolocation needed continuously */
         CONTINUOUS
     }
 
@@ -56,10 +60,18 @@ public abstract class AbstractFragment extends Fragment {
         return this.mainActivity;
     }
 
+    /**
+     * Returns the geolocation type needed by the fragment.
+     * @return the geolocation type needed by the fragment
+     */
     public GEOLOCATION_TYPE getGeolocationTypeNeeded(){
         return GEOLOCATION_TYPE.NONE;
     }
 
+    /**
+     * Called when a position is found.
+     * @param location the position that has been found
+     */
     public void onLocationChanged(MuslimLocation location){
 
     }

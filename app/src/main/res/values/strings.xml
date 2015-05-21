@@ -7,6 +7,8 @@
     <string name="location_required_message">The application needs location to be enabled</string>
     <string name="settings">Settings</string>
 
+    <string name="automatic">Automatic</string>
+
     <string name="geolocating">Geolocation</string>
     <string name="qibla_below_compass">Qibla:&#160;</string>
     <string name="qibla">Qibla</string>
@@ -30,7 +32,6 @@
     <string name="city_chosen">City</string>
     <string name="no_city_chosen">No one</string>
     <string name="search">Search</string>
-
 
     <string name="prayer_times">Prayer times</string>
     <string name="salat">Salat</string>
@@ -78,6 +79,44 @@
         <item>November</item>
         <item>December</item>
     </string-array>
+
+    <string name="convention">Convention</string>
+    <string name="asr_juristic_method">Al Asr Juristic Method</string>
+    <string name="higher_latitude_method">Higher Latitude Calculation Method</string>
+
+    <string name="convention_name_mwl">Muslim World League</string>
+    <string name="convention_name_isna">I.S.N.A. (Islamic Society of North America)</string>
+    <string name="convention_name_egypt">Egyptian General Authority of Survey</string>
+    <string name="convention_name_makkah">Umm al-Qura University, Makkah</string>
+    <string name="convention_name_karachi">University of Islamic Sciences, Karachi</string>
+    <string name="convention_name_tehran">Institute of Geophysics, University of Tehran</string>
+    <string name="convention_name_jafari">Shia Ithna Ashari, Leva Research Institute, Qum</string>
+    <string name="convention_name_algeria">Ministry of religious affairs and Wakfs, Algeria</string>
+    <string name="convention_name_morocco">Ministry of Habous and Islamic Affairs, Morocco</string>
+    <string name="convention_name_tunisia">Ministry of Religious affairs, Tunisia</string>
+    <string name="convention_name_south_east_asia">Calculation rules in South East Asia</string>
+    <string name="convention_name_uoif">Union of Islamic Organisations of France</string>
+    <string name="convention_name_turkey">Presidency of Religious Affairs, Turkey</string>
+    <string name="convention_name_oman">Ministry of Endowments and Religious Affairs, Oman</string>
+    <string name="convention_name_emirates">General Authority of Islamic Affairs &amp; Endowments, U.A.E.</string>
+    <string name="convention_name_dubai">Department of Islamic Affairs and Charitable Activities, Dubai</string>
+    <string name="convention_name_jordan">Ministry of Awqaf Islamic Affairs and Holy Places, Jordan</string>
+    <string name="convention_name_kuwait">Ministry of Awqaf and Islamic Affairs, Kuwait</string>
+    <string name="convention_name_qatar">Qatar Calendar House</string>
+    <string name="convention_name_lybia">Ministry of Endowments and Islamic Affairs, Lybia</string>
+    <string name="convention_name_maldives">Ministry of Islamic Affairs, Maldives</string>
+    <string name="convention_name_birmingham">Birmingham Central Mosque</string>
+    <string name="convention_name_london">London Central Mosque</string>
+    <string name="convention_name_munich">Munich, Germany</string>
+    <string name="convention_name_paris">Grand Mosque of Paris</string>
+    <string name="convention_name_quebec">Islamic Centre of Quebec</string>
+
+    <string name="asr_not_hanafi">Shafi\'i, Maliki, Ja\'fari, and Hanbali</string>
+    <string name="asr_hanafi">Hanafi</string>
+
+    <string name="method_angle_based">Angle Based</string>
+    <string name="method_middle_of_night">Middle of the Night</string>
+    <string name="method_seventh">One Seventh of the Night</string>
 
     <string name="thin_path">font/Roboto-Thin.ttf</string>
     <string name="thin_italic_path">font/Roboto-ThinItalic.ttf</string>

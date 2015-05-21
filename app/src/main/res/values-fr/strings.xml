@@ -7,6 +7,8 @@
     <string name="location_required_message">L\'application nécessite que la localisation soit active</string>
     <string name="settings">Paramètres</string>
 
+    <string name="automatic">Automatique</string>
+
     <string name="geolocating">Geolocalisation</string>
     <string name="qibla_below_compass">Qibla :&#160;</string>
     <string name="qibla">Qibla</string>
@@ -77,6 +79,44 @@
         <item>Novembre</item>
         <item>Décembre</item>
     </string-array>
+
+    <string name="convention">Convention</string>
+    <string name="asr_juristic_method">Méthode de calcul d\'Al Asr</string>
+    <string name="higher_latitude_method">Méthode de calcul pour les latitudes élevées</string>
+
+    <string name="convention_name_mwl">Ligue Islamique Mondiale (L.I.M.)</string>
+    <string name="convention_name_isna">Islamic Society of North America (I.S.N.A.)</string>
+    <string name="convention_name_egypt">Autorité Générale Égyptienne d\'Arpentage</string>
+    <string name="convention_name_makkah">Université Oumm al-Qura, La Mecque</string>
+    <string name="convention_name_karachi">Université des Sciences Islamiques, Karachi</string>
+    <string name="convention_name_tehran">Institut de Géophysique, Université de Téhéran</string>
+    <string name="convention_name_jafari">Shia Ithna Ashari, Institut de Recherche Leva, Qom</string>
+    <string name="convention_name_algeria">Ministère des Affaires Religieuses et des Wakfs, Algérie</string>
+    <string name="convention_name_morocco">Ministère des Habous et des Affaires Islamiques, Maroc</string>
+    <string name="convention_name_tunisia">Ministère des Affaires Religieuses, Tunisie</string>
+    <string name="convention_name_south_east_asia">Règles de calcul d\'Asie du Sud-Est</string>
+    <string name="convention_name_uoif">Union des Organisations Islamiques de France</string>
+    <string name="convention_name_turkey">Présidence des Affaires Religieuses, Turquie</string>
+    <string name="convention_name_oman">Ministère des dotations et des Affaires Religieuses, Oman</string>
+    <string name="convention_name_emirates">Autorité Générale des Affaires Religieused &amp; des Dotations, E.A.U.</string>
+    <string name="convention_name_dubai">Département des Affaires Islamiques et des Activités Charitables, Dubaï</string>
+    <string name="convention_name_jordan">Ministère de l\'Awqaf, des Affaires Islamiques et des lieux Saints, Jordanie</string>
+    <string name="convention_name_kuwait">Ministère de l\'Awqaf et des Affaires Islamiques, Kuwait</string>
+    <string name="convention_name_qatar">Maison des Calendrier du Qatar</string>
+    <string name="convention_name_lybia">Ministères des Dotations et des Affaires Islamiques, Lybie</string>
+    <string name="convention_name_maldives">Ministère des Affaires Islamiques, Maldives</string>
+    <string name="convention_name_birmingham">Mosquée Centrale de Birmingham</string>
+    <string name="convention_name_london">Mosquée Centrale de Londres</string>
+    <string name="convention_name_munich">Munich, Allemagne</string>
+    <string name="convention_name_paris">Grande Mosquée de Paris</string>
+    <string name="convention_name_quebec">Centre Islamic du Québec</string>
+
+    <string name="asr_not_hanafi">Shafii, Maliki, Jafari, et Hanbali</string>
+    <string name="asr_hanafi">Hanafi</string>
+
+    <string name="method_angle_based">Basée sur l\'angle</string>
+    <string name="method_middle_of_night">Moitié de la nuit</string>
+    <string name="method_seventh">Septième de la nuit</string>
 
     <string name="thin_path">font/Roboto-Thin.ttf</string>
     <string name="thin_italic_path">font/Roboto-ThinItalic.ttf</string>
@@ -216,7 +256,7 @@
     <string name="country_kp">Corée du Nord</string>
     <string name="country_kr">Corée du Sud</string>
     <string name="country_kw">Koweït</string>
-    <string name="country_xk"></string>
+    <string name="country_xk">Kosovo</string>
     <string name="country_ky">Îles Caïmans</string>
     <string name="country_kz">Kazakhstan</string>
     <string name="country_la">Laos</string>

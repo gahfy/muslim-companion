@@ -96,7 +96,7 @@ public class PrayerTimeFragment extends AbstractFragment{
             int[] calendarDatas = DateUtils.getDayMonthYear(timeStamp);
 
             countryIso = LocationUtils.getCountryIso(getActivity());
-            PrayerTimesUtils prayerTimesUtils = new PrayerTimesUtils(calendarDatas[0], calendarDatas[1], calendarDatas[2], location.getLocationLatitude(), location.getLocationLongitude(), PrayerTimesUtils.Convention.MUSLIM_WORLD_LEAGUE, PrayerTimesUtils.School.NOT_HANAFI);
+            PrayerTimesUtils prayerTimesUtils = new PrayerTimesUtils(getMainActivity(), calendarDatas[0], calendarDatas[1], calendarDatas[2], location.getLocationLatitude(), location.getLocationLongitude(), PrayerTimesUtils.Convention.MUSLIM_WORLD_LEAGUE, PrayerTimesUtils.School.NOT_HANAFI);
             if(countryIso != null)
                 prayerTimesUtils.changeCountry(countryIso);
 
@@ -116,7 +116,7 @@ public class PrayerTimeFragment extends AbstractFragment{
             String[] locationDatas = LocationUtils.getCountryIsoAndCityName(getActivity(), getMainActivity().getCurrentLocation());
 
             if(locationDatas != null) {
-                countryIso = locationDatas[0];
+                countryIso = locationDatas[0].toLowerCase();
                 cityName = locationDatas[1];
             }
 
@@ -128,7 +128,7 @@ public class PrayerTimeFragment extends AbstractFragment{
                     long timeStamp = new Date().getTime() + ((long) dayDifference * 24l * 3600l * 1000l);
                     int[] calendarDatas = DateUtils.getDayMonthYear(timeStamp);
 
-                    PrayerTimesUtils prayerTimesUtils = new PrayerTimesUtils(calendarDatas[0], calendarDatas[1], calendarDatas[2], getMainActivity().getCurrentLocation().getLocationLatitude(), getMainActivity().getCurrentLocation().getLocationLongitude(), PrayerTimesUtils.Convention.MUSLIM_WORLD_LEAGUE, PrayerTimesUtils.School.NOT_HANAFI);
+                    PrayerTimesUtils prayerTimesUtils = new PrayerTimesUtils(getMainActivity(), calendarDatas[0], calendarDatas[1], calendarDatas[2], getMainActivity().getCurrentLocation().getLocationLatitude(), getMainActivity().getCurrentLocation().getLocationLongitude(), PrayerTimesUtils.Convention.MUSLIM_WORLD_LEAGUE, PrayerTimesUtils.School.NOT_HANAFI);
                     if(countryIso != null)
                         prayerTimesUtils.changeCountry(countryIso);
 
@@ -143,6 +143,8 @@ public class PrayerTimeFragment extends AbstractFragment{
 
     public void restoreState(Bundle savedInstanceState){
         cityName = savedInstanceState.getString("cityName");
+        countryIso = savedInstanceState.getString("countryIso");
+
         if(cityName != null){
             getMainActivity().setTitle(getMainActivity().getString(R.string.salat_at, cityName));
         }
@@ -153,7 +155,7 @@ public class PrayerTimeFragment extends AbstractFragment{
             long timeStamp = new Date().getTime() + ((long) dayDifference * 24l * 3600l * 1000l);
             int[] calendarDatas = DateUtils.getDayMonthYear(timeStamp);
 
-            PrayerTimesUtils prayerTimesUtils = new PrayerTimesUtils(calendarDatas[0], calendarDatas[1], calendarDatas[2], getMainActivity().getCurrentLocation().getLocationLatitude(), getMainActivity().getCurrentLocation().getLocationLongitude(), PrayerTimesUtils.Convention.MUSLIM_WORLD_LEAGUE, PrayerTimesUtils.School.NOT_HANAFI);
+            PrayerTimesUtils prayerTimesUtils = new PrayerTimesUtils(getMainActivity(), calendarDatas[0], calendarDatas[1], calendarDatas[2], getMainActivity().getCurrentLocation().getLocationLatitude(), getMainActivity().getCurrentLocation().getLocationLongitude(), PrayerTimesUtils.Convention.MUSLIM_WORLD_LEAGUE, PrayerTimesUtils.School.NOT_HANAFI);
             if(countryIso != null)
                 prayerTimesUtils.changeCountry(countryIso);
 
@@ -164,6 +166,7 @@ public class PrayerTimeFragment extends AbstractFragment{
     @Override
     public void onSaveInstanceState(Bundle outState){
         outState.putString("cityName", cityName);
+        outState.putString("countryIso", countryIso);
         super.onSaveInstanceState(outState);
     }
 

@@ -140,14 +140,14 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:paddingLeft="16dp"
-                android:paddingRight="16dp">
+                android:orientation="vertical">
 
                 <RelativeLayout
                     android:id="@+id/lyt_menu_prayer_time_container"
                     android:layout_width="match_parent"
                     android:layout_height="48dp"
+                    android:paddingLeft="16dp"
+                    android:paddingRight="16dp"
                     android:background="@drawable/menu_item_background">
                     <LinearLayout
                         android:id="@+id/lyt_menu_prayer_time_image_container"
@@ -176,6 +176,8 @@
                     android:id="@+id/lyt_menu_qibla_container"
                     android:layout_width="match_parent"
                     android:layout_height="48dp"
+                    android:paddingLeft="16dp"
+                    android:paddingRight="16dp"
                     android:background="@drawable/menu_item_background">
                     <LinearLayout
                         android:id="@+id/lyt_menu_qibla_image_container"
@@ -204,6 +206,8 @@
                     android:id="@+id/lyt_menu_settings_container"
                     android:layout_width="match_parent"
                     android:layout_height="48dp"
+                    android:paddingLeft="16dp"
+                    android:paddingRight="16dp"
                     android:background="@drawable/menu_item_background">
                     <LinearLayout
                         android:id="@+id/lyt_menu_settings_image_container"
