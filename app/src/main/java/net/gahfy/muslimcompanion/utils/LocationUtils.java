@@ -95,7 +95,7 @@ public class LocationUtils {
     private static double bearingTo(double latFrom, double lonFrom, double latTo, double lonTo){
         double latitude1 = Math.toRadians(latFrom);
         double latitude2 = Math.toRadians(latTo);
-        double longDiff= Math.toRadians(lonFrom-lonTo);
+        double longDiff= Math.toRadians(lonTo - lonFrom);
         double y= Math.sin(longDiff)*Math.cos(latitude2);
         double x=Math.cos(latitude1)*Math.sin(latitude2)-Math.sin(latitude1)*Math.cos(latitude2)*Math.cos(longDiff);
 
