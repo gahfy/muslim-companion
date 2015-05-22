@@ -1,19 +1,18 @@
-<?xml version="1.0" encoding="utf-8"?>
 <resources>
+	<string name="app_name">مسلم كومبانيون</string>
 
-    <string name="app_name">مسلم كومبانيون</string>
+    <string name="cancel">إلغاء</string>
 
-    <string name="cancel">الغاء</string>
-
-    <string name="location_required_title">شغل خاصية تحديد المواقع</string>
-    <string name="location_required_message">التطبيق يحتاج تشغيل تحديد المواقع</string>
+    <string name="location_required_title">تشغيل تحديد الموقع</string>
+    <string name="location_required_message">يتطلب التطبيق تشغيل تحديد الموقع</string>
     <string name="settings">الإعدادات</string>
 
-    <string name="geolocating">تحديد موقعك</string>
+    <string name="automatic">تلقائياً</string>
 
-    <string name="qibla_below_compass">القبلة:&#160;</string>
+    <string name="geolocating">تحديد الموقع الجغرافي</string>
+    <string name="qibla_below_compass">القبلة: </string>
     <string name="qibla">القبلة</string>
-    <string name="angle">%d°ش</string>
+	<string name="angle">º%d ش</string>
 
     <string name="north_abbreviation">ش</string>
     <string name="south_abbreviation">ج</string>
@@ -21,36 +20,38 @@
     <string name="west_abbreviation">غ</string>
 
     <string name="qibla_at">القبلة في %s</string>
+	<string name="last_geolocation_on">آخر تحديد للموقع الجغرافي يوم %1$s في الساعة %2$s</string>
 
-    <string name="last_geolocation_on">آخر تحديد للموقع في %1$s على %2$s</string>
     <string name="short_date_format">yyyy/MM/dd</string>
     <string name="hour_format">HH:mm</string>
-
-    <string name="prayer_times">مواقيت الصلاة</string>
+    
+    <string name="prayer_times">أوقات الصلاة</string>
     <string name="salat">الصلاة</string>
-    <string name="salat_at">الصلاة في %s</string>
+	<string name="salat_at">الصلاة في %s</string>
+	<string name="gregorian_date_format" formatted="false">%2$d %1$s %3$d</string>
+	<string name="islamic_date_format" formatted="false">%1$d %2$s %3$d</string>
 
-    <string name="prayer_name_fajr">فجر</string>
-    <string name="prayer_name_sunrise">شروق</string>
-    <string name="prayer_name_dhuhr">ظهر</string>
-    <string name="prayer_name_asr">عصر</string>
-    <string name="prayer_name_maghrib">مغرب</string>
-    <string name="prayer_name_isha">عشاء</string>
+    <string name="prayer_name_fajr">الفجر</string>
+    <string name="prayer_name_sunrise">الشروق</string>
+    <string name="prayer_name_dhuhr">الظهر</string>
+    <string name="prayer_name_asr">العصر</string>
+    <string name="prayer_name_maghrib">المغرب</string>
+    <string name="prayer_name_isha">العشاء</string>
 
     <string-array name="islamic_month">
         <item></item>
-        <item>مُحَرَّم</item>
-        <item>صَفَر</item>
-        <item>رَبيع الأوّل</item>
-        <item>ربيع الآخر</item>
-        <item>جُمادى الأولى</item>
-        <item>جُمادى الآخرة</item>
-        <item>رَجَب</item>
-        <item>شَعْبان</item>
-        <item>رَمَضان</item>
-        <item>شَوّال</item>
-        <item>ذو القَعْدة</item>
-        <item>ذو الحِجّة</item>
+        <item>محرم</item>
+        <item>صفر</item>
+        <item>ربيع الأول</item>
+        <item>ربيع الثاني</item>
+        <item>جمادى الأول</item>
+        <item>جمادى الثاني</item>
+        <item>رجب</item>
+        <item>شعبان</item>
+        <item>رمضان</item>
+        <item>شوال</item>
+        <item>ذو القعدة</item>
+        <item>ذو الحجة</item>
     </string-array>
 
     <string-array name="gregorian_month">
@@ -59,16 +60,51 @@
         <item>فبراير</item>
         <item>مارس</item>
         <item>أبريل</item>
-        <item>ماي</item>
+        <item>مايو</item>
         <item>يونيو</item>
-        <item>يوليوز</item>
-        <item>غشت</item>
-        <item>شتنبر</item>
+        <item>يوليو</item>
+        <item>أغسطس</item>
+        <item>سبتمبر</item>
         <item>أكتوبر</item>
-        <item>نونبر</item>
-        <item>دجنبر</item>
+        <item>نوفمبر</item>
+        <item>ديسمبر</item>
     </string-array>
 
-    <string name="gregorian_date_format" formatted="false">%2$d %1$s %3$d</string>
-    <string name="islamic_date_format" formatted="false">%1$d %2$s %3$d</string>
+    <string name="convention">العرف</string>
+    <string name="asr_juristic_method">طريقة حساب العصر</string>
+    <string name="higher_latitude_method">طريقة الحساب لخطوط العرض المرتفعة</string>
+
+    <string name="convention_name_mwl">رابطة العالم الإسلامي (M.W.L)</string>
+    <string name="convention_name_isna">الجمعية الإسلامية لأمريكا الشمالية (I.S.N.A)</string>
+    <string name="convention_name_egypt">الهيئة المصرية العامـة للمساحـة</string>
+    <string name="convention_name_makkah">جامعة أم القرى، مكة المكرمة</string>
+    <string name="convention_name_karachi">جامعة العلوم الإسلامية، كراتشي</string>
+    <string name="convention_name_tehran">معهد الجيوفيزياء، جامعة طهران</string>
+    <string name="convention_name_jafari">الشيعة الإثني عشرية، معهد بحوث لواء، مدينة قم</string>
+    <string name="convention_name_algeria">وزارة الشؤون الدينية والأوقاف، الجزائر</string>
+    <string name="convention_name_morocco">وزارة الأوقاف والشؤون الإسلامية، المغرب</string>
+    <string name="convention_name_tunisia">وزارة الشؤون الدينية، تونس</string>
+    <string name="convention_name_south_east_asia">قواعد الحساب لجنوب شرق آسيا</string>
+    <string name="convention_name_uoif">اتحاد المنظمات الإسلامية في فرنسا</string>
+    <string name="convention_name_turkey">رئاسة الشؤون الدينية، تركيا</string>
+    <string name="convention_name_oman">وزارة الأوقاف والشؤون الدينية، سلطنة عمان</string>
+    <string name="convention_name_emirates">	الهيئة العامة للشؤون الاسلامية والأوقاف الإمارات العربية المتحدة</string>
+    <string name="convention_name_dubai">دائرة الشؤون الإسلامية والعمل الخيري، دبي</string>
+    <string name="convention_name_jordan">وزارة الأوقاف والشؤون والمقدسات الاسلامية، الأردن</string>
+    <string name="convention_name_kuwait">وزارة الأوقاف والشؤون الإسلامية، الكويت</string>
+    <string name="convention_name_qatar">دار التقويم القطري</string>
+    <string name="convention_name_lybia">وزارة الأوقاف والشؤون الإسلامية، ليبيا</string>
+    <string name="convention_name_maldives">وزارة الشؤون الإسلامية، جزر المالديف</string>
+    <string name="convention_name_birmingham">مسجد برمنغهام المركزي</string>
+    <string name="convention_name_london">مسجد لندن المركزي</string>
+    <string name="convention_name_munich">ميونيخ، ألمانيا</string>
+    <string name="convention_name_paris">مسجد باريس الكبير</string>
+    <string name="convention_name_quebec">المركز الإسلامي في كيبيك</string>
+
+    <string name="asr_not_hanafi">الشافعي والمالكي والجعفري والحنبلي</string>
+    <string name="asr_hanafi">الحنفي</string>
+
+    <string name="method_angle_based">بناءً على الزاوية</string>
+    <string name="method_middle_of_night">نصف الليل</string>
+    <string name="method_seventh">سُبع الليل</string>
 </resources>
