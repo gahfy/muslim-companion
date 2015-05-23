@@ -32,7 +32,13 @@ public class SharedPreferencesUtils{
 
     private static final String SCHOOL = "school";
 
-    private static final String HIGHER_LATITUDE_MODE = "higher_latitude_mode";
+    private static final String HIGHER_LATITUDE_MODE = "higherLatitudeMode";
+
+    private static final String CONVENTION_AUTOMATIC = "conventionIsAutomatic";
+
+    private static final String SCHOOL_AUTOMATIC = "schoolIsAutomatic";
+
+    private static final String HIGHER_LATITUDE_MODE_AUTOMATIC = "higherLatitudeModeIsAutomatic";
 
     /**
      * Saves a MuslimLocation as the last location in Shared Preferences.
@@ -90,6 +96,18 @@ public class SharedPreferencesUtils{
         return sharedPreferences.getInt(HIGHER_LATITUDE_MODE, -1);
     }
 
+    public static void putHigherLatitudeModeIsAutomatic(Context context, boolean higherLatitudeModeIsAutomatic){
+        SharedPreferences sharedPreferences = context.getSharedPreferences(PREFERENCES_NAME, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putBoolean(HIGHER_LATITUDE_MODE_AUTOMATIC, higherLatitudeModeIsAutomatic);
+        editor.commit();
+    }
+
+    public static boolean getHigherLatitudeModeIsAutomatic(Context context){
+        SharedPreferences sharedPreferences = context.getSharedPreferences(PREFERENCES_NAME, Context.MODE_PRIVATE);
+        return sharedPreferences.getBoolean(HIGHER_LATITUDE_MODE_AUTOMATIC, true);
+    }
+
     public static void putSchool(Context context, int schoolValue){
         SharedPreferences sharedPreferences = context.getSharedPreferences(PREFERENCES_NAME, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
@@ -102,6 +120,18 @@ public class SharedPreferencesUtils{
         return sharedPreferences.getInt(SCHOOL, -1);
     }
 
+    public static void putSchoolIsAutomatic(Context context, boolean higherLatitudeModeIsAutomatic){
+        SharedPreferences sharedPreferences = context.getSharedPreferences(PREFERENCES_NAME, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putBoolean(SCHOOL_AUTOMATIC, higherLatitudeModeIsAutomatic);
+        editor.commit();
+    }
+
+    public static boolean getSchoolIsAutomatic(Context context){
+        SharedPreferences sharedPreferences = context.getSharedPreferences(PREFERENCES_NAME, Context.MODE_PRIVATE);
+        return sharedPreferences.getBoolean(SCHOOL_AUTOMATIC, true);
+    }
+
     public static void putConvention(Context context, int conventionValue){
         SharedPreferences sharedPreferences = context.getSharedPreferences(PREFERENCES_NAME, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
@@ -112,6 +142,18 @@ public class SharedPreferencesUtils{
     public static int getConventionValue(Context context){
         SharedPreferences sharedPreferences = context.getSharedPreferences(PREFERENCES_NAME, Context.MODE_PRIVATE);
         return sharedPreferences.getInt(CONVENTION, -1);
+    }
+
+    public static void putConventionIsAutomatic(Context context, boolean higherLatitudeModeIsAutomatic){
+        SharedPreferences sharedPreferences = context.getSharedPreferences(PREFERENCES_NAME, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putBoolean(CONVENTION_AUTOMATIC, higherLatitudeModeIsAutomatic);
+        editor.commit();
+    }
+
+    public static boolean getConventionIsAutomatic(Context context){
+        SharedPreferences sharedPreferences = context.getSharedPreferences(PREFERENCES_NAME, Context.MODE_PRIVATE);
+        return sharedPreferences.getBoolean(CONVENTION_AUTOMATIC, true);
     }
 
     public static void putLocationValidityDate(Context context, long locationValidityTime){

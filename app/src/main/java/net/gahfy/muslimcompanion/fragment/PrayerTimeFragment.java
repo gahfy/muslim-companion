@@ -60,12 +60,26 @@ public class PrayerTimeFragment extends AbstractFragment{
     }
 
     public void initMembers(){
+        TextView lblPrayerFajr = (TextView) fragmentView.findViewById(R.id.lbl_prayer_fajr);
+        TextView lblPrayerSunrise = (TextView) fragmentView.findViewById(R.id.lbl_prayer_sunrise);
+        TextView lblPrayerDhuhr = (TextView) fragmentView.findViewById(R.id.lbl_prayer_dhuhr);
+        TextView lblPrayerAsr = (TextView) fragmentView.findViewById(R.id.lbl_prayer_asr);
+        TextView lblPrayerMaghrib = (TextView) fragmentView.findViewById(R.id.lbl_prayer_maghrib);
+        TextView lblPrayerIsha = (TextView) fragmentView.findViewById(R.id.lbl_prayer_isha);
+
         lblTimeFajr = (TextView) fragmentView.findViewById(R.id.lbl_time_fajr);
         lblTimeSunrise = (TextView) fragmentView.findViewById(R.id.lbl_time_sunrise);
         lblTimeDhuhr = (TextView) fragmentView.findViewById(R.id.lbl_time_dhuhr);
         lblTimeAsr = (TextView) fragmentView.findViewById(R.id.lbl_time_asr);
         lblTimeMaghrib = (TextView) fragmentView.findViewById(R.id.lbl_time_maghrib);
         lblTimeIsha = (TextView) fragmentView.findViewById(R.id.lbl_time_isha);
+
+        ViewUtils.setTypefaceToTextView(getActivity(), lblPrayerFajr, ViewUtils.FONT_WEIGHT.LIGHT);
+        ViewUtils.setTypefaceToTextView(getActivity(), lblPrayerSunrise, ViewUtils.FONT_WEIGHT.LIGHT);
+        ViewUtils.setTypefaceToTextView(getActivity(), lblPrayerDhuhr, ViewUtils.FONT_WEIGHT.LIGHT);
+        ViewUtils.setTypefaceToTextView(getActivity(), lblPrayerAsr, ViewUtils.FONT_WEIGHT.LIGHT);
+        ViewUtils.setTypefaceToTextView(getActivity(), lblPrayerMaghrib, ViewUtils.FONT_WEIGHT.LIGHT);
+        ViewUtils.setTypefaceToTextView(getActivity(), lblPrayerIsha, ViewUtils.FONT_WEIGHT.LIGHT);
 
         ViewUtils.setTypefaceToTextView(getActivity(), lblTimeFajr, ViewUtils.FONT_WEIGHT.MEDIUM);
         ViewUtils.setTypefaceToTextView(getActivity(), lblTimeSunrise, ViewUtils.FONT_WEIGHT.MEDIUM);

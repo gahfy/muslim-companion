@@ -35,12 +35,17 @@ public class SchoolListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder viewHolder, int position) {
         ViewHolder holder = (ViewHolder) viewHolder;
-        holder.lblSchoolName.setText(PrayerTimesUtils.getSchoolResId(schools[position]));
+        if(position == 0){
+            holder.lblSchoolName.setText(R.string.automatic);
+        }
+        else {
+            holder.lblSchoolName.setText(PrayerTimesUtils.getSchoolResId(schools[position-1]));
+        }
     }
 
     @Override
     public int getItemCount() {
-        return schools.length;
+        return schools.length+1;
     }
 
     private class ViewHolder extends RecyclerView.ViewHolder{
@@ -57,7 +62,14 @@ public class SchoolListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         @Override
         public void onClick(View view) {
             int itemPosition = recyclerView.getChildPosition(view);
-            SharedPreferencesUtils.putSchool(activity, PrayerTimesUtils.getSchoolPreferenceValue(schools[itemPosition]));
+            if(itemPosition == 0) {
+                SharedPreferencesUtils.putSchoolIsAutomatic(activity, true);
+                SharedPreferencesUtils.putSchool(activity, -1);
+            }
+            else{
+                SharedPreferencesUtils.putSchoolIsAutomatic(activity, false);
+                SharedPreferencesUtils.putSchool(activity, PrayerTimesUtils.getSchoolPreferenceValue(schools[itemPosition-1]));
+            }
             activity.onBackPressed();
         }
     }

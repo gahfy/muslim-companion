@@ -36,12 +36,17 @@ public class ConventionListAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder viewHolder, int position) {
         ViewHolder holder = (ViewHolder) viewHolder;
-        holder.lblConventionName.setText(PrayerTimesUtils.getConventionNameResId(conventions[position]));
+        if(position == 0){
+            holder.lblConventionName.setText(R.string.automatic);
+        }
+        else {
+            holder.lblConventionName.setText(PrayerTimesUtils.getConventionNameResId(conventions[position-1]));
+        }
     }
 
     @Override
     public int getItemCount() {
-        return conventions.length;
+        return conventions.length+1;
     }
 
     private class ViewHolder extends RecyclerView.ViewHolder{
@@ -58,8 +63,15 @@ public class ConventionListAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         @Override
         public void onClick(View view) {
             int itemPosition = recyclerView.getChildPosition(view);
-            SharedPreferencesUtils.putConvention(activity, PrayerTimesUtils.getConventionPreferenceValue(conventions[itemPosition]));
-            activity.onBackPressed();
+            if(itemPosition == 0) {
+                SharedPreferencesUtils.putConventionIsAutomatic(activity, true);
+                SharedPreferencesUtils.putConvention(activity, -1);
+            }
+            else{
+                SharedPreferencesUtils.putConventionIsAutomatic(activity, false);
+                SharedPreferencesUtils.putConvention(activity, PrayerTimesUtils.getConventionPreferenceValue(conventions[itemPosition-1]));
+                activity.onBackPressed();
+            }
         }
     }
 }

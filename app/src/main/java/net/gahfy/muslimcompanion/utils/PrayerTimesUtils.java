@@ -226,14 +226,25 @@ public class PrayerTimesUtils {
     }
 
     public void changeConvention(Convention convention, School school, HigherLatitudeMode mode){
-        if(SharedPreferencesUtils.getConventionValue(context) != -1){
+        if(!SharedPreferencesUtils.getConventionIsAutomatic(context)){
             convention = getConventionFromPreferenceValue(SharedPreferencesUtils.getConventionValue(context));
         }
-        if(SharedPreferencesUtils.getSchoolValue(context) != -1){
+        else{
+            SharedPreferencesUtils.putConvention(context, getConventionPreferenceValue(convention));
+        }
+
+        if(!SharedPreferencesUtils.getSchoolIsAutomatic(context)){
             school = getSchoolFromPreferenceValue(SharedPreferencesUtils.getSchoolValue(context));
         }
-        if(SharedPreferencesUtils.getHigherLatitudeModeValue(context) != -1){
+        else{
+            SharedPreferencesUtils.putSchool(context, getSchoolPreferenceValue(school));
+        }
+
+        if(!SharedPreferencesUtils.getHigherLatitudeModeIsAutomatic(context)){
             mode = getHigherLatitudeModeFromPreferenceValue(SharedPreferencesUtils.getHigherLatitudeModeValue(context));
+        }
+        else{
+            SharedPreferencesUtils.putHigherLatitudeMode(context, getHigherLatitudeModePreferenceValue(mode));
         }
 
         higherLatitudeMode = mode;

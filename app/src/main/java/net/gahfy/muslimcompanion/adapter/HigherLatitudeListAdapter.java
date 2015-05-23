@@ -35,12 +35,17 @@ public class HigherLatitudeListAdapter extends RecyclerView.Adapter<RecyclerView
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder viewHolder, int position) {
         ViewHolder holder = (ViewHolder) viewHolder;
-        holder.lblHigherLatitudeName.setText(PrayerTimesUtils.getHigherLatitudeModeResId(higherLatitudeModes[position]));
+        if(position == 0){
+            holder.lblHigherLatitudeName.setText(R.string.automatic);
+        }
+        else {
+            holder.lblHigherLatitudeName.setText(PrayerTimesUtils.getHigherLatitudeModeResId(higherLatitudeModes[position-1]));
+        }
     }
 
     @Override
     public int getItemCount() {
-        return higherLatitudeModes.length;
+        return higherLatitudeModes.length+1;
     }
 
     private class ViewHolder extends RecyclerView.ViewHolder{
@@ -57,7 +62,14 @@ public class HigherLatitudeListAdapter extends RecyclerView.Adapter<RecyclerView
         @Override
         public void onClick(View view) {
             int itemPosition = recyclerView.getChildPosition(view);
-            SharedPreferencesUtils.putHigherLatitudeMode(activity, PrayerTimesUtils.getHigherLatitudeModePreferenceValue(higherLatitudeModes[itemPosition]));
+            if(itemPosition == 0) {
+                SharedPreferencesUtils.putHigherLatitudeModeIsAutomatic(activity, true);
+                SharedPreferencesUtils.putHigherLatitudeMode(activity, -1);
+            }
+            else{
+                SharedPreferencesUtils.putHigherLatitudeModeIsAutomatic(activity, false);
+                SharedPreferencesUtils.putHigherLatitudeMode(activity, PrayerTimesUtils.getHigherLatitudeModePreferenceValue(higherLatitudeModes[itemPosition-1]));
+            }
             activity.onBackPressed();
         }
     }
