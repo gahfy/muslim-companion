@@ -23,6 +23,8 @@ public class HigherLatitudeModeListFragment extends AbstractFragment{
         listHigherLatitudeMode.setLayoutManager(new LinearLayoutManager(getActivity()));
         listHigherLatitudeMode.setAdapter(adapter);
 
+        getMainActivity().setTitle(R.string.higher_latitude_method);
+
         return view;
     }
 }

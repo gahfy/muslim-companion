@@ -4,6 +4,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import net.gahfy.muslimcompanion.MainActivity;
@@ -36,9 +37,19 @@ public class HigherLatitudeListAdapter extends RecyclerView.Adapter<RecyclerView
     public void onBindViewHolder(RecyclerView.ViewHolder viewHolder, int position) {
         ViewHolder holder = (ViewHolder) viewHolder;
         if(position == 0){
+            if(SharedPreferencesUtils.getHigherLatitudeModeIsAutomatic(activity))
+                holder.imgTick.setVisibility(View.VISIBLE);
+            else
+                holder.imgTick.setVisibility(View.INVISIBLE);
             holder.lblHigherLatitudeName.setText(R.string.automatic);
         }
         else {
+            if(!SharedPreferencesUtils.getHigherLatitudeModeIsAutomatic(activity)) {
+                if (SharedPreferencesUtils.getHigherLatitudeModeValue(activity) == PrayerTimesUtils.getHigherLatitudeModePreferenceValue(higherLatitudeModes[position-1]))
+                    holder.imgTick.setVisibility(View.VISIBLE);
+                else
+                    holder.imgTick.setVisibility(View.INVISIBLE);
+            }
             holder.lblHigherLatitudeName.setText(PrayerTimesUtils.getHigherLatitudeModeResId(higherLatitudeModes[position-1]));
         }
     }
@@ -50,11 +61,13 @@ public class HigherLatitudeListAdapter extends RecyclerView.Adapter<RecyclerView
 
     private class ViewHolder extends RecyclerView.ViewHolder{
         TextView lblHigherLatitudeName;
+        ImageView imgTick;
 
         public ViewHolder(View itemView) {
             super(itemView);
 
             lblHigherLatitudeName = (TextView) itemView.findViewById(R.id.lbl_item);
+            imgTick = (ImageView) itemView.findViewById(R.id.img_tick_item);
         }
     }
 

@@ -4,6 +4,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import net.gahfy.muslimcompanion.MainActivity;
@@ -37,9 +38,22 @@ public class SchoolListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         ViewHolder holder = (ViewHolder) viewHolder;
         if(position == 0){
             holder.lblSchoolName.setText(R.string.automatic);
+            if(SharedPreferencesUtils.getSchoolIsAutomatic(activity))
+                holder.imgTick.setVisibility(View.VISIBLE);
+            else
+                holder.imgTick.setVisibility(View.INVISIBLE);
         }
         else {
             holder.lblSchoolName.setText(PrayerTimesUtils.getSchoolResId(schools[position-1]));
+            if(!SharedPreferencesUtils.getSchoolIsAutomatic(activity)) {
+                if (SharedPreferencesUtils.getSchoolValue(activity) == PrayerTimesUtils.getSchoolPreferenceValue(schools[position-1]))
+                    holder.imgTick.setVisibility(View.VISIBLE);
+                else
+                    holder.imgTick.setVisibility(View.INVISIBLE);
+            }
+            else{
+                holder.imgTick.setVisibility(View.INVISIBLE);
+            }
         }
     }
 
@@ -50,11 +64,13 @@ public class SchoolListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
     private class ViewHolder extends RecyclerView.ViewHolder{
         TextView lblSchoolName;
+        ImageView imgTick;
 
         public ViewHolder(View itemView) {
             super(itemView);
 
             lblSchoolName = (TextView) itemView.findViewById(R.id.lbl_item);
+            imgTick = (ImageView) itemView.findViewById(R.id.img_tick_item);
         }
     }
 

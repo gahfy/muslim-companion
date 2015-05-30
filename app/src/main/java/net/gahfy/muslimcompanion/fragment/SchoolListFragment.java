@@ -22,6 +22,8 @@ public class SchoolListFragment extends AbstractFragment{
         listSchools.setLayoutManager(new LinearLayoutManager(getActivity()));
         listSchools.setAdapter(adapter);
 
+        getMainActivity().setTitle(R.string.asr_juristic_method);
+
         return view;
     }
 }

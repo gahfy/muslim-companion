@@ -5,6 +5,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import net.gahfy.muslimcompanion.MainActivity;
@@ -37,9 +38,19 @@ public class ConventionListAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     public void onBindViewHolder(RecyclerView.ViewHolder viewHolder, int position) {
         ViewHolder holder = (ViewHolder) viewHolder;
         if(position == 0){
+            if(SharedPreferencesUtils.getConventionIsAutomatic(activity))
+                holder.imgTick.setVisibility(View.VISIBLE);
+            else
+                holder.imgTick.setVisibility(View.INVISIBLE);
             holder.lblConventionName.setText(R.string.automatic);
         }
         else {
+            if(!SharedPreferencesUtils.getConventionIsAutomatic(activity)) {
+                if (SharedPreferencesUtils.getConventionValue(activity) == PrayerTimesUtils.getConventionPreferenceValue(conventions[position-1]))
+                    holder.imgTick.setVisibility(View.VISIBLE);
+                else
+                    holder.imgTick.setVisibility(View.INVISIBLE);
+            }
             holder.lblConventionName.setText(PrayerTimesUtils.getConventionNameResId(conventions[position-1]));
         }
     }
@@ -51,11 +62,13 @@ public class ConventionListAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 
     private class ViewHolder extends RecyclerView.ViewHolder{
         TextView lblConventionName;
+        ImageView imgTick;
 
         public ViewHolder(View itemView) {
             super(itemView);
 
             lblConventionName = (TextView) itemView.findViewById(R.id.lbl_item);
+            imgTick = (ImageView) itemView.findViewById(R.id.img_tick_item);
         }
     }
 
@@ -69,9 +82,9 @@ public class ConventionListAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             }
             else{
                 SharedPreferencesUtils.putConventionIsAutomatic(activity, false);
-                SharedPreferencesUtils.putConvention(activity, PrayerTimesUtils.getConventionPreferenceValue(conventions[itemPosition-1]));
-                activity.onBackPressed();
+                SharedPreferencesUtils.putConvention(activity, PrayerTimesUtils.getConventionPreferenceValue(conventions[itemPosition - 1]));
             }
+            activity.onBackPressed();
         }
     }
 }

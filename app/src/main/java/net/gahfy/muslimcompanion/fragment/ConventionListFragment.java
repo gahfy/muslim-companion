@@ -21,6 +21,8 @@ public class ConventionListFragment extends AbstractFragment{
         listConvention.setLayoutManager(new LinearLayoutManager(getActivity()));
         listConvention.setAdapter(adapter);
 
+        getMainActivity().setTitle(R.string.convention);
+
         return view;
     }
 }
