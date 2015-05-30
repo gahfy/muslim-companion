@@ -12,7 +12,7 @@
     <string name="geolocating">تحديد الموقع الجغرافي</string>
     <string name="qibla_below_compass">القبلة: </string>
     <string name="qibla">القبلة</string>
-	<string name="angle">º%d ش</string>
+	<string name="angle">%d° ش</string>
 
     <string name="north_abbreviation">ش</string>
     <string name="south_abbreviation">ج</string>

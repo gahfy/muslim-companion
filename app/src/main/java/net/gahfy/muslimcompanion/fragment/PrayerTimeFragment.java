@@ -1,6 +1,11 @@
 package net.gahfy.muslimcompanion.fragment;
 
+import android.graphics.Point;
+import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
+import android.util.TypedValue;
+import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -59,7 +64,34 @@ public class PrayerTimeFragment extends AbstractFragment{
         return fragmentView;
     }
 
-    public void initMembers(){
+    public void initMembers() {
+        int width, height;
+        float fontSize;
+        Display display = getActivity().getWindowManager().getDefaultDisplay();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2){
+            Point size = new Point();
+            display.getSize(size);
+            width = size.x;
+            height = size.y;
+        }
+        else{
+            width = display.getWidth();
+            height = display.getHeight();
+        }
+
+        if(width <= height) {
+            if (((double) width / 1080.0) * 1776.0 < (double) height) {
+                height = (int) (((double) width / 1080.0) * 1776.0);
+            }
+            fontSize = (float) ((((double) height)/1776.0)*85.0);
+        }
+        else{
+            if (((double) width*1080.0)/1794.0 < (double) height) {
+                height = (int) (((double) width * 1080.0) / 1794.0);
+            }
+            fontSize = (float) ((((double) height)/1080.0)*85.0);
+        }
+
         TextView lblPrayerFajr = (TextView) fragmentView.findViewById(R.id.lbl_prayer_fajr);
         TextView lblPrayerSunrise = (TextView) fragmentView.findViewById(R.id.lbl_prayer_sunrise);
         TextView lblPrayerDhuhr = (TextView) fragmentView.findViewById(R.id.lbl_prayer_dhuhr);
@@ -73,6 +105,20 @@ public class PrayerTimeFragment extends AbstractFragment{
         lblTimeAsr = (TextView) fragmentView.findViewById(R.id.lbl_time_asr);
         lblTimeMaghrib = (TextView) fragmentView.findViewById(R.id.lbl_time_maghrib);
         lblTimeIsha = (TextView) fragmentView.findViewById(R.id.lbl_time_isha);
+
+        lblPrayerFajr.setTextSize(TypedValue.COMPLEX_UNIT_PX, fontSize);
+        lblPrayerSunrise.setTextSize(TypedValue.COMPLEX_UNIT_PX, fontSize);
+        lblPrayerDhuhr.setTextSize(TypedValue.COMPLEX_UNIT_PX, fontSize);
+        lblPrayerAsr.setTextSize(TypedValue.COMPLEX_UNIT_PX, fontSize);
+        lblPrayerMaghrib.setTextSize(TypedValue.COMPLEX_UNIT_PX, fontSize);
+        lblPrayerIsha.setTextSize(TypedValue.COMPLEX_UNIT_PX, fontSize);
+
+        lblTimeFajr.setTextSize(TypedValue.COMPLEX_UNIT_PX, fontSize);
+        lblTimeSunrise.setTextSize(TypedValue.COMPLEX_UNIT_PX, fontSize);
+        lblTimeDhuhr.setTextSize(TypedValue.COMPLEX_UNIT_PX, fontSize);
+        lblTimeAsr.setTextSize(TypedValue.COMPLEX_UNIT_PX, fontSize);
+        lblTimeMaghrib.setTextSize(TypedValue.COMPLEX_UNIT_PX, fontSize);
+        lblTimeIsha.setTextSize(TypedValue.COMPLEX_UNIT_PX, fontSize);
 
         ViewUtils.setTypefaceToTextView(getActivity(), lblPrayerFajr, ViewUtils.FONT_WEIGHT.LIGHT);
         ViewUtils.setTypefaceToTextView(getActivity(), lblPrayerSunrise, ViewUtils.FONT_WEIGHT.LIGHT);
