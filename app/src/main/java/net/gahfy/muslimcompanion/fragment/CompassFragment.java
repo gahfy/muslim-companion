@@ -99,11 +99,9 @@ public class CompassFragment extends AbstractFragment implements ViewTreeObserve
             isCompassWorking = true;
             mSensorManager.registerListener(this, mAccelerometer, SensorManager.SENSOR_DELAY_GAME);
             mSensorManager.registerListener(this, mMagnetometer, SensorManager.SENSOR_DELAY_GAME);
-            getMainActivity().sendCompassOnEvent();
         }
         else{
             //TODO : Manage Error
-            getMainActivity().sendCompassErrorEvent();
         }
 
         ViewUtils.setTypefaceToTextView(getMainActivity(), lblQibla, ViewUtils.FONT_WEIGHT.LIGHT);
@@ -360,7 +358,7 @@ public class CompassFragment extends AbstractFragment implements ViewTreeObserve
             });
         }
         catch(Exception e){
-            getMainActivity().sendCityErrorEvent();
+            e.printStackTrace();
         }
     }
 

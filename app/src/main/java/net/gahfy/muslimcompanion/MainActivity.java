@@ -19,8 +19,7 @@ import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
-import com.google.android.gms.analytics.HitBuilders;
-import com.google.android.gms.analytics.Tracker;
+import com.splunk.mint.Mint;
 
 import net.gahfy.muslimcompanion.fragment.AbstractFragment;
 import net.gahfy.muslimcompanion.fragment.CompassFragment;
@@ -38,39 +37,6 @@ import java.util.Date;
 public class MainActivity extends ActionBarActivity implements LocationListener{
     private AlertDialog locationDisabledDialog;
 
-    /** The Category for analytics event about listeners */
-    private static final String CATEGORY_LISTENER = "Listener";
-
-    /** The Category for analytics event about Database */
-    private static final String CATEGORY_DATABASE = "Database";
-
-    /** The Action for analytics about compass */
-    private static final String ACTION_COMPASS = "Compass";
-
-    /** The Action for analytics about location */
-    private static final String ACTION_LOCATION = "Location";
-
-    /** The Action for analytics about City */
-    private static final String ACTION_CITY = "City";
-
-    /** The Label for analytics when compass is switched on */
-    private static final String LABEL_COMPASS_ON = "CompassOn";
-
-    /** The Label for analytics when compass has an error */
-    private static final String LABEL_COMPASS_ERROR = "CompassError";
-
-    /** The Label for analytics when location is found */
-    private static final String LABEL_LOCATION_FOUND = "LocationFound";
-
-    /** The Label for analytics when user leave before finding location */
-    private static final String LABEL_LOCATION_LEAVE = "LocationLeave";
-
-    /** The Label for analytics when retrieving the city */
-    private static final String LABEL_CITY_FOUND = "CityFound";
-
-    /** The Label for analytics when there is an error retrieving the city */
-    private static final String LABEL_CITY_ERROR = "CityError";
-
     /** The current Fragment */
     private AbstractFragment currentFragment;
 
@@ -85,9 +51,6 @@ public class MainActivity extends ActionBarActivity implements LocationListener{
 
     /** The scrollview with the navigation drawer */
     private ScrollView scrollDrawerView;
-
-    /** The Google Analytics Tracker */
-    private Tracker analyticsTracker;
 
     /** The Location Manager of the activity */
     private LocationManager locationManager;
@@ -112,17 +75,11 @@ public class MainActivity extends ActionBarActivity implements LocationListener{
 
     boolean shouldDisplayAlert = false;
 
-    /**
-     * Returns the Google Analytics Tracker
-     * @return the Google Analytics Tracker
-     */
-    public Tracker getAnalyticsTracker(){
-        return analyticsTracker;
-    }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        Mint.initAndStartSession(MainActivity.this, "c72aff53");
 
         this.setContentView(R.layout.activity_main);
 
@@ -139,8 +96,6 @@ public class MainActivity extends ActionBarActivity implements LocationListener{
     }
 
     public void initMembers(){
-        analyticsTracker = ((MuslimCompanionApplication) getApplication()).getTracker(MuslimCompanionApplication.TrackerName.GLOBAL_TRACKER);
-
         toolbar = (Toolbar) findViewById(R.id.toolbar);
 
         lytIcMenuContainer = (RelativeLayout) findViewById(R.id.lyt_ic_menu_container);
@@ -264,9 +219,6 @@ public class MainActivity extends ActionBarActivity implements LocationListener{
     @Override
     public void onPause(){
         super.onPause();
-        if(isGeolocationWorking && currentLocation == null){
-            sendLocationLeaveEvent(new Date().getTime() - locationStartTime);
-        }
         switchOffLocationListeners();
     }
 
@@ -412,51 +364,6 @@ public class MainActivity extends ActionBarActivity implements LocationListener{
         return SharedPreferencesUtils.getLastLocation(this);
     }
 
-    public void sendCityFoundEvent(long timeTaken){
-        sendAnalyticsEvent(CATEGORY_DATABASE, ACTION_CITY, LABEL_CITY_FOUND, timeTaken);
-    }
-
-    public void sendCityErrorEvent(){
-        sendAnalyticsEvent(CATEGORY_DATABASE, ACTION_CITY, LABEL_CITY_ERROR);
-    }
-
-    public void sendLocationFoundEvent(long timeTaken){
-        sendAnalyticsEvent(CATEGORY_LISTENER, ACTION_LOCATION, LABEL_LOCATION_FOUND, timeTaken);
-    }
-
-    public void sendLocationLeaveEvent(long afterTime){
-        sendAnalyticsEvent(CATEGORY_LISTENER, ACTION_LOCATION, LABEL_LOCATION_LEAVE, afterTime);
-    }
-
-    public void sendCompassOnEvent(){
-        sendAnalyticsEvent(CATEGORY_LISTENER, ACTION_COMPASS, LABEL_COMPASS_ON);
-    }
-
-    public void sendCompassErrorEvent(){
-        sendAnalyticsEvent(CATEGORY_LISTENER, ACTION_COMPASS, LABEL_COMPASS_ERROR);
-    }
-
-    private void sendAnalyticsEvent(String category, String action, String label){
-        if(getAnalyticsTracker() != null) {
-            getAnalyticsTracker().send(new HitBuilders.EventBuilder()
-                    .setCategory(category)
-                    .setAction(action)
-                    .setLabel(label)
-                    .build());
-        }
-    }
-
-    private void sendAnalyticsEvent(String category, String action, String label, long value){
-        if(getAnalyticsTracker() != null) {
-            getAnalyticsTracker().send(new HitBuilders.EventBuilder()
-                    .setCategory(category)
-                    .setAction(action)
-                    .setLabel(label)
-                    .setValue(value)
-                    .build());
-        }
-    }
-
     @Override
     public void onLocationChanged(Location location) {
         switch(currentFragment.getGeolocationTypeNeeded()) {
@@ -472,7 +379,6 @@ public class MainActivity extends ActionBarActivity implements LocationListener{
                 );
                 SharedPreferencesUtils.putLastLocation(this, currentLocation);
                 currentFragment.onLocationChanged(currentLocation);
-                sendLocationFoundEvent(new Date().getTime() - locationStartTime);
                 break;
         }
     }

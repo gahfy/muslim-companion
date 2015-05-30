@@ -151,7 +151,7 @@ public class PrayerTimeFragment extends AbstractFragment{
             });
         }
         catch(Exception e){
-            getMainActivity().sendCityErrorEvent();
+            e.printStackTrace();
         }
     }
 

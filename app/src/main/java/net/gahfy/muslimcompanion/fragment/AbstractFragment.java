@@ -3,8 +3,6 @@ package net.gahfy.muslimcompanion.fragment;
 import android.app.Activity;
 import android.support.v4.app.Fragment;
 
-import com.google.android.gms.analytics.HitBuilders;
-
 import net.gahfy.muslimcompanion.MainActivity;
 import net.gahfy.muslimcompanion.models.MuslimLocation;
 
@@ -39,12 +37,6 @@ public abstract class AbstractFragment extends Fragment {
     @Override
     public void onStart(){
         super.onStart();
-
-        // Set screen name.
-        getMainActivity().getAnalyticsTracker().setScreenName(getClass().getSimpleName());
-
-        // Send a screen view.
-        getMainActivity().getAnalyticsTracker().send(new HitBuilders.AppViewBuilder().build());
     }
 
     @Override
