@@ -1,0 +1,33 @@
+Accédez à la Qibla et aux horaires de Salat avec Muslim Companion - Qibla Salat
+
+Muslim Companion - Qibla Salat est une application permettant aux musulmans de connaître les horaires de prière ansi que la direction de la Qibla.
+
+Muslim Companion - Qibla Salat satisfaira toutes vos attentes de musulman :
+• Un design épuré et simple
+• Un paramétrage automatique, simple, exhaustif et personnalisable des horaires de prière
+• Un algorithme de calcul des horaires de Salat et de la direction de la Qibla très précis
+• Un mouvement de boussole fluide pour éviter les tremblements lors de l'affichage de la direction de la prière
+
+Un premier écran vous affiche l'heure de chaque prière du jour, ainsi que l'horaire de Shorouq, ainsi que la ville pour à laquelle l'horaire de Salat s'applique.
+Un second écran vous affiche la direction vers la Kaaba, en plus d'une boussole affichant les quatre points cardinaux, afin de vérifier que la direction de la Kaaba est bien la bonne.
+
+Muslim Companion - Qibla Salat est gratuit, sans publicité et le restera toujours.
+
+Muslim Companion - Qibla Salat est traduit en :
+• Anglais
+• Arabe
+• Indonésien (Bahasa)
+• Français
+
+Note: Muslim Companion - Qibla Salat est open-source, vous pouvez accéder au code source de Muslim Companion - Qibla Salat ici : https://github.com/gahfy/muslim-companion
+N'hésitez pas à y apporter votre contribution, que vous souhaitiez traduire Muslim Companion - Qibla Salat, développer de nouvelles fonctionnalités, ou simplement nous aider à rendre Muslim Companion - Qibla Salat plus belle.
+
+N'hésitez pas à noter et à donner des idées pour améliorer Muslim Companion - Qibla Salat.
+
+===================================
+1/ Utilisable en mode paysage
+2/ Boussole précise pour la Qibla
+3/ Horaires des cinq prières et de Shorouq
+4/ Calcul des horaires de prières entièrement personnalisable
+5/ Large choix de conventions
+6/ Optimisé pour les langues écrites de droite à gauche
