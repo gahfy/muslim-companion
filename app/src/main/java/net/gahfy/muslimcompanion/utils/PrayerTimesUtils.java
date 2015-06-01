@@ -89,10 +89,10 @@ public class PrayerTimesUtils {
         BIRMINGHAM_CENTRAL_MOSQUE,
         /** London Central Mosque */
         LONDON_CENTRAL_MOSQUE,
-        /** Munich, Germany */
-        MUNICH_GERMANY,
         /** Islamic Centre of Quebec */
-        ISLAMIC_CENTRE_OF_QUEBEC
+        ISLAMIC_CENTRE_OF_QUEBEC,
+        /** Munich, Germany */
+        MUNICH_GERMANY
     }
 
     public static final int MUSLIM_WORLD_LEAGUE_VALUE = 0;

@@ -51,6 +51,9 @@ public class ConventionListAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                 else
                     holder.imgTick.setVisibility(View.INVISIBLE);
             }
+            else{
+                holder.imgTick.setVisibility(View.INVISIBLE);
+            }
             holder.lblConventionName.setText(PrayerTimesUtils.getConventionNameResId(conventions[position-1]));
         }
     }

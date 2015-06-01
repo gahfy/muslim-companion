@@ -50,6 +50,9 @@ public class HigherLatitudeListAdapter extends RecyclerView.Adapter<RecyclerView
                 else
                     holder.imgTick.setVisibility(View.INVISIBLE);
             }
+            else{
+                holder.imgTick.setVisibility(View.INVISIBLE);
+            }
             holder.lblHigherLatitudeName.setText(PrayerTimesUtils.getHigherLatitudeModeResId(higherLatitudeModes[position-1]));
         }
     }
