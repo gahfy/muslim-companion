@@ -231,60 +231,56 @@ public class PrayerTimeFragment extends AbstractFragment{
     }
 
     public void updatePrayerTimes(PrayerTimesUtils prayerTimesUtils){
-        int year = prayerTimesUtils.getYear();
-        int month = prayerTimesUtils.getMonth();
-        int day = prayerTimesUtils.getDay();
+        if(getActivity() != null) {
+            int year = prayerTimesUtils.getYear();
+            int month = prayerTimesUtils.getMonth();
+            int day = prayerTimesUtils.getDay();
 
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(getActivity().getString(R.string.time_format), Locale.getDefault());
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat(getActivity().getString(R.string.time_format), Locale.getDefault());
 
-        String[] islamicMonths = getActivity().getResources().getStringArray(R.array.islamic_month);
-        String[] gregorianMonths = getActivity().getResources().getStringArray(R.array.gregorian_month);
+            String[] islamicMonths = getActivity().getResources().getStringArray(R.array.islamic_month);
+            String[] gregorianMonths = getActivity().getResources().getStringArray(R.array.gregorian_month);
 
-        int[] hijri = DateUtils.getHijriFromJulianDay(DateUtils.dateToJulian(year, month, day));
+            int[] hijri = DateUtils.getHijriFromJulianDay(DateUtils.dateToJulian(year, month, day));
 
-        String gregorianDateFormat = getActivity().getString(R.string.gregorian_date_format);
-        String islamicDateFormat = getActivity().getString(R.string.islamic_date_format);
+            String gregorianDateFormat = getActivity().getString(R.string.gregorian_date_format);
+            String islamicDateFormat = getActivity().getString(R.string.islamic_date_format);
 
 
-        String gregorianDate = String.format(gregorianDateFormat, gregorianMonths[month], day, year);
-        String islamicDate = String.format(islamicDateFormat, hijri[2], islamicMonths[hijri[1]], hijri[0]);
+            String gregorianDate = String.format(gregorianDateFormat, gregorianMonths[month], day, year);
+            String islamicDate = String.format(islamicDateFormat, hijri[2], islamicMonths[hijri[1]], hijri[0]);
 
-        getMainActivity().setSubTitle(String.format("%s (%s)", gregorianDate, islamicDate));
+            getMainActivity().setSubTitle(String.format("%s (%s)", gregorianDate, islamicDate));
 
-        long currentTimestamp = new Date().getTime();
+            long currentTimestamp = new Date().getTime();
 
-        if(prayerTimesUtils.getFajrTimestamp() > currentTimestamp) {
-            lblTimeFajr.setTextColor(getActivity().getResources().getColor(R.color.accent));
+            if (prayerTimesUtils.getFajrTimestamp() > currentTimestamp) {
+                lblTimeFajr.setTextColor(getActivity().getResources().getColor(R.color.accent));
+            } else if (prayerTimesUtils.getSunriseTimestamp() > currentTimestamp) {
+                lblTimeFajr.setTextColor(getActivity().getResources().getColor(R.color.primary));
+                lblTimeSunrise.setTextColor(getActivity().getResources().getColor(R.color.accent));
+            } else if (prayerTimesUtils.getDhuhrTimestamp() > currentTimestamp) {
+                lblTimeSunrise.setTextColor(getActivity().getResources().getColor(R.color.primary));
+                lblTimeDhuhr.setTextColor(getActivity().getResources().getColor(R.color.accent));
+            } else if (prayerTimesUtils.getAsrTimestamp() > currentTimestamp) {
+                lblTimeDhuhr.setTextColor(getActivity().getResources().getColor(R.color.primary));
+                lblTimeAsr.setTextColor(getActivity().getResources().getColor(R.color.accent));
+            } else if (prayerTimesUtils.getMaghribTimestamp() > currentTimestamp) {
+                lblTimeAsr.setTextColor(getActivity().getResources().getColor(R.color.primary));
+                lblTimeMaghrib.setTextColor(getActivity().getResources().getColor(R.color.accent));
+            } else if (prayerTimesUtils.getIshaTimestamp() > currentTimestamp) {
+                lblTimeMaghrib.setTextColor(getActivity().getResources().getColor(R.color.primary));
+                lblTimeIsha.setTextColor(getActivity().getResources().getColor(R.color.accent));
+            } else {
+                lblTimeIsha.setTextColor(getActivity().getResources().getColor(R.color.primary));
+            }
+
+            lblTimeFajr.setText(simpleDateFormat.format(new Date(prayerTimesUtils.getFajrTimestamp())));
+            lblTimeSunrise.setText(simpleDateFormat.format(new Date(prayerTimesUtils.getSunriseTimestamp())));
+            lblTimeDhuhr.setText(simpleDateFormat.format(new Date(prayerTimesUtils.getDhuhrTimestamp())));
+            lblTimeAsr.setText(simpleDateFormat.format(new Date(prayerTimesUtils.getAsrTimestamp())));
+            lblTimeMaghrib.setText(simpleDateFormat.format(new Date(prayerTimesUtils.getMaghribTimestamp())));
+            lblTimeIsha.setText(simpleDateFormat.format(new Date(prayerTimesUtils.getIshaTimestamp())));
         }
-        else if(prayerTimesUtils.getSunriseTimestamp() > currentTimestamp) {
-            lblTimeFajr.setTextColor(getActivity().getResources().getColor(R.color.primary));
-            lblTimeSunrise.setTextColor(getActivity().getResources().getColor(R.color.accent));
-        }
-        else if(prayerTimesUtils.getDhuhrTimestamp() > currentTimestamp) {
-            lblTimeSunrise.setTextColor(getActivity().getResources().getColor(R.color.primary));
-            lblTimeDhuhr.setTextColor(getActivity().getResources().getColor(R.color.accent));
-        }
-        else if(prayerTimesUtils.getAsrTimestamp() > currentTimestamp) {
-            lblTimeDhuhr.setTextColor(getActivity().getResources().getColor(R.color.primary));
-            lblTimeAsr.setTextColor(getActivity().getResources().getColor(R.color.accent));
-        }
-        else if(prayerTimesUtils.getMaghribTimestamp() > currentTimestamp) {
-            lblTimeAsr.setTextColor(getActivity().getResources().getColor(R.color.primary));
-            lblTimeMaghrib.setTextColor(getActivity().getResources().getColor(R.color.accent));
-        }
-        else if(prayerTimesUtils.getIshaTimestamp() > currentTimestamp) {
-            lblTimeMaghrib.setTextColor(getActivity().getResources().getColor(R.color.primary));
-            lblTimeIsha.setTextColor(getActivity().getResources().getColor(R.color.accent));
-        }
-        else{
-            lblTimeIsha.setTextColor(getActivity().getResources().getColor(R.color.primary));
-        }
-
-        lblTimeFajr.setText(simpleDateFormat.format(new Date(prayerTimesUtils.getFajrTimestamp())));
-        lblTimeSunrise.setText(simpleDateFormat.format(new Date(prayerTimesUtils.getSunriseTimestamp())));
-        lblTimeDhuhr.setText(simpleDateFormat.format(new Date(prayerTimesUtils.getDhuhrTimestamp())));
-        lblTimeAsr.setText(simpleDateFormat.format(new Date(prayerTimesUtils.getAsrTimestamp())));
-        lblTimeMaghrib.setText(simpleDateFormat.format(new Date(prayerTimesUtils.getMaghribTimestamp())));
-        lblTimeIsha.setText(simpleDateFormat.format(new Date(prayerTimesUtils.getIshaTimestamp())));
     }
 }
