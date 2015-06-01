@@ -65,6 +65,8 @@ public class PrayerTimesUtils {
         SOUTH_EAST_ASIA,
         /** Union of Islamic Organisations of France */
         UNION_OF_ISLAMIC_ORGANISATIONS_OF_FRANCE,
+        /** Grand Mosque of Paris */
+        GRAND_MOSQUE_OF_PARIS,
         /** Presidency of Religious Affairs, Turkey */
         PRESIDENCY_OF_RELIGIOUS_AFFAIRS_TURKEY,
         /** Ministry of Endowments and Religious Affairs, Oman */
@@ -89,8 +91,6 @@ public class PrayerTimesUtils {
         LONDON_CENTRAL_MOSQUE,
         /** Munich, Germany */
         MUNICH_GERMANY,
-        /** Grand Mosque of Paris */
-        GRAND_MOSQUE_OF_PARIS,
         /** Islamic Centre of Quebec */
         ISLAMIC_CENTRE_OF_QUEBEC
     }
