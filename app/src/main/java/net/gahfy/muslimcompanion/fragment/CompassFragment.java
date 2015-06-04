@@ -296,7 +296,7 @@ public class CompassFragment extends AbstractFragment implements ViewTreeObserve
                 fragmentView.findViewById(R.id.lyt_compass).setLayoutParams(lytCompassLytParams);
 
                 lblQibla.setTextSize(TypedValue.COMPLEX_UNIT_PX, compassHeight * 0.13f);
-                lblAngle.setTextSize(TypedValue.COMPLEX_UNIT_PX, compassHeight * 0.19f);
+                lblAngle.setTextSize(TypedValue.COMPLEX_UNIT_PX, compassHeight * 0.18f);
             }
         }
     }
