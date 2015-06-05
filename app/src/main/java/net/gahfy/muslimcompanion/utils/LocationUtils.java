@@ -152,11 +152,11 @@ public class LocationUtils {
             return result;
         }
         catch(IOException e){
-            e.printStackTrace();
+            // TODO: Handle error
             return null;
         }
         catch(SQLException e){
-            e.printStackTrace();
+            // TODO: Handle error
             return null;
         }
     }

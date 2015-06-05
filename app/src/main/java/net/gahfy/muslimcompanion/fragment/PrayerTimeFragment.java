@@ -3,7 +3,6 @@ package net.gahfy.muslimcompanion.fragment;
 import android.graphics.Point;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.Display;
 import android.view.LayoutInflater;
@@ -197,7 +196,7 @@ public class PrayerTimeFragment extends AbstractFragment{
             });
         }
         catch(Exception e){
-            e.printStackTrace();
+            //TODO: Handle error
         }
     }
 

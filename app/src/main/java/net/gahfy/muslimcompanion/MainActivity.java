@@ -20,6 +20,7 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.splunk.mint.Mint;
+import com.splunk.mint.MintLogLevel;
 
 import net.gahfy.muslimcompanion.fragment.AbstractFragment;
 import net.gahfy.muslimcompanion.fragment.CompassFragment;
@@ -33,6 +34,7 @@ import net.gahfy.muslimcompanion.utils.LocationUtils;
 import net.gahfy.muslimcompanion.utils.SharedPreferencesUtils;
 import net.gahfy.muslimcompanion.utils.ViewUtils;
 import java.util.Date;
+import java.util.HashMap;
 
 public class MainActivity extends ActionBarActivity implements LocationListener{
     private AlertDialog locationDisabledDialog;
@@ -66,6 +68,9 @@ public class MainActivity extends ActionBarActivity implements LocationListener{
 
     /** The toolbar of the activity */
     private Toolbar toolbar;
+
+    /** The time when the application starts */
+    private long applicationStartTime;
 
     /**
      * The status (enabled/disabled) of location listeners
@@ -135,6 +140,8 @@ public class MainActivity extends ActionBarActivity implements LocationListener{
     public void onResume() {
         super.onResume();
 
+        Mint.startSession(MainActivity.this);
+
         TextView lblGeolocating = (TextView) findViewById(R.id.lbl_geolocating);
         TextView lblMenuSettings = (TextView) findViewById(R.id.lbl_menu_settings);
         TextView lblMenuPrayerTimes = (TextView) findViewById(R.id.lbl_menu_prayer_time);
@@ -165,6 +172,8 @@ public class MainActivity extends ActionBarActivity implements LocationListener{
                 redirectToFragment(new CompassFragment(), false);
             }
         });
+
+        applicationStartTime = new Date().getTime();
     }
 
     @Override
@@ -220,6 +229,14 @@ public class MainActivity extends ActionBarActivity implements LocationListener{
     public void onPause(){
         super.onPause();
         switchOffLocationListeners();
+        if(getLastMuslimLocation() == null){
+            long timeTaken = new Date().getTime() - applicationStartTime;
+
+            HashMap<String, Object> timeData = new HashMap<String, Object>();
+            timeData.put("timeTaken", new Long(timeTaken));
+            Mint.logEvent("Left without location", MintLogLevel.Info, timeData);
+        }
+        Mint.closeSession(MainActivity.this);
     }
 
     public MuslimLocation getCurrentLocation(){
@@ -234,7 +251,7 @@ public class MainActivity extends ActionBarActivity implements LocationListener{
             try {
                 locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, this);
             } catch (IllegalArgumentException e) {
-                e.printStackTrace();
+                //TODO: Handle error
             }
             locationManager.requestLocationUpdates(LocationManager.PASSIVE_PROVIDER, 0, 0, this);
         }
@@ -366,6 +383,14 @@ public class MainActivity extends ActionBarActivity implements LocationListener{
 
     @Override
     public void onLocationChanged(Location location) {
+        if(getLastMuslimLocation() == null) {
+            long timeTaken = new Date().getTime() - applicationStartTime;
+
+            HashMap<String, Object> timeData = new HashMap<String, Object>();
+            timeData.put("timeTaken", new Long(timeTaken));
+            Mint.logEvent("Time to geolocate", MintLogLevel.Info, timeData);
+        }
+
         switch(currentFragment.getGeolocationTypeNeeded()) {
             case NONE:
             case ONCE:

@@ -358,7 +358,7 @@ public class CompassFragment extends AbstractFragment implements ViewTreeObserve
             });
         }
         catch(Exception e){
-            e.printStackTrace();
+            //TODO: Handle error
         }
     }
 

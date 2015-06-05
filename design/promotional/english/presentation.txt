@@ -3,7 +3,7 @@ Access the Qibla and Salat times with Muslim Companion - Qibla Salat
 Muslim Companion - Qibla Salat is an application that allows muslims to know the payer times and the direction of the Qibla.
 
 Muslim Companion - Qibla Salat will satisfy all your expectations as a muslim:
-• A sleek and simple design
+• A clean and simple design
 • An automatic, simple, customizable and complete setting of the prayer times
 • A very precise algorithm for calculation of the times of Salat and direction of Qibla
 • Smooth moves of the compass to avoid shakes when displaying the direction of prayer

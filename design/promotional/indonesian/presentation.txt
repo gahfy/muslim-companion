@@ -1,6 +1,6 @@
-Musim Companion - Qibla Salat adalah sebuah aplikasi yang memungkinkan muslim untuk mengetahui waktu shalat dan arah kiblat.
+Musim Companion-Kiblat Sholat adalah sebuah aplikasi yang memungkinkan muslim untuk mengetahui waktu shalat dan arah kiblat.
 
-Muslim Companian - Qibla Salat dapat memenuhi semua harapan Anda sebagai seorang muslim:
+Muslim Companian-Kiblat Sholat dapat memenuhi semua harapan Anda sebagai seorang muslim:
 • Desain yang ramping dan sederhana
 • Pengaturan otomatis, mudah, dapat disesuaikan dan pengaturan lengkap mengenai waktu shalat
 • Algoritma yang sangat tepat untuk perhitungan waktu shalat dan arah kiblat
@@ -9,17 +9,17 @@ Muslim Companian - Qibla Salat dapat memenuhi semua harapan Anda sebagai seorang
 Layar pertama menampilkan waktu sholat, waktu Shuruq, sesuai dengan waktu setempat.
 Layar kedua menampilkan arah Kakbah, dan juga kompas dengan empat arah, untuk memeriksa arah yang ditunjuk adalah arah yang benar.
 
-Muslim Companion - Qibla Salat akan selalu gratis, dan tanpa iklan. 
+Muslim Companion-Kiblat Sholat akan selalu gratis, dan tanpa iklan. 
 
-Muslim Companion - Qiblat Salat diterjemahkan kedalam:
+Muslim Companion-Kiblat Sholat diterjemahkan kedalam:
 • Bahasa Inggris
 • Bahasa Arab
 • Bahasa Indonesia
 • Bahasa Prancis
 
-Catatan: Muslim Companion - Qibla Salat adalah perangkat lunak gratis, anda dapat menelusuri perangkat lunak Muslim Companion - Qibla Salat disini: https://github.com/gahfy/muslim-companion
+Catatan: Muslim Companion-Kiblat Sholat adalah perangkat lunak gratis, anda dapat menelusuri perangkat lunak Muslim Companion-Kiblat Sholat disini: https://github.com/gahfy/muslim-companion
 
-Jangan ragu untuk memberikan ulasan dan ide Anda untuk meningkatkan kualitas Muslim Companion - Qibla Salat
+Jangan ragu untuk memberikan ulasan dan ide Anda untuk meningkatkan kualitas Muslim Companion-Kiblat Sholat
 
 ===================================
 1/ Tersedia dalam modus landscape

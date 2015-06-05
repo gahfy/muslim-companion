@@ -73,7 +73,7 @@ public class DateUtils {
             return format.parse(dateFormatted).getTime();
         }
         catch(ParseException e){
-            e.printStackTrace();
+            //TODO: Handle error
             return 0;
         }
     }
