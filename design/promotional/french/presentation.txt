@@ -31,3 +31,6 @@ N'hésitez pas à noter et à donner des idées pour améliorer Muslim Companion
 4/ Calcul des horaires de prières entièrement personnalisable
 5/ Large choix de conventions
 6/ Optimisé pour les langues écrites de droite à gauche
+===================================
+Ajout des horaires de prière
+Bon ramadan !

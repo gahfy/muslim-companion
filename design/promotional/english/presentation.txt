@@ -31,3 +31,6 @@ Feel free to review and give us ideas to improve Muslim Companion - Qibla Salat.
 4/ Calculation of prayer times fully customizable
 5/ Choice of many conventions
 6/ Optimized for languages written from right to left
+===================================
+Adding prayer times
+Have a nice Ramadhan!

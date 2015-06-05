@@ -27,10 +27,10 @@
     <string name="short_date_format">dd/MM/yyyy</string>
     <string name="hour_format">HH:mm</string>
 
-    <string name="prayer_times">Waktu Sholat</string>
-    <string name="salat">Sholat</string>
+    <string name="prayer_times">Waktu Shalat</string>
+    <string name="salat">Shalat</string>
 
-    <string name="salat_at">Waktu sholat untuk %s</string>
+    <string name="salat_at">Waktu shalat untuk %s</string>
 
     <string formatted="false" name="gregorian_date_format">%2$d %1$s %3$d</string>
 

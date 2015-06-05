@@ -1,25 +1,25 @@
-Musim Companion-Kiblat Sholat adalah sebuah aplikasi yang memungkinkan muslim untuk mengetahui waktu shalat dan arah kiblat.
+Musim Companion-Kiblat Shalat adalah sebuah aplikasi yang memungkinkan muslim untuk mengetahui waktu shalat dan arah kiblat.
 
-Muslim Companian-Kiblat Sholat dapat memenuhi semua harapan Anda sebagai seorang muslim:
+Muslim Companian-Kiblat Shalat dapat memenuhi semua harapan Anda sebagai seorang muslim:
 • Desain yang ramping dan sederhana
 • Pengaturan otomatis, mudah, dapat disesuaikan dan pengaturan lengkap mengenai waktu shalat
 • Algoritma yang sangat tepat untuk perhitungan waktu shalat dan arah kiblat
 • Kompas yang bergerak untuk menghindari guncangan ketika menampilkan arah kiblat
 
-Layar pertama menampilkan waktu sholat, waktu Shuruq, sesuai dengan waktu setempat.
+Layar pertama menampilkan waktu shalat, waktu Shuruq, sesuai dengan waktu setempat.
 Layar kedua menampilkan arah Kakbah, dan juga kompas dengan empat arah, untuk memeriksa arah yang ditunjuk adalah arah yang benar.
 
-Muslim Companion-Kiblat Sholat akan selalu gratis, dan tanpa iklan. 
+Muslim Companion-Kiblat Shalat akan selalu gratis, dan tanpa iklan. 
 
-Muslim Companion-Kiblat Sholat diterjemahkan kedalam:
+Muslim Companion-Kiblat Shalat diterjemahkan kedalam:
 • Bahasa Inggris
 • Bahasa Arab
 • Bahasa Indonesia
 • Bahasa Prancis
 
-Catatan: Muslim Companion-Kiblat Sholat adalah perangkat lunak gratis, anda dapat menelusuri perangkat lunak Muslim Companion-Kiblat Sholat disini: https://github.com/gahfy/muslim-companion
+Catatan: Muslim Companion-Kiblat Shalat adalah perangkat lunak gratis, anda dapat menelusuri perangkat lunak Muslim Companion-Kiblat Shalat disini: https://github.com/gahfy/muslim-companion
 
-Jangan ragu untuk memberikan ulasan dan ide Anda untuk meningkatkan kualitas Muslim Companion-Kiblat Sholat
+Jangan ragu untuk memberikan ulasan dan ide Anda untuk meningkatkan kualitas Muslim Companion-Kiblat Shalat
 
 ===================================
 1/ Tersedia dalam modus landscape
@@ -28,3 +28,7 @@ Jangan ragu untuk memberikan ulasan dan ide Anda untuk meningkatkan kualitas Mus
 4/ Perhitungan waktu shalat yang dapat disesuaikan
 5/ Banyak pilihan konvensi
 6/ Dioptimalkan untuk bahasa yang tertulis dari kanan ke kiri
+===================================
+
+Tambahkan waktu shalat
+Selamat Berpuasa Di Bulan Suci Ramadhan!
