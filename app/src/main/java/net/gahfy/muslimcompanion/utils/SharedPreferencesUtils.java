@@ -5,6 +5,10 @@ import android.content.SharedPreferences;
 
 import net.gahfy.muslimcompanion.models.MuslimLocation;
 
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
+
 public class SharedPreferencesUtils{
     /** The name of the shared preferences file */
     private static final String PREFERENCES_NAME = "muslimCompanionPrefs";
@@ -39,6 +43,8 @@ public class SharedPreferencesUtils{
     private static final String SCHOOL_AUTOMATIC = "schoolIsAutomatic";
 
     private static final String HIGHER_LATITUDE_MODE_AUTOMATIC = "higherLatitudeModeIsAutomatic";
+
+    private static final String LAST_USAGE = "lastUsage";
 
     /**
      * Saves a MuslimLocation as the last location in Shared Preferences.
@@ -94,6 +100,45 @@ public class SharedPreferencesUtils{
     public static int getHigherLatitudeModeValue(Context context){
         SharedPreferences sharedPreferences = context.getSharedPreferences(PREFERENCES_NAME, Context.MODE_PRIVATE);
         return sharedPreferences.getInt(HIGHER_LATITUDE_MODE, -1);
+    }
+
+    public static boolean saveUsageandGetHasUsedYesterday(Context context){
+        long lastUsage = getLastUsage(context);
+        boolean shouldSave = false;
+        boolean hasUsedYesterday = false;
+
+        if(lastUsage != -1){
+            GregorianCalendar currentDayCalendar = new GregorianCalendar();
+            currentDayCalendar.setTimeInMillis(new Date().getTime());
+
+            currentDayCalendar.set(Calendar.HOUR, 0);
+            currentDayCalendar.set(Calendar.MINUTE, 0);
+            currentDayCalendar.set(Calendar.SECOND, 0);
+            currentDayCalendar.set(Calendar.MILLISECOND, 0);
+
+            long todayMidnightDate = currentDayCalendar.getTimeInMillis();
+
+            if(lastUsage < todayMidnightDate){
+                shouldSave = true;
+                hasUsedYesterday = lastUsage > (todayMidnightDate-86400l*1000l);
+            }
+        }
+        else{
+            shouldSave = true;
+        }
+
+        if(shouldSave){
+            SharedPreferences sharedPreferences = context.getSharedPreferences(PREFERENCES_NAME, Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putLong(LAST_USAGE, new Date().getTime());
+            editor.commit();
+        }
+        return hasUsedYesterday;
+    }
+
+    public static long getLastUsage(Context context){
+        SharedPreferences sharedPreferences = context.getSharedPreferences(PREFERENCES_NAME, Context.MODE_PRIVATE);
+        return sharedPreferences.getLong(LAST_USAGE, -1);
     }
 
     public static void putHigherLatitudeModeIsAutomatic(Context context, boolean higherLatitudeModeIsAutomatic){

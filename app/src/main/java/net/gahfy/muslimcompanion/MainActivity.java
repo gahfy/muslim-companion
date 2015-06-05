@@ -174,6 +174,10 @@ public class MainActivity extends ActionBarActivity implements LocationListener{
         });
 
         applicationStartTime = new Date().getTime();
+
+        if(SharedPreferencesUtils.saveUsageandGetHasUsedYesterday(this)){
+            Mint.logEvent("Daily user", MintLogLevel.Info);
+        }
     }
 
     @Override
