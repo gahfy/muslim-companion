@@ -235,7 +235,7 @@ public class PrayerTimeFragment extends AbstractFragment{
             int month = prayerTimesUtils.getMonth();
             int day = prayerTimesUtils.getDay();
 
-            SimpleDateFormat simpleDateFormat = new SimpleDateFormat(getActivity().getString(R.string.time_format), Locale.getDefault());
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat(getActivity().getString(R.string.hour_format), Locale.getDefault());
 
             String[] islamicMonths = getActivity().getResources().getStringArray(R.array.islamic_month);
             String[] gregorianMonths = getActivity().getResources().getStringArray(R.array.gregorian_month);
