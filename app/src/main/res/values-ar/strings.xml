@@ -37,6 +37,9 @@
     <string name="prayer_name_asr">العصر</string>
     <string name="prayer_name_maghrib">المغرب</string>
     <string name="prayer_name_isha">العشاء</string>
+    <string name="prayer_name_isha_and_fajr">العشاء والفجر</string>
+
+    <string name="prayer_notification_content">%1$s: %2$s في %3$s</string>
 
     <string-array name="islamic_month">
         <item></item>

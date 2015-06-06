@@ -80,6 +80,9 @@
     <string name="prayer_name_asr">Asr</string>
     <string name="prayer_name_maghrib">Maghreb</string>
     <string name="prayer_name_isha">Icha</string>
+    <string name="prayer_name_isha_and_fajr">Icha et Fajr</string>
+
+    <string name="prayer_notification_content">%1$s : %2$s à %3$s</string>
 
     <string-array name="islamic_month">
         <item></item>

@@ -46,6 +46,12 @@ public class SharedPreferencesUtils{
 
     private static final String LAST_USAGE = "lastUsage";
 
+    private static final String TIME_LAST_NOTIFICATION_PRAYER = "timeLastNotificationPrayer";
+
+    private static final String NOTIFY_PRAYER = "notifyPrayer";
+
+    private static final String SOUND_NOTIFICATION_PRAYER = "soundNotificationPrayer";
+
     /**
      * Saves a MuslimLocation as the last location in Shared Preferences.
      * @param context Context in which the application is running
@@ -88,6 +94,42 @@ public class SharedPreferencesUtils{
             return new MuslimLocation(locationLatitude, locationLongitude, locationTime, locationMode);
         }
         return null;
+    }
+
+    public static void putLastNotificationPrayer(Context context, long lastNotificationPrayer){
+        SharedPreferences sharedPreferences = context.getSharedPreferences(PREFERENCES_NAME, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putLong(TIME_LAST_NOTIFICATION_PRAYER, lastNotificationPrayer);
+        editor.commit();
+    }
+
+    public static long getLastNotificationPrayer(Context context){
+        SharedPreferences sharedPreferences = context.getSharedPreferences(PREFERENCES_NAME, Context.MODE_PRIVATE);
+        return sharedPreferences.getLong(TIME_LAST_NOTIFICATION_PRAYER, -1);
+    }
+
+    public static void putNotifyPrayer(Context context, boolean notifyPrayer){
+        SharedPreferences sharedPreferences = context.getSharedPreferences(PREFERENCES_NAME, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putBoolean(NOTIFY_PRAYER, notifyPrayer);
+        editor.commit();
+    }
+
+    public static boolean getNotifyPrayer(Context context){
+        SharedPreferences sharedPreferences = context.getSharedPreferences(PREFERENCES_NAME, Context.MODE_PRIVATE);
+        return sharedPreferences.getBoolean(NOTIFY_PRAYER, true);
+    }
+
+    public static void putSoundNotificationPrayer(Context context, int soundNotificationPrayer){
+        SharedPreferences sharedPreferences = context.getSharedPreferences(PREFERENCES_NAME, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putInt(SOUND_NOTIFICATION_PRAYER, soundNotificationPrayer);
+        editor.commit();
+    }
+
+    public static int getSoundNotificationPrayer(Context context){
+        SharedPreferences sharedPreferences = context.getSharedPreferences(PREFERENCES_NAME, Context.MODE_PRIVATE);
+        return sharedPreferences.getInt(SOUND_NOTIFICATION_PRAYER, 1);
     }
 
     public static void putHigherLatitudeMode(Context context, int higherLatitudeModeValue){

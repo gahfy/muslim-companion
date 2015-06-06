@@ -40,6 +40,9 @@
     <string name="prayer_name_asr">Asr</string>
     <string name="prayer_name_maghrib">Maghrib</string>
     <string name="prayer_name_isha">Isha\'a</string>
+    <string name="prayer_name_isha_and_fajr">Isha\'a and Fajr</string>
+
+    <string name="prayer_notification_content">%1$s: %2$s in %3$s</string>
 
     <string-array name="islamic_month">
         <item></item>
@@ -110,4 +113,14 @@
     <string name="method_angle_based">Angle Based</string>
     <string name="method_middle_of_night">Middle of the Night</string>
     <string name="method_seventh">One Seventh of the Night</string>
+
+    <string name="prayer_notification">Prayer\'s notification</string>
+
+    <string name="prayer_notification_enabled">Notification enabled</string>
+    <string name="prayer_notification_disabled">Notification disabled</string>
+
+    <string name="prayer_notification_sound">Sound of notification</string>
+    <string name="sound_none">None</string>
+    <string name="sound_android_default">Android default</string>
+    <string name="sound_adhan">Adhan</string>
 </resources>

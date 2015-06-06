@@ -42,6 +42,9 @@
     <string name="prayer_name_asr">Asar</string>
     <string name="prayer_name_maghrib">Maghrib</string>
     <string name="prayer_name_isha">Isya</string>
+    <string name="prayer_name_isha_and_fajr">Isya dan Subuh</string>
+
+    <string name="prayer_notification_content">%1$s: %2$s di %3$s</string>
 
     <string-array name="islamic_month">
         <item/>

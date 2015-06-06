@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import net.gahfy.muslimcompanion.R;
 import net.gahfy.muslimcompanion.models.MuslimLocation;
+import net.gahfy.muslimcompanion.utils.AlarmUtils;
 import net.gahfy.muslimcompanion.utils.DateUtils;
 import net.gahfy.muslimcompanion.utils.LocationUtils;
 import net.gahfy.muslimcompanion.utils.PrayerTimesUtils;
@@ -280,6 +281,8 @@ public class PrayerTimeFragment extends AbstractFragment{
             lblTimeAsr.setText(simpleDateFormat.format(new Date(prayerTimesUtils.getAsrTimestamp())));
             lblTimeMaghrib.setText(simpleDateFormat.format(new Date(prayerTimesUtils.getMaghribTimestamp())));
             lblTimeIsha.setText(simpleDateFormat.format(new Date(prayerTimesUtils.getIshaTimestamp())));
+
+            AlarmUtils.notifyAndSetNextAlarm(getMainActivity(), false);
         }
     }
 }

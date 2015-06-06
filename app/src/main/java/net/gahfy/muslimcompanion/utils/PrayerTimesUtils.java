@@ -447,15 +447,13 @@ public class PrayerTimesUtils {
      * @return the timestamp of Dhuhr
      */
     public long getDhuhrTimestamp(){
-        return DateUtils.utcTimeToTimestamp(year, month, day, getDhuhr() + dhuhrDelay);
-    }
-
-    public long getDhuhrOfPreviousDayTimestamp(){
-        return DateUtils.utcTimeToTimestamp(year, month, day, getDhuhrOfPreviousDay() + dhuhrDelay) - (24l*3600l*1000l);
+        long realTime = DateUtils.utcTimeToTimestamp(year, month, day, getDhuhr() + dhuhrDelay);
+        return realTime - (realTime%60000l) + 60000l;
     }
 
     public long getDhuhrOfNextDayTimestamp(){
-        return DateUtils.utcTimeToTimestamp(year, month, day, getDhuhrOfNextDay() + dhuhrDelay) + (24l*3600l*1000l);
+        long realTime = DateUtils.utcTimeToTimestamp(year, month, day, getDhuhrOfNextDay() + dhuhrDelay)+24l*3600l*1000l;
+        return realTime - (realTime%60000l) + 60000l;
     }
 
     /**
@@ -464,17 +462,14 @@ public class PrayerTimesUtils {
      */
     public long getSunriseTimestamp(){
         double hoursInTheDay = getDhuhr() - getTimeBelowHorizonDifference(sunriseAngle) + sunriseDelay;
-        return DateUtils.utcTimeToTimestamp(year, month, day, hoursInTheDay);
+        long realTime = DateUtils.utcTimeToTimestamp(year, month, day, hoursInTheDay);
+        return realTime - (realTime%60000l) + 60000l;
     }
 
     public long getSunriseOfNextDayTimestamp(){
         double hoursInTheDay = getDhuhrOfNextDay() - getTimeBelowHorizonDifference(sunriseAngle, time + (1.0/36525.0)) + sunriseDelay;
-        return DateUtils.utcTimeToTimestamp(year, month, day, hoursInTheDay) + 24l*3600l*1000l;
-    }
-
-    public long getSunriseOfPreviousDayTimestamp(){
-        double hoursInTheDay = getDhuhrOfPreviousDay() - getTimeBelowHorizonDifference(sunriseAngle, time - (1.0/36525.0)) + sunriseDelay;
-        return DateUtils.utcTimeToTimestamp(year, month, day, hoursInTheDay) - 24l*3600l*1000l;
+        long realTime = DateUtils.utcTimeToTimestamp(year, month, day, hoursInTheDay) + 24l*3600l*1000l;
+        return realTime - (realTime%60000l) + 60000l;
     }
 
     /**
@@ -483,17 +478,14 @@ public class PrayerTimesUtils {
      */
     public long getMaghribTimestamp(){
         double hoursInTheDay = getDhuhr() + getTimeBelowHorizonDifference(maghribAngle) + maghribDelay;
-        return DateUtils.utcTimeToTimestamp(year, month, day, hoursInTheDay);
-    }
-
-    public long getMaghribOfNextDayTimestamp(){
-        double hoursInTheDay = getDhuhrOfNextDay() + getTimeBelowHorizonDifference(maghribAngle, time + (1.0/36525.0)) + maghribDelay;
-        return DateUtils.utcTimeToTimestamp(year, month, day, hoursInTheDay) + 24l*3600l*1000l;
+        long realTime = DateUtils.utcTimeToTimestamp(year, month, day, hoursInTheDay);
+        return realTime - (realTime%60000l) + 60000l;
     }
 
     public long getMaghribOfPreviousDayTimestamp(){
         double hoursInTheDay = getDhuhrOfPreviousDay() + getTimeBelowHorizonDifference(maghribAngle, time - (1.0/36525.0)) + maghribDelay;
-        return DateUtils.utcTimeToTimestamp(year, month, day, hoursInTheDay) - 24l*3600l*1000l;
+        long realTime = DateUtils.utcTimeToTimestamp(year, month, day, hoursInTheDay) - 24l*3600l*1000l;
+        return realTime - (realTime%60000l) + 60000l;
     }
 
     /**
@@ -514,15 +506,56 @@ public class PrayerTimesUtils {
             }
         }
         double hoursInTheDay = getDhuhr() - timeBelowHorizonDifference + fajrDelay;
-        return DateUtils.utcTimeToTimestamp(year, month, day, hoursInTheDay);
+        long realTime = DateUtils.utcTimeToTimestamp(year, month, day, hoursInTheDay);
+        return realTime - (realTime%60000l) + 60000l;
+    }
+
+    public long getFajrTimestampOfNextDay(){
+        double timeBelowHorizonDifference = getTimeBelowHorizonDifference(fajrAngle, time + (1.0/36525.0));
+        if(Double.isNaN(timeBelowHorizonDifference)){
+            switch (higherLatitudeMode){
+                case MIDDLE_OF_THE_NIGHT:
+                    return getSunriseOfNextDayTimestamp() - (long)(((double)(getSunriseOfNextDayTimestamp() - getMaghribTimestamp()))/2.0) + (long)(fajrDelay*3600.0*1000.0);
+                case SEVENTH:
+                    return getSunriseOfNextDayTimestamp() - (long)(((double)(getSunriseOfNextDayTimestamp() - getMaghribTimestamp()))/7.0) + (long)(fajrDelay*3600.0*1000.0);
+                case ANGLE_BASED:
+                    double t = 60.0/fajrAngle;
+                    return getSunriseOfNextDayTimestamp() - (long)(((double)(getSunriseOfNextDayTimestamp() - getMaghribTimestamp()))/t) + (long)(fajrDelay*3600.0*1000.0);
+            }
+        }
+        double hoursInTheDay = getDhuhrOfNextDay() - timeBelowHorizonDifference + fajrDelay;
+        long realTime = DateUtils.utcTimeToTimestamp(year, month, day, hoursInTheDay) + 24l*3600l*1000l;
+        return realTime - (realTime%60000l) + 60000l;
     }
 
     /**
      * Returns the timestamp of Isha.
      * @return the timestamp of Isha
      */
-    public long getIshaTimestamp(){
+    public long getIshaTimestamp() {
         double timeBelowHorizonDifference = getTimeBelowHorizonDifference(ishaAngle);
+
+        int[] hijri = DateUtils.getHijriFromJulianDay(DateUtils.dateToJulian(year, month, day));
+        double delayToAdd = hijri[1] == 9 ? ishaDelayOnRamadhan : ishaDelayNormal;
+
+        if (Double.isNaN(timeBelowHorizonDifference)) {
+            switch (higherLatitudeMode) {
+                case MIDDLE_OF_THE_NIGHT:
+                    return getMaghribTimestamp() + (long) (((double) (getSunriseOfNextDayTimestamp() - getMaghribTimestamp())) / 2.0) + (long) ((ishaDelay + delayToAdd) * 3600.0 * 1000.0);
+                case SEVENTH:
+                    return getMaghribTimestamp() + (long) (((double) (getSunriseOfNextDayTimestamp() - getMaghribTimestamp())) / 7.0) + (long) ((ishaDelay + delayToAdd) * 3600.0 * 1000.0);
+                case ANGLE_BASED:
+                    double t = 60.0 / ishaAngle;
+                    return getMaghribTimestamp() + (long) (((double) (getSunriseOfNextDayTimestamp() - getMaghribTimestamp())) / t) + (long) ((ishaDelay + delayToAdd) * 3600.0 * 1000.0);
+            }
+        }
+        double hoursInTheDay = getDhuhr() + timeBelowHorizonDifference + delayToAdd + ishaDelay;
+        long realTime = DateUtils.utcTimeToTimestamp(year, month, day, hoursInTheDay);
+        return realTime - (realTime % 60000l) + 60000l;
+    }
+
+    public long getIshaTimestampOfPreviousDay(){
+        double timeBelowHorizonDifference = getTimeBelowHorizonDifference(ishaAngle, time - (1.0/36525.0));
 
         int[] hijri = DateUtils.getHijriFromJulianDay(DateUtils.dateToJulian(year, month, day));
         double delayToAdd = hijri[1] == 9 ? ishaDelayOnRamadhan : ishaDelayNormal;
@@ -530,16 +563,17 @@ public class PrayerTimesUtils {
         if(Double.isNaN(timeBelowHorizonDifference)) {
             switch (higherLatitudeMode){
                 case MIDDLE_OF_THE_NIGHT:
-                    return getMaghribTimestamp() + (long)(((double)(getSunriseOfNextDayTimestamp() - getMaghribTimestamp()))/2.0) + (long)((ishaDelay + delayToAdd)*3600.0*1000.0);
+                    return getMaghribOfPreviousDayTimestamp() + (long)(((double)(getSunriseTimestamp() - getMaghribOfPreviousDayTimestamp()))/2.0) + (long)((ishaDelay + delayToAdd)*3600.0*1000.0);
                 case SEVENTH:
-                    return getMaghribTimestamp() + (long)(((double)(getSunriseOfNextDayTimestamp() - getMaghribTimestamp())) / 7.0) + (long)((ishaDelay + delayToAdd)*3600.0*1000.0);
+                    return getMaghribOfPreviousDayTimestamp() + (long)(((double)(getSunriseTimestamp() - getMaghribOfPreviousDayTimestamp())) / 7.0) + (long)((ishaDelay + delayToAdd)*3600.0*1000.0);
                 case ANGLE_BASED:
                     double t = 60.0/ishaAngle;
-                    return getMaghribTimestamp() + (long)(((double)(getSunriseOfNextDayTimestamp() - getMaghribTimestamp())) / t) + (long)((ishaDelay + delayToAdd)*3600.0*1000.0);
+                    return getMaghribOfPreviousDayTimestamp() + (long)(((double)(getSunriseTimestamp() - getMaghribOfPreviousDayTimestamp())) / t) + (long)((ishaDelay + delayToAdd)*3600.0*1000.0);
             }
         }
-        double hoursInTheDay = getDhuhr() + timeBelowHorizonDifference + delayToAdd + ishaDelay;
-        return DateUtils.utcTimeToTimestamp(year, month, day, hoursInTheDay);
+        double hoursInTheDay = getDhuhrOfPreviousDay() + timeBelowHorizonDifference + delayToAdd + ishaDelay;
+        long realTime = DateUtils.utcTimeToTimestamp(year, month, day, hoursInTheDay) - 24l*3600l*1000l;
+        return realTime - (realTime%60000l) + 60000l;
     }
 
     /**
@@ -548,7 +582,8 @@ public class PrayerTimesUtils {
      */
     public long getAsrTimestamp(){
         double hoursInTheDay = getDhuhr() + getTimeShadowSizeDifference(asrTime) + asrDelay;
-        return DateUtils.utcTimeToTimestamp(year, month, day, hoursInTheDay);
+        long realTime = DateUtils.utcTimeToTimestamp(year, month, day, hoursInTheDay);
+        return realTime - (realTime%60000l) + 60000l;
     }
 
     /**

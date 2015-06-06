@@ -46,8 +46,8 @@ public abstract class ItemListAdapter extends RecyclerView.Adapter<RecyclerView.
      * @param activity The parent activity
      */
     public ItemListAdapter(RecyclerView recyclerView, MainActivity activity){
-        recyclerView = recyclerView;
-        activity = activity;
+        this.recyclerView = recyclerView;
+        this.activity = activity;
     }
 
     /**

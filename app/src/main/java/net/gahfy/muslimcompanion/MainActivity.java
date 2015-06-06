@@ -26,6 +26,7 @@ import net.gahfy.muslimcompanion.fragment.AbstractFragment;
 import net.gahfy.muslimcompanion.fragment.CompassFragment;
 import net.gahfy.muslimcompanion.fragment.ConventionListFragment;
 import net.gahfy.muslimcompanion.fragment.HigherLatitudeModeListFragment;
+import net.gahfy.muslimcompanion.fragment.NotificationSoundListFragment;
 import net.gahfy.muslimcompanion.fragment.PrayerTimeFragment;
 import net.gahfy.muslimcompanion.fragment.SchoolListFragment;
 import net.gahfy.muslimcompanion.fragment.SettingsFragment;
@@ -122,6 +123,10 @@ public class MainActivity extends ActionBarActivity implements LocationListener{
                 drawerLayout.openDrawer(scrollDrawerView);
             }
         });
+    }
+
+    public void redirectToNotificationSoundList(){
+        redirectToFragment(new NotificationSoundListFragment(), true);
     }
 
     public void redirectToConventionList(){
