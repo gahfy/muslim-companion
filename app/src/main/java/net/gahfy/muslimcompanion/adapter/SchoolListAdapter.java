@@ -1,60 +1,27 @@
 package net.gahfy.muslimcompanion.adapter;
 
 import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import net.gahfy.muslimcompanion.MainActivity;
 import net.gahfy.muslimcompanion.R;
 import net.gahfy.muslimcompanion.utils.PrayerTimesUtils;
 import net.gahfy.muslimcompanion.utils.SharedPreferencesUtils;
-import net.gahfy.muslimcompanion.utils.ViewUtils;
 
-public class SchoolListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+/**
+ * This class is used as adapter for list of schools in the settings.
+ */
+public class SchoolListAdapter extends ItemListAdapter {
+    /** The list of schools of the current adapter */
     PrayerTimesUtils.School[] schools;
-    RecyclerView recyclerView;
-    MainActivity activity;
 
-    public SchoolListAdapter(RecyclerView recyclerView, MainActivity activity){
+    /**
+     * Instantiates a new adapter
+     * @param recyclerView The RecyclerView on which the adapter is applied
+     * @param activity     The parent activity
+     */
+    public SchoolListAdapter(RecyclerView recyclerView, MainActivity activity) {
+        super(recyclerView, activity);
         schools = PrayerTimesUtils.School.values();
-        this.recyclerView = recyclerView;
-        this.activity = activity;
-    }
-
-    @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int position) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_list, parent, false);
-        v.setOnClickListener(new ItemClickedListener());
-        ViewHolder holder = new ViewHolder(v);
-        ViewUtils.setTypefaceToTextView(activity, holder.lblSchoolName, ViewUtils.FONT_WEIGHT.REGULAR);
-        return holder;
-    }
-
-    @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder viewHolder, int position) {
-        ViewHolder holder = (ViewHolder) viewHolder;
-        if(position == 0){
-            holder.lblSchoolName.setText(R.string.automatic);
-            if(SharedPreferencesUtils.getSchoolIsAutomatic(activity))
-                holder.imgTick.setVisibility(View.VISIBLE);
-            else
-                holder.imgTick.setVisibility(View.INVISIBLE);
-        }
-        else {
-            holder.lblSchoolName.setText(PrayerTimesUtils.getSchoolResId(schools[position-1]));
-            if(!SharedPreferencesUtils.getSchoolIsAutomatic(activity)) {
-                if (SharedPreferencesUtils.getSchoolValue(activity) == PrayerTimesUtils.getSchoolPreferenceValue(schools[position-1]))
-                    holder.imgTick.setVisibility(View.VISIBLE);
-                else
-                    holder.imgTick.setVisibility(View.INVISIBLE);
-            }
-            else{
-                holder.imgTick.setVisibility(View.INVISIBLE);
-            }
-        }
     }
 
     @Override
@@ -62,31 +29,34 @@ public class SchoolListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         return schools.length+1;
     }
 
-    private class ViewHolder extends RecyclerView.ViewHolder{
-        TextView lblSchoolName;
-        ImageView imgTick;
-
-        public ViewHolder(View itemView) {
-            super(itemView);
-
-            lblSchoolName = (TextView) itemView.findViewById(R.id.lbl_item);
-            imgTick = (ImageView) itemView.findViewById(R.id.img_tick_item);
-        }
+    @Override
+    public boolean isSelected(int position) {
+        if(position == 0)
+            return SharedPreferencesUtils.getSchoolIsAutomatic(activity);
+        // As position !=0
+        // It should be not automatic (first line)
+        // And the item saved in preference should be the one of the current position
+        return (!SharedPreferencesUtils.getSchoolIsAutomatic(activity))
+                && SharedPreferencesUtils.getSchoolValue(activity) == PrayerTimesUtils.getSchoolPreferenceValue(schools[position - 1]);
     }
 
-    private class ItemClickedListener implements View.OnClickListener {
-        @Override
-        public void onClick(View view) {
-            int itemPosition = recyclerView.getChildPosition(view);
-            if(itemPosition == 0) {
-                SharedPreferencesUtils.putSchoolIsAutomatic(activity, true);
-                SharedPreferencesUtils.putSchool(activity, -1);
-            }
-            else{
-                SharedPreferencesUtils.putSchoolIsAutomatic(activity, false);
-                SharedPreferencesUtils.putSchool(activity, PrayerTimesUtils.getSchoolPreferenceValue(schools[itemPosition-1]));
-            }
-            activity.onBackPressed();
+    @Override
+    public int getTextResId(int position) {
+        if(position == 0)
+            return R.string.automatic;
+        else
+            return PrayerTimesUtils.getSchoolResId(schools[position - 1]);
+    }
+
+    @Override
+    public void onClick(int position) {
+        if(position == 0) {
+            SharedPreferencesUtils.putSchoolIsAutomatic(activity, true);
+            SharedPreferencesUtils.putSchool(activity, -1);
+        }
+        else{
+            SharedPreferencesUtils.putSchoolIsAutomatic(activity, false);
+            SharedPreferencesUtils.putSchool(activity, PrayerTimesUtils.getSchoolPreferenceValue(schools[position - 1]));
         }
     }
 }

@@ -1,92 +1,62 @@
 package net.gahfy.muslimcompanion.adapter;
 
 import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import net.gahfy.muslimcompanion.MainActivity;
 import net.gahfy.muslimcompanion.R;
 import net.gahfy.muslimcompanion.utils.PrayerTimesUtils;
 import net.gahfy.muslimcompanion.utils.SharedPreferencesUtils;
-import net.gahfy.muslimcompanion.utils.ViewUtils;
 
-public class HigherLatitudeListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
-    PrayerTimesUtils.HigherLatitudeMode[] higherLatitudeModes;
-    RecyclerView recyclerView;
-    MainActivity activity;
+/**
+ * This class is used as adapter for list of methods for higher latitudes in the settings.
+ */
+public class HigherLatitudeListAdapter extends ItemListAdapter {
+    /** The list of methods for higher latitudes of the current adapter */
+    PrayerTimesUtils.HigherLatitudeMode[] higherLatitudes;
 
-    public HigherLatitudeListAdapter(RecyclerView recyclerView, MainActivity activity){
-        higherLatitudeModes = PrayerTimesUtils.HigherLatitudeMode.values();
-        this.recyclerView = recyclerView;
-        this.activity = activity;
-    }
-
-    @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int position) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_list, parent, false);
-        v.setOnClickListener(new ItemClickedListener());
-        ViewHolder holder = new ViewHolder(v);
-        ViewUtils.setTypefaceToTextView(activity, holder.lblHigherLatitudeName, ViewUtils.FONT_WEIGHT.REGULAR);
-        return holder;
-    }
-
-    @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder viewHolder, int position) {
-        ViewHolder holder = (ViewHolder) viewHolder;
-        if(position == 0){
-            if(SharedPreferencesUtils.getHigherLatitudeModeIsAutomatic(activity))
-                holder.imgTick.setVisibility(View.VISIBLE);
-            else
-                holder.imgTick.setVisibility(View.INVISIBLE);
-            holder.lblHigherLatitudeName.setText(R.string.automatic);
-        }
-        else {
-            if(!SharedPreferencesUtils.getHigherLatitudeModeIsAutomatic(activity)) {
-                if (SharedPreferencesUtils.getHigherLatitudeModeValue(activity) == PrayerTimesUtils.getHigherLatitudeModePreferenceValue(higherLatitudeModes[position-1]))
-                    holder.imgTick.setVisibility(View.VISIBLE);
-                else
-                    holder.imgTick.setVisibility(View.INVISIBLE);
-            }
-            else{
-                holder.imgTick.setVisibility(View.INVISIBLE);
-            }
-            holder.lblHigherLatitudeName.setText(PrayerTimesUtils.getHigherLatitudeModeResId(higherLatitudeModes[position-1]));
-        }
+    /**
+     * Instantiates a new adapter
+     * @param recyclerView The RecyclerView on which the adapter is applied
+     * @param activity     The parent activity
+     */
+    public HigherLatitudeListAdapter(RecyclerView recyclerView, MainActivity activity) {
+        super(recyclerView, activity);
+        higherLatitudes = PrayerTimesUtils.HigherLatitudeMode.values();
     }
 
     @Override
     public int getItemCount() {
-        return higherLatitudeModes.length+1;
+        return higherLatitudes.length+1;
     }
 
-    private class ViewHolder extends RecyclerView.ViewHolder{
-        TextView lblHigherLatitudeName;
-        ImageView imgTick;
+    @Override
+    public boolean isSelected(int position) {
+        if(position == 0)
+            return SharedPreferencesUtils.getHigherLatitudeModeIsAutomatic(activity);
+        // As position !=0
+        // It should be not automatic (first line)
+        // And the item saved in preference should be the one of the current position
+        return (!SharedPreferencesUtils.getHigherLatitudeModeIsAutomatic(activity))
+                && SharedPreferencesUtils.getHigherLatitudeModeValue(activity) == PrayerTimesUtils.getHigherLatitudeModePreferenceValue(higherLatitudes[position - 1]);
+    }
 
-        public ViewHolder(View itemView) {
-            super(itemView);
+    @Override
+    public int getTextResId(int position) {
+        if(position == 0)
+            return R.string.automatic;
+        else
+            return PrayerTimesUtils.getHigherLatitudeModeResId(higherLatitudes[position - 1]);
+    }
 
-            lblHigherLatitudeName = (TextView) itemView.findViewById(R.id.lbl_item);
-            imgTick = (ImageView) itemView.findViewById(R.id.img_tick_item);
+    @Override
+    public void onClick(int position) {
+        if(position == 0) {
+            SharedPreferencesUtils.putHigherLatitudeModeIsAutomatic(activity, true);
+            SharedPreferencesUtils.putHigherLatitudeMode(activity, -1);
         }
-    }
-
-    private class ItemClickedListener implements View.OnClickListener {
-        @Override
-        public void onClick(View view) {
-            int itemPosition = recyclerView.getChildPosition(view);
-            if(itemPosition == 0) {
-                SharedPreferencesUtils.putHigherLatitudeModeIsAutomatic(activity, true);
-                SharedPreferencesUtils.putHigherLatitudeMode(activity, -1);
-            }
-            else{
-                SharedPreferencesUtils.putHigherLatitudeModeIsAutomatic(activity, false);
-                SharedPreferencesUtils.putHigherLatitudeMode(activity, PrayerTimesUtils.getHigherLatitudeModePreferenceValue(higherLatitudeModes[itemPosition-1]));
-            }
-            activity.onBackPressed();
+        else{
+            SharedPreferencesUtils.putHigherLatitudeModeIsAutomatic(activity, false);
+            SharedPreferencesUtils.putHigherLatitudeMode(activity, PrayerTimesUtils.getHigherLatitudeModePreferenceValue(higherLatitudes[position - 1]));
         }
     }
 }
