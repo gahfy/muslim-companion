@@ -282,7 +282,14 @@ public class PrayerTimeFragment extends AbstractFragment{
             lblTimeMaghrib.setText(simpleDateFormat.format(new Date(prayerTimesUtils.getMaghribTimestamp())));
             lblTimeIsha.setText(simpleDateFormat.format(new Date(prayerTimesUtils.getIshaTimestamp())));
 
-            AlarmUtils.notifyAndSetNextAlarm(getMainActivity(), false);
+            new Thread(
+                new Runnable() {
+                    @Override
+                    public void run() {
+                        AlarmUtils.notifyAndSetNextAlarm(getMainActivity(), false);
+                    }
+                }
+            ).start();
         }
     }
 }
