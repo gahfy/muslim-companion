@@ -15,6 +15,131 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
                 <LinearLayout
+                    android:id="@+id/lyt_prayer_notification"
+                    android:layout_width="wrap_content"
+                    android:layout_height="48dp"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentLeft="true">
+                    <TextView
+                        android:id="@+id/lbl_prayer_notification_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/prayer_notification"
+                        android:textSize="14sp"
+                        android:textColor="@color/accent"
+                        android:paddingTop="14.33dp"
+                        android:paddingBottom="14.33dp"
+                        android:paddingLeft="16dp"
+                        />
+                </LinearLayout>
+                <RelativeLayout
+                    android:id="@+id/lyt_choose_if_notification"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_below="@id/lyt_prayer_notification"
+                    android:background="@drawable/menu_item_background">
+                    <ImageView
+                        android:id="@+id/img_choose_if_notification"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_centerVertical="true"
+                        android:layout_alignParentLeft="true"
+                        android:layout_marginLeft="16dp"
+                        android:layout_marginRight="16dp"
+                        android:src="@drawable/ic_notifications_accent_24px" />
+                    <RelativeLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_toRightOf="@id/img_choose_if_notification"
+                        android:padding="16dp"
+                        android:layout_centerVertical="true">
+                        <TextView
+                            android:id="@+id/lbl_choose_if_notification"
+                            android:layout_alignParentTop="true"
+                            android:layout_alignParentLeft="true"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="16sp"
+                            android:textColor="@color/black_87"
+                            android:singleLine="false" />
+                        <android.support.v7.widget.SwitchCompat
+                            android:id="@+id/sw_choose_if_notification"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true"
+                            android:layout_marginRight="16dp"
+                            android:layout_centerVertical="true" />
+                    </RelativeLayout>
+                    <View
+                        android:layout_toRightOf="@id/img_choose_if_notification"
+                        android:layout_alignParentBottom="true"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/white_87" />
+                </RelativeLayout>
+
+
+                <RelativeLayout
+                    android:id="@+id/lyt_choose_notification_sound"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_below="@id/lyt_choose_if_notification"
+                    android:background="@drawable/menu_item_background">
+                    <ImageView
+                        android:id="@+id/img_choose_notification_sound"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_centerVertical="true"
+                        android:layout_alignParentLeft="true"
+                        android:layout_marginLeft="16dp"
+                        android:layout_marginRight="16dp"
+                        android:src="@drawable/ic_music_note_accent_24px" />
+                    <RelativeLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_toRightOf="@id/img_choose_notification_sound"
+                        android:padding="16dp"
+                        android:layout_centerVertical="true">
+                        <TextView
+                            android:id="@+id/lbl_choose_notification_sound"
+                            android:layout_alignParentTop="true"
+                            android:layout_alignParentLeft="true"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="16sp"
+                            android:textColor="@color/black_87"
+                            android:singleLine="false"
+                            android:text="@string/prayer_notification_sound" />
+                        <TextView
+                            android:id="@+id/lbl_choose_notification_sound_details"
+                            android:layout_below="@id/lbl_choose_notification_sound"
+                            android:layout_alignParentLeft="true"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="14sp"
+                            android:textColor="@color/black_54"
+                            android:singleLine="false" />
+                    </RelativeLayout>
+                    <View
+                        android:layout_toRightOf="@id/img_choose_notification_sound"
+                        android:layout_alignParentBottom="true"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/white_87" />
+                </RelativeLayout>
+            </RelativeLayout>
+        </android.support.v7.widget.CardView>
+
+        <android.support.v7.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp">
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <LinearLayout
                     android:id="@+id/lyt_prayer_time_title"
                     android:layout_width="wrap_content"
                     android:layout_height="48dp"
@@ -181,131 +306,6 @@
                     </RelativeLayout>
                 </RelativeLayout>
 
-            </RelativeLayout>
-        </android.support.v7.widget.CardView>
-
-        <android.support.v7.widget.CardView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp">
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-                <LinearLayout
-                    android:id="@+id/lyt_prayer_notification"
-                    android:layout_width="wrap_content"
-                    android:layout_height="48dp"
-                    android:layout_alignParentTop="true"
-                    android:layout_alignParentLeft="true">
-                    <TextView
-                        android:id="@+id/lbl_prayer_notification_title"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/prayer_notification"
-                        android:textSize="14sp"
-                        android:textColor="@color/accent"
-                        android:paddingTop="14.33dp"
-                        android:paddingBottom="14.33dp"
-                        android:paddingLeft="16dp"
-                        />
-                </LinearLayout>
-                <RelativeLayout
-                    android:id="@+id/lyt_choose_if_notification"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentLeft="true"
-                    android:layout_below="@id/lyt_prayer_notification"
-                    android:background="@drawable/menu_item_background">
-                    <ImageView
-                        android:id="@+id/img_choose_if_notification"
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
-                        android:layout_centerVertical="true"
-                        android:layout_alignParentLeft="true"
-                        android:layout_marginLeft="16dp"
-                        android:layout_marginRight="16dp"
-                        android:src="@drawable/ic_notifications_accent_24px" />
-                    <RelativeLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_toRightOf="@id/img_choose_if_notification"
-                        android:padding="16dp"
-                        android:layout_centerVertical="true">
-                        <TextView
-                            android:id="@+id/lbl_choose_if_notification"
-                            android:layout_alignParentTop="true"
-                            android:layout_alignParentLeft="true"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:textSize="16sp"
-                            android:textColor="@color/black_87"
-                            android:singleLine="false" />
-                        <android.support.v7.widget.SwitchCompat
-                            android:id="@+id/sw_choose_if_notification"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentRight="true"
-                            android:layout_marginRight="16dp"
-                            android:layout_centerVertical="true" />
-                    </RelativeLayout>
-                    <View
-                        android:layout_toRightOf="@id/img_choose_if_notification"
-                        android:layout_alignParentBottom="true"
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:background="@color/white_87" />
-                </RelativeLayout>
-
-
-                <RelativeLayout
-                    android:id="@+id/lyt_choose_notification_sound"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentLeft="true"
-                    android:layout_below="@id/lyt_choose_if_notification"
-                    android:background="@drawable/menu_item_background">
-                    <ImageView
-                        android:id="@+id/img_choose_notification_sound"
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
-                        android:layout_centerVertical="true"
-                        android:layout_alignParentLeft="true"
-                        android:layout_marginLeft="16dp"
-                        android:layout_marginRight="16dp"
-                        android:src="@drawable/ic_music_note_accent_24px" />
-                    <RelativeLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_toRightOf="@id/img_choose_notification_sound"
-                        android:padding="16dp"
-                        android:layout_centerVertical="true">
-                        <TextView
-                            android:id="@+id/lbl_choose_notification_sound"
-                            android:layout_alignParentTop="true"
-                            android:layout_alignParentLeft="true"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:textSize="16sp"
-                            android:textColor="@color/black_87"
-                            android:singleLine="false"
-                            android:text="@string/prayer_notification_sound" />
-                        <TextView
-                            android:id="@+id/lbl_choose_notification_sound_details"
-                            android:layout_below="@id/lbl_choose_notification_sound"
-                            android:layout_alignParentLeft="true"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:textSize="14sp"
-                            android:textColor="@color/black_54"
-                            android:singleLine="false" />
-                    </RelativeLayout>
-                    <View
-                        android:layout_toRightOf="@id/img_choose_notification_sound"
-                        android:layout_alignParentBottom="true"
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:background="@color/white_87" />
-                </RelativeLayout>
             </RelativeLayout>
         </android.support.v7.widget.CardView>
     </LinearLayout>
