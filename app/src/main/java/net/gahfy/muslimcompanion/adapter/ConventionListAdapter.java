@@ -4,6 +4,7 @@ import android.support.v7.widget.RecyclerView;
 
 import net.gahfy.muslimcompanion.MainActivity;
 import net.gahfy.muslimcompanion.R;
+import net.gahfy.muslimcompanion.utils.AlarmUtils;
 import net.gahfy.muslimcompanion.utils.PrayerTimesUtils;
 import net.gahfy.muslimcompanion.utils.SharedPreferencesUtils;
 
@@ -58,5 +59,11 @@ public class ConventionListAdapter extends ItemListAdapter {
             SharedPreferencesUtils.putConventionIsAutomatic(activity, false);
             SharedPreferencesUtils.putConvention(activity, PrayerTimesUtils.getConventionPreferenceValue(conventions[position - 1]));
         }
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                AlarmUtils.notifyAndSetNextAlarm(activity, false);
+            }
+        }).start();
     }
 }
