@@ -153,4 +153,14 @@
     <string name="method_angle_based">Basée sur l\'angle</string>
     <string name="method_middle_of_night">Moitié de la nuit</string>
     <string name="method_seventh">Septième de la nuit</string>
+
+    <string name="prayer_notification">Notifications des prières</string>
+
+    <string name="prayer_notification_enabled">Notifications activées</string>
+    <string name="prayer_notification_disabled">Notifications desactivées</string>
+
+    <string name="prayer_notification_sound">Son de notification</string>
+    <string name="sound_none">Aucun</string>
+    <string name="sound_android_default">Son Android par défaut</string>
+    <string name="sound_adhan">Adhan</string>
 </resources>

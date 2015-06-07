@@ -114,10 +114,10 @@
     <string name="method_middle_of_night">Middle of the Night</string>
     <string name="method_seventh">One Seventh of the Night</string>
 
-    <string name="prayer_notification">Prayer\'s notification</string>
+    <string name="prayer_notification">Notifications of prayers</string>
 
-    <string name="prayer_notification_enabled">Notification enabled</string>
-    <string name="prayer_notification_disabled">Notification disabled</string>
+    <string name="prayer_notification_enabled">Notifications enabled</string>
+    <string name="prayer_notification_disabled">Notifications disabled</string>
 
     <string name="prayer_notification_sound">Sound of notification</string>
     <string name="sound_none">None</string>

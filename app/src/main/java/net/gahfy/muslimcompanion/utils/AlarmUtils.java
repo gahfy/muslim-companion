@@ -49,10 +49,23 @@ public class AlarmUtils extends BroadcastReceiver{
             int month = gregorianCalendar.get(Calendar.MONTH)+1;
             int year = gregorianCalendar.get(Calendar.YEAR);
 
+            PrayerTimesUtils prayerTimesUtils = new PrayerTimesUtils(context, year, month, day, muslimLocation.getLocationLatitude(), muslimLocation.getLocationLongitude(), PrayerTimesUtils.Convention.MUSLIM_WORLD_LEAGUE, PrayerTimesUtils.School.NOT_HANAFI);
+            boolean countryHasBeenChanged = false;
+
             String[] locationDatas = LocationUtils.getCountryIsoAndCityName(context, muslimLocation);
 
-            PrayerTimesUtils prayerTimesUtils = new PrayerTimesUtils(context, year, month, day, muslimLocation.getLocationLatitude(), muslimLocation.getLocationLongitude(), PrayerTimesUtils.Convention.MUSLIM_WORLD_LEAGUE, PrayerTimesUtils.School.NOT_HANAFI);
-            prayerTimesUtils.changeCountry(locationDatas[0].toLowerCase());
+            String countryIso = LocationUtils.getCountryIso(context);
+            if(countryIso != null){
+                prayerTimesUtils.changeCountry(countryIso.toLowerCase());
+                countryHasBeenChanged = true;
+            }
+            if(!countryHasBeenChanged){
+                if(locationDatas != null) {
+                    if(locationDatas[0] != null) {
+                        prayerTimesUtils.changeCountry(locationDatas[0].toLowerCase());
+                    }
+                }
+            }
 
             long currentTimestamp = new Date().getTime();
             long currentTimestampMinus10Minutes = currentTimestamp - (35l*60000l);
@@ -60,7 +73,12 @@ public class AlarmUtils extends BroadcastReceiver{
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat(context.getString(R.string.hour_format), Locale.getDefault());
 
             long timestampOfNextAlarm = 0l;
-            String cityName = locationDatas[1];
+
+            String cityName = "";
+            if(locationDatas != null) {
+                if(locationDatas[1] != null)
+                cityName = locationDatas[1];
+            }
             String notificationTitle = "";
             String notificationContent = "";
 
