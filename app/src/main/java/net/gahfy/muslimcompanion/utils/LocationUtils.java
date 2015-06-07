@@ -3,6 +3,7 @@ package net.gahfy.muslimcompanion.utils;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteException;
 import android.location.Location;
 import android.location.LocationManager;
 import android.support.annotation.Nullable;
@@ -169,6 +170,10 @@ public class LocationUtils {
             return null;
         }
         catch(SQLException e){
+            // TODO: Handle error
+            return null;
+        }
+        catch(SQLiteException e){
             // TODO: Handle error
             return null;
         }
