@@ -110,4 +110,14 @@
     <string name="method_angle_based">بناءً على الزاوية</string>
     <string name="method_middle_of_night">نصف الليل</string>
     <string name="method_seventh">سُبع الليل</string>
+
+    <string name="prayer_notification"> إشعارات الصلاة</string>
+
+    <string name="prayer_notification_enabled"> الاشعارات مشغلة</string>
+    <string name="prayer_notification_disabled">الاشعارات غير مشغلة</string>
+
+    <string name="prayer_notification_sound">صوت الاشعار</string>
+    <string name="sound_none">صامت</string>
+    <string name="sound_android_default">صوت الاندرويد الافتراضي</string>
+    <string name="sound_adhan">الآذان</string>
 </resources>

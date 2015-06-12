@@ -223,6 +223,9 @@ public class AlarmUtils extends BroadcastReceiver{
                     soundUri = normalAdhanUri;
                 }
             }
+            else{
+                shouldNotify = false;
+            }
 
 
             if(shouldNotify) {
