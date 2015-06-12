@@ -73,6 +73,7 @@
     <string name="prayer_name_fajr">Fajr</string>
     <string name="prayer_name_sunrise">Shorouq</string>
     <string name="prayer_name_dhuhr">Dohr</string>
+    <string name="prayer_name_jumuah">Jumu\'a</string>
     <string name="prayer_name_asr">Asr</string>
     <string name="prayer_name_maghrib">Maghreb</string>
     <string name="prayer_name_isha">Icha</string>

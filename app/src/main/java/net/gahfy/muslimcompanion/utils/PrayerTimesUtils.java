@@ -4,6 +4,8 @@ import android.content.Context;
 
 import net.gahfy.muslimcompanion.R;
 
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 
 public class PrayerTimesUtils {
@@ -440,6 +442,14 @@ public class PrayerTimesUtils {
 
     public double getDhuhrOfNextDay(){
         return 12.0 - (longitude/15.0) - (equationOfTime(time+(1.0/36525.0))/60.0);
+    }
+
+    public boolean isFriday(){
+        long dhuhrTimestamp = getDhuhrTimestamp();
+        GregorianCalendar calendar = new GregorianCalendar();
+        calendar.setTimeInMillis(dhuhrTimestamp);
+
+        return calendar.get(Calendar.DAY_OF_WEEK) == 6;
     }
 
     /**

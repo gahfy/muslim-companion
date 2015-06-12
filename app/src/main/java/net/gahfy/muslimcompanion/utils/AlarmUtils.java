@@ -163,10 +163,13 @@ public class AlarmUtils extends BroadcastReceiver{
             else if(prayerTimesUtils.getDhuhrTimestamp() < currentTimestamp && prayerTimesUtils.getDhuhrTimestamp() > currentTimestampMinus10Minutes){
                 // Dhuhr
                 timestampOfNextAlarm = prayerTimesUtils.getAsrTimestamp();
-                notificationTitle = context.getString(R.string.prayer_name_dhuhr);
+                if(prayerTimesUtils.isFriday())
+                    notificationTitle = context.getString(R.string.prayer_name_jumuah);
+                else
+                    notificationTitle = context.getString(R.string.prayer_name_dhuhr);
 
                 notificationContent = context.getString(R.string.prayer_notification_content,
-                        context.getString(R.string.prayer_name_dhuhr),
+                        notificationTitle,
                         simpleDateFormat.format(new Date(prayerTimesUtils.getDhuhrTimestamp())),
                         cityName);
                 shouldNotify = shouldNotify && (prayerTimesUtils.getDhuhrTimestamp() != SharedPreferencesUtils.getLastNotificationPrayer(context));

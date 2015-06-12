@@ -36,6 +36,7 @@
     <string name="prayer_name_fajr">Fajr</string>
     <string name="prayer_name_sunrise">Sunrise</string>
     <string name="prayer_name_dhuhr">Dhuhr</string>
+    <string name="prayer_name_jumuah">Jumu\'ah</string>
     <string name="prayer_name_asr">Asr</string>
     <string name="prayer_name_maghrib">Maghrib</string>
     <string name="prayer_name_isha">Isha\'a</string>

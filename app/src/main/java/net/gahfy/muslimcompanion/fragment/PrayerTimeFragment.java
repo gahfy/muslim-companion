@@ -30,6 +30,7 @@ public class PrayerTimeFragment extends AbstractFragment{
     private String cityName;
     private String countryIso;
 
+    private TextView lblPrayerDhuhr;
     private TextView lblTimeFajr;
     private TextView lblTimeSunrise;
     private TextView lblTimeDhuhr;
@@ -94,7 +95,7 @@ public class PrayerTimeFragment extends AbstractFragment{
 
         TextView lblPrayerFajr = (TextView) fragmentView.findViewById(R.id.lbl_prayer_fajr);
         TextView lblPrayerSunrise = (TextView) fragmentView.findViewById(R.id.lbl_prayer_sunrise);
-        TextView lblPrayerDhuhr = (TextView) fragmentView.findViewById(R.id.lbl_prayer_dhuhr);
+        lblPrayerDhuhr = (TextView) fragmentView.findViewById(R.id.lbl_prayer_dhuhr);
         TextView lblPrayerAsr = (TextView) fragmentView.findViewById(R.id.lbl_prayer_asr);
         TextView lblPrayerMaghrib = (TextView) fragmentView.findViewById(R.id.lbl_prayer_maghrib);
         TextView lblPrayerIsha = (TextView) fragmentView.findViewById(R.id.lbl_prayer_isha);
@@ -235,6 +236,12 @@ public class PrayerTimeFragment extends AbstractFragment{
             int year = prayerTimesUtils.getYear();
             int month = prayerTimesUtils.getMonth();
             int day = prayerTimesUtils.getDay();
+
+            if(prayerTimesUtils.isFriday())
+                lblPrayerDhuhr.setText(R.string.prayer_name_jumuah);
+            else
+                lblPrayerDhuhr.setText(R.string.prayer_name_dhuhr);
+
 
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat(getActivity().getString(R.string.hour_format), Locale.getDefault());
 

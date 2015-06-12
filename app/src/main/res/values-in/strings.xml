@@ -38,6 +38,7 @@
     <string name="prayer_name_fajr">Subuh</string>
     <string name="prayer_name_sunrise">Terbit</string>
     <string name="prayer_name_dhuhr">Zuhur</string>
+    <string name="prayer_name_jumuah">Jumat</string>
     <string name="prayer_name_asr">Asar</string>
     <string name="prayer_name_maghrib">Maghrib</string>
     <string name="prayer_name_isha">Isya</string>
