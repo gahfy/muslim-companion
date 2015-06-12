@@ -23,15 +23,14 @@
     <string name="west_abbreviation">W</string>
 
     <string name="qibla_at">Qibla at %s</string>
-    <string name="last_geolocation_on">Last geolocation the %1$s at %2$s</string>
-    <string name="short_date_format">MM/dd/yyyy</string>
+    <string name="last_geolocation_on">Last geolocation: %1$s at %2$s</string>
     <string name="hour_format">HH:mm</string>
 
     <string name="prayer_times">Prayer times</string>
     <string name="salat">Salat</string>
     <string name="salat_at">Salat in %s</string>
 
-    <string name="gregorian_date_format" formatted="false">%1$s %2$d %3$d</string>
+    <string name="gregorian_date_format" formatted="false">%1$s %2$d%4$s, %3$d</string>
     <string name="islamic_date_format" formatted="false">%1$d %2$s %3$d</string>
 
     <string name="prayer_name_fajr">Fajr</string>
@@ -45,7 +44,7 @@
     <string name="prayer_notification_content">%1$s: %2$s in %3$s</string>
 
     <string-array name="islamic_month">
-        <item></item>
+        <item />
         <item>Muḥarram</item>
         <item>Ṣafar</item>
         <item>Rabī‘ I</item>
@@ -61,8 +60,8 @@
     </string-array>
 
     <string-array name="gregorian_month">
-        <item></item>
-        <item>Janurary</item>
+        <item />
+        <item>January</item>
         <item>February</item>
         <item>March</item>
         <item>April</item>
@@ -99,7 +98,7 @@
     <string name="convention_name_jordan">Ministry of Awqaf Islamic Affairs and Holy Places, Jordan</string>
     <string name="convention_name_kuwait">Ministry of Awqaf and Islamic Affairs, Kuwait</string>
     <string name="convention_name_qatar">Qatar Calendar House</string>
-    <string name="convention_name_lybia">Ministry of Endowments and Islamic Affairs, Lybia</string>
+    <string name="convention_name_lybia">Ministry of Endowments and Islamic Affairs, Libya</string>
     <string name="convention_name_maldives">Ministry of Islamic Affairs, Maldives</string>
     <string name="convention_name_birmingham">Birmingham Central Mosque</string>
     <string name="convention_name_london">London Central Mosque</string>
@@ -123,4 +122,39 @@
     <string name="sound_none">None</string>
     <string name="sound_android_default">Android default</string>
     <string name="sound_adhan">Adhan</string>
+
+    <string-array name="day_number_suffix">
+        <item />
+        <item />
+        <item />
+        <item />
+        <item />
+        <item />
+        <item />
+        <item />
+        <item />
+        <item />
+        <item />
+        <item />
+        <item />
+        <item />
+        <item />
+        <item />
+        <item />
+        <item />
+        <item />
+        <item />
+        <item />
+        <item />
+        <item />
+        <item />
+        <item />
+        <item />
+        <item />
+        <item />
+        <item />
+        <item />
+        <item />
+        <item />
+    </string-array>
 </resources>

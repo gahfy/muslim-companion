@@ -22,9 +22,8 @@
 
     <string name="qibla_at">Kiblat di %s</string>
 
-    <string name="last_geolocation_on">Geolokasi terakhir %1$s hingga %2$s</string>
+    <string name="last_geolocation_on">Geolokasi terakhir : %1$s hingga %2$s</string>
 
-    <string name="short_date_format">dd/MM/yyyy</string>
     <string name="hour_format">HH:mm</string>
 
     <string name="prayer_times">Waktu Shalat</string>
@@ -32,7 +31,7 @@
 
     <string name="salat_at">Waktu shalat untuk %s</string>
 
-    <string formatted="false" name="gregorian_date_format">%2$d %1$s %3$d</string>
+    <string formatted="false" name="gregorian_date_format">%2$d%4$s %1$s %3$d</string>
 
     <string formatted="false" name="islamic_date_format">%1$d %2$s %3$d</string>
 
@@ -47,7 +46,7 @@
     <string name="prayer_notification_content">%1$s: %2$s di %3$s</string>
 
     <string-array name="islamic_month">
-        <item/>
+        <item />
         <item>Muharram</item>
         <item>Safar</item>
         <item>Robiul awal</item>
@@ -63,7 +62,7 @@
     </string-array>
 
     <string-array name="gregorian_month">
-        <item/>
+        <item />
         <item>Januari</item>
         <item>Februari</item>
         <item>Maret</item>
@@ -115,4 +114,39 @@
     <string name="method_angle_based">Berdasarkan Sudut</string>
     <string name="method_middle_of_night">Separuh Malam</string>
     <string name="method_seventh">1/7 Malam</string>
+
+    <string-array name="day_number_suffix">
+        <item />
+        <item />
+        <item />
+        <item />
+        <item />
+        <item />
+        <item />
+        <item />
+        <item />
+        <item />
+        <item />
+        <item />
+        <item />
+        <item />
+        <item />
+        <item />
+        <item />
+        <item />
+        <item />
+        <item />
+        <item />
+        <item />
+        <item />
+        <item />
+        <item />
+        <item />
+        <item />
+        <item />
+        <item />
+        <item />
+        <item />
+        <item />
+    </string-array>
 </resources>

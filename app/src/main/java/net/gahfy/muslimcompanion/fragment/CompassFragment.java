@@ -27,6 +27,8 @@ import net.gahfy.muslimcompanion.utils.ViewUtils;
 import net.gahfy.muslimcompanion.view.CompassArrowView;
 
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.Locale;
 
 public class CompassFragment extends AbstractFragment implements ViewTreeObserver.OnGlobalLayoutListener, SensorEventListener {
@@ -350,7 +352,18 @@ public class CompassFragment extends AbstractFragment implements ViewTreeObserve
                 public void run() {
                     getMainActivity().setTitle(getMainActivity().getString(R.string.qibla_at, cityName));
                     if(getMainActivity().getCurrentLocation().getLocationMode() == MuslimLocation.MODE.MODE_PROVIDER) {
-                        String date = new SimpleDateFormat(getMainActivity().getString(R.string.short_date_format), Locale.getDefault()).format(getMainActivity().getCurrentLocation().getLocationTime());
+                        GregorianCalendar calendar = new GregorianCalendar();
+                        calendar.setTimeInMillis(getMainActivity().getCurrentLocation().getLocationTime());
+                        int year = calendar.get(Calendar.YEAR);
+                        int month = calendar.get(Calendar.MONTH)+1;
+                        int day = calendar.get(Calendar.DAY_OF_MONTH);
+
+                        String[] gregorianMonths = getActivity().getResources().getStringArray(R.array.gregorian_month);
+                        String[] daySuffix = getActivity().getResources().getStringArray(R.array.day_number_suffix);
+
+                        String gregorianDateFormat = getActivity().getString(R.string.gregorian_date_format);
+
+                        String date = String.format(gregorianDateFormat, gregorianMonths[month], day, year, daySuffix[day]);
                         String hour = new SimpleDateFormat(getMainActivity().getString(R.string.hour_format), Locale.getDefault()).format(getMainActivity().getCurrentLocation().getLocationTime());
                         getMainActivity().setSubTitle(getMainActivity().getString(R.string.last_geolocation_on, date, hour));
                     }
@@ -379,7 +392,18 @@ public class CompassFragment extends AbstractFragment implements ViewTreeObserve
         }
         if(getMainActivity().getCurrentLocation() != null){
             if(getMainActivity().getCurrentLocation().getLocationMode() == MuslimLocation.MODE.MODE_PROVIDER) {
-                String date = new SimpleDateFormat(getMainActivity().getString(R.string.short_date_format), Locale.getDefault()).format(getMainActivity().getCurrentLocation().getLocationTime());
+                GregorianCalendar calendar = new GregorianCalendar();
+                calendar.setTimeInMillis(getMainActivity().getCurrentLocation().getLocationTime());
+                int year = calendar.get(Calendar.YEAR);
+                int month = calendar.get(Calendar.MONTH)+1;
+                int day = calendar.get(Calendar.DAY_OF_MONTH);
+
+                String[] gregorianMonths = getActivity().getResources().getStringArray(R.array.gregorian_month);
+                String[] daySuffix = getActivity().getResources().getStringArray(R.array.day_number_suffix);
+
+                String gregorianDateFormat = getActivity().getString(R.string.gregorian_date_format);
+
+                String date = String.format(gregorianDateFormat, gregorianMonths[month], day, year, daySuffix[day]);
                 String hour = new SimpleDateFormat(getMainActivity().getString(R.string.hour_format), Locale.getDefault()).format(getMainActivity().getCurrentLocation().getLocationTime());
                 getMainActivity().setSubTitle(getMainActivity().getString(R.string.last_geolocation_on, date, hour));
             }

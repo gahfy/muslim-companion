@@ -38,13 +38,8 @@
 
     <string name="qibla_at">Qibla à %s</string>
     <!-- %1$s est pour le jour de la date, %2$s est pour l'heure -->
-    <string name="last_geolocation_on">Dernière géolocalisation le %1$s à %2$s</string>
+    <string name="last_geolocation_on">Dernière géolocalisation : %1$s à %2$s</string>
 
-    <!-- Format de la date: Garder les groupes de lettre tels quels -->
-    <!-- dd pour le jour sur 2 chiffres -->
-    <!-- MM pour le mois sur 2 chiffres -->
-    <!-- yyyy pour l'année sur 4 chiffres -->
-    <string name="short_date_format">dd/MM/yyyy</string>
     <!-- Format de l'heure -->
     <!-- HH pour l'heure sur 2 chiffres -->
     <!-- mm pour les minutes sur 2 chiffres -->
@@ -60,10 +55,11 @@
     <!-- %2$d est pour le numéro du jour -->
     <!-- %1$s est pour le nom du mois -->
     <!-- %3$d est pour le numéro de l'année -->
-    <!-- %2$d %1$s %3$d => 2 Mai 2015 -->
-    <!-- %1$s %2$d %3$d => Mai 2 2015 -->
-    <!-- %3$d %1$s %2$d => 2015 Mai 2 -->
-    <string name="gregorian_date_format" formatted="false">%2$d %1$s %3$d</string>
+    <!-- %4$s est pour le suffixe du jour -->
+    <!-- %2$d%4$s %1$s %3$d => 1er Mai 2015 -->
+    <!-- %1$s %2$d%4$s %3$d => Mai 1er 2015 -->
+    <!-- %3$d %1$s %2$d%4$s => 2015 Mai 1er -->
+    <string name="gregorian_date_format" formatted="false">%2$d%4$s %1$s %3$d</string>
 
     <!-- Format de date islamique -->
     <!-- %1$d est pour le numéro du jour -->
@@ -85,7 +81,7 @@
     <string name="prayer_notification_content">%1$s : %2$s à %3$s</string>
 
     <string-array name="islamic_month">
-        <item></item>
+        <item />
         <item>Mouharram</item>
         <item>Safar</item>
         <item>Rabia al awal</item>
@@ -101,7 +97,7 @@
     </string-array>
 
     <string-array name="gregorian_month">
-        <item></item>
+        <item />
         <item>Janvier</item>
         <item>Février</item>
         <item>Mars</item>
@@ -163,4 +159,39 @@
     <string name="sound_none">Aucun</string>
     <string name="sound_android_default">Son Android par défaut</string>
     <string name="sound_adhan">Adhan</string>
+
+    <string-array name="day_number_suffix">
+        <item />
+        <item>er</item>
+        <item />
+        <item />
+        <item />
+        <item />
+        <item />
+        <item />
+        <item />
+        <item />
+        <item />
+        <item />
+        <item />
+        <item />
+        <item />
+        <item />
+        <item />
+        <item />
+        <item />
+        <item />
+        <item />
+        <item />
+        <item />
+        <item />
+        <item />
+        <item />
+        <item />
+        <item />
+        <item />
+        <item />
+        <item />
+        <item />
+    </string-array>
 </resources>

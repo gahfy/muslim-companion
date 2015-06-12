@@ -240,6 +240,7 @@ public class PrayerTimeFragment extends AbstractFragment{
 
             String[] islamicMonths = getActivity().getResources().getStringArray(R.array.islamic_month);
             String[] gregorianMonths = getActivity().getResources().getStringArray(R.array.gregorian_month);
+            String[] daySuffix = getActivity().getResources().getStringArray(R.array.day_number_suffix);
 
             int[] hijri = DateUtils.getHijriFromJulianDay(DateUtils.dateToJulian(year, month, day));
 
@@ -247,7 +248,7 @@ public class PrayerTimeFragment extends AbstractFragment{
             String islamicDateFormat = getActivity().getString(R.string.islamic_date_format);
 
 
-            String gregorianDate = String.format(gregorianDateFormat, gregorianMonths[month], day, year);
+            String gregorianDate = String.format(gregorianDateFormat, gregorianMonths[month], day, year, daySuffix[day]);
             String islamicDate = String.format(islamicDateFormat, hijri[2], islamicMonths[hijri[1]], hijri[0]);
 
             getMainActivity().setSubTitle(String.format("%s (%s)", gregorianDate, islamicDate));

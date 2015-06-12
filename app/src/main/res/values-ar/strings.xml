@@ -20,15 +20,14 @@
     <string name="west_abbreviation">غ</string>
 
     <string name="qibla_at">القبلة في %s</string>
-	<string name="last_geolocation_on">آخر تحديد للموقع الجغرافي يوم %1$s في الساعة %2$s</string>
+    <string name="last_geolocation_on">آخر تحديد للموقع الجغرافي : %1$s في الساعة %2$s</string>
 
-    <string name="short_date_format">yyyy/MM/dd</string>
     <string name="hour_format">HH:mm</string>
     
     <string name="prayer_times">أوقات الصلاة</string>
     <string name="salat">الصلاة</string>
 	<string name="salat_at">الصلاة في %s</string>
-	<string name="gregorian_date_format" formatted="false">%2$d %1$s %3$d</string>
+	<string name="gregorian_date_format" formatted="false">%2$d%4$s %1$s %3$d</string>
 	<string name="islamic_date_format" formatted="false">%1$d %2$s %3$d</string>
 
     <string name="prayer_name_fajr">الفجر</string>
@@ -42,7 +41,7 @@
     <string name="prayer_notification_content">%1$s: %2$s في %3$s</string>
 
     <string-array name="islamic_month">
-        <item></item>
+        <item />
         <item>محرم</item>
         <item>صفر</item>
         <item>ربيع الأول</item>
@@ -58,7 +57,7 @@
     </string-array>
 
     <string-array name="gregorian_month">
-        <item></item>
+        <item />
         <item>يناير</item>
         <item>فبراير</item>
         <item>مارس</item>
@@ -120,4 +119,39 @@
     <string name="sound_none">صامت</string>
     <string name="sound_android_default">صوت الاندرويد الافتراضي</string>
     <string name="sound_adhan">الآذان</string>
+
+    <string-array name="day_number_suffix">
+        <item />
+        <item />
+        <item />
+        <item />
+        <item />
+        <item />
+        <item />
+        <item />
+        <item />
+        <item />
+        <item />
+        <item />
+        <item />
+        <item />
+        <item />
+        <item />
+        <item />
+        <item />
+        <item />
+        <item />
+        <item />
+        <item />
+        <item />
+        <item />
+        <item />
+        <item />
+        <item />
+        <item />
+        <item />
+        <item />
+        <item />
+        <item />
+    </string-array>
 </resources>
