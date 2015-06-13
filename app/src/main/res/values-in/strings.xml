@@ -84,8 +84,8 @@
 
     <string name="convention_name_mwl">Liga Muslim Dunia (L.M.D)</string>
     <string name="convention_name_isna">Masyarakat Islam Amerika Utara (MIAU)</string>
-    <string name="convention_name_egypt">Otoritas Survey Umum Mesir</string>
-    <string name="convention_name_makkah">Universitas Oumm al-Qura, Mekah</string>
+    <string name="convention_name_egypt">Otoritas Survei Umum Mesir</string>
+    <string name="convention_name_makkah">Universitas Umm Al-Qura, Mekkah</string>
     <string name="convention_name_karachi">Universitas Pengetahuan Islam, Karachi</string>
     <string name="convention_name_tehran">Institut Geofisika, Universitas Teheran</string>
     <string name="convention_name_jafari">Shia Ithna Ashari, Institut Riset Reva, Qom</string>
@@ -115,6 +115,16 @@
     <string name="method_angle_based">Berdasarkan Sudut</string>
     <string name="method_middle_of_night">Separuh Malam</string>
     <string name="method_seventh">1/7 Malam</string>
+
+    <string name="prayer_notification">Pemberitahuan Shalat</string>
+
+    <string name="prayer_notification_enabled">Pemberitahuan Dinyalakan</string>
+    <string name="prayer_notification_disabled">Pemberitahuan Dimatikan</string>
+
+    <string name="prayer_notification_sound">Nada dering pemberitahuan</string>
+    <string name="sound_none">Tidak Ada</string>
+    <string name="sound_android_default">Android default</string>
+    <string name="sound_adhan">Azan</string>
 
     <string-array name="day_number_suffix">
         <item />
