@@ -114,9 +114,11 @@ public class LocationUtils {
      */
     @Nullable
     public static String getCountryIso(Context context){
-        TelephonyManager telephonyManager = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
-        if(telephonyManager != null)
-            return telephonyManager.getNetworkCountryIso().toLowerCase();
+        if(context != null) {
+            TelephonyManager telephonyManager = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
+            if (telephonyManager != null)
+                return telephonyManager.getNetworkCountryIso().toLowerCase();
+        }
         return null;
     }
 
