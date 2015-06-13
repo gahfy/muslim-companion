@@ -10,6 +10,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.splunk.mint.Mint;
+import com.splunk.mint.MintLogLevel;
+
 import net.gahfy.muslimcompanion.R;
 import net.gahfy.muslimcompanion.models.MuslimLocation;
 import net.gahfy.muslimcompanion.utils.AlarmUtils;
@@ -20,6 +23,7 @@ import net.gahfy.muslimcompanion.utils.ViewUtils;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Locale;
 
 public class PrayerTimeFragment extends AbstractFragment{
@@ -289,6 +293,18 @@ public class PrayerTimeFragment extends AbstractFragment{
             lblTimeAsr.setText(simpleDateFormat.format(new Date(prayerTimesUtils.getAsrTimestamp())));
             lblTimeMaghrib.setText(simpleDateFormat.format(new Date(prayerTimesUtils.getMaghribTimestamp())));
             lblTimeIsha.setText(simpleDateFormat.format(new Date(prayerTimesUtils.getIshaTimestamp())));
+
+            SimpleDateFormat logSimpleDateFormat = new SimpleDateFormat(getActivity().getString(R.string.hour_format), Locale.US);
+
+            HashMap<String, Object> prayerData = new HashMap<String, Object>();
+            prayerData.put("Location", String.format(Locale.US, "%f,%f", prayerTimesUtils.getLatitude(), prayerTimesUtils.getLongitude()));
+            prayerData.put("Fajr", String.format("%s (%d)", logSimpleDateFormat.format(new Date(prayerTimesUtils.getFajrTimestamp())), prayerTimesUtils.getFajrTimestamp()/1000));
+            prayerData.put("Shuruq", String.format("%s (%d)", logSimpleDateFormat.format(new Date(prayerTimesUtils.getSunriseTimestamp())), prayerTimesUtils.getSunriseTimestamp()/1000));
+            prayerData.put("Dhuhr", String.format("%s (%d)", logSimpleDateFormat.format(new Date(prayerTimesUtils.getDhuhrTimestamp())), prayerTimesUtils.getDhuhrTimestamp()/1000));
+            prayerData.put("Asr", String.format("%s (%d)", logSimpleDateFormat.format(new Date(prayerTimesUtils.getAsrTimestamp())), prayerTimesUtils.getAsrTimestamp()/1000));
+            prayerData.put("Maghrib", String.format("%s (%d)", logSimpleDateFormat.format(new Date(prayerTimesUtils.getMaghribTimestamp())), prayerTimesUtils.getMaghribTimestamp()/1000));
+            prayerData.put("Isha", String.format("%s (%d)", logSimpleDateFormat.format(new Date(prayerTimesUtils.getIshaTimestamp())), prayerTimesUtils.getIshaTimestamp()/1000));
+            Mint.logEvent("Prayer times", MintLogLevel.Info, prayerData);
 
             new Thread(
                 new Runnable() {

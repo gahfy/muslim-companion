@@ -220,6 +220,14 @@ public class PrayerTimesUtils {
         return day;
     }
 
+    public double getLatitude(){
+        return latitude;
+    }
+
+    public double getLongitude(){
+        return longitude;
+    }
+
     public void changeCountry(String countryIso){
         Pair pair = COUNTRY_DEFAULT_CONVENTION.get(countryIso);
         if(pair != null){

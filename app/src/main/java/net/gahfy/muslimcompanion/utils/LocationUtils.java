@@ -155,6 +155,7 @@ public class LocationUtils {
 
             HashMap<String, Object> cityData = new HashMap<String, Object>();
             cityData.put("cityId", c.getLong(0));
+            cityData.put("location", String.format(Locale.US, "%f,%f", latitude, longitude));
             cityData.put("cityName", c.getString(2));
             cityData.put("cityCountry", c.getString(1));
             cityData.put("language", context.getString(R.string.language_name_for_database));
