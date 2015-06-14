@@ -161,6 +161,11 @@
     <string name="sound_android_default">Son Android par défaut</string>
     <string name="sound_adhan">Adhan</string>
 
+    <string name="jumuah_first_call">Premier appel de Jumu\'a</string>
+    <string name="jumuah_first_call_disabled">Désactivé</string>
+
+    <string name="minutes_before_jumuah">%d minutes avant Jumu\'a</string>
+
     <string-array name="day_number_suffix">
         <item />
         <item>er</item>

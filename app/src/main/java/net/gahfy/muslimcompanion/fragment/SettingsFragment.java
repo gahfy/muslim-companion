@@ -26,12 +26,16 @@ public class SettingsFragment extends AbstractFragment{
         RelativeLayout lytChooseAsr = (RelativeLayout) view.findViewById(R.id.lyt_choose_asr);
         RelativeLayout lytChooseHigherLatitude = (RelativeLayout) view.findViewById(R.id.lyt_choose_higher_latitude);
         RelativeLayout lytChooseNotificationSound = (RelativeLayout) view.findViewById(R.id.lyt_choose_notification_sound);
+        RelativeLayout lytChooseFirstCallJumuah = (RelativeLayout) view.findViewById(R.id.lyt_choose_first_call_jumuah);
 
         TextView lblPrayerTitle = (TextView) view.findViewById(R.id.lbl_prayer_title);
         TextView lblPrayerNotificationTitle = (TextView) view.findViewById(R.id.lbl_prayer_notification_title);
 
         TextView lblChooseConvention = (TextView) view.findViewById(R.id.lbl_choose_convention);
         TextView lblChooseConventionDetail= (TextView) view.findViewById(R.id.lbl_choose_convention_details);
+
+        TextView lblChooseFirstCallJumuah = (TextView) view.findViewById(R.id.lbl_choose_first_call_jumuah);
+        final TextView lblChooseFirstCallJumuahDetail= (TextView) view.findViewById(R.id.lbl_choose_first_call_jumuah_details);
 
         TextView lblChooseAsr= (TextView) view.findViewById(R.id.lbl_choose_asr);
         TextView lblChooseAsrDetail= (TextView) view.findViewById(R.id.lbl_choose_asr_details);
@@ -45,6 +49,7 @@ public class SettingsFragment extends AbstractFragment{
         TextView lblChooseNotificationSoundDetail= (TextView) view.findViewById(R.id.lbl_choose_notification_sound_details);
 
         SwitchCompat swChooseIfNotification = (SwitchCompat) view.findViewById(R.id.sw_choose_if_notification);
+        SwitchCompat swChooseJumuahFirstCall = (SwitchCompat) view.findViewById(R.id.sw_choose_if_first_call_jumuah);
 
         ViewUtils.setTypefaceToTextView(getActivity(), lblPrayerTitle, ViewUtils.FONT_WEIGHT.BOLD);
         ViewUtils.setTypefaceToTextView(getActivity(), lblPrayerNotificationTitle, ViewUtils.FONT_WEIGHT.BOLD);
@@ -54,30 +59,44 @@ public class SettingsFragment extends AbstractFragment{
         ViewUtils.setTypefaceToTextView(getActivity(), lblChooseHigherLatitude, ViewUtils.FONT_WEIGHT.MEDIUM);
         ViewUtils.setTypefaceToTextView(getActivity(), lblChooseIfNotification, ViewUtils.FONT_WEIGHT.MEDIUM);
         ViewUtils.setTypefaceToTextView(getActivity(), lblChooseNotificationSound, ViewUtils.FONT_WEIGHT.MEDIUM);
+        ViewUtils.setTypefaceToTextView(getActivity(), lblChooseFirstCallJumuah, ViewUtils.FONT_WEIGHT.MEDIUM);
 
         ViewUtils.setTypefaceToTextView(getActivity(), lblChooseConventionDetail, ViewUtils.FONT_WEIGHT.LIGHT);
         ViewUtils.setTypefaceToTextView(getActivity(), lblChooseAsrDetail, ViewUtils.FONT_WEIGHT.LIGHT);
         ViewUtils.setTypefaceToTextView(getActivity(), lblChooseHigherLatitudeDetail, ViewUtils.FONT_WEIGHT.LIGHT);
         ViewUtils.setTypefaceToTextView(getActivity(), lblChooseNotificationSoundDetail, ViewUtils.FONT_WEIGHT.LIGHT);
+        ViewUtils.setTypefaceToTextView(getActivity(), lblChooseFirstCallJumuahDetail, ViewUtils.FONT_WEIGHT.LIGHT);
 
         boolean isNotificationEnabled = SharedPreferencesUtils.getNotifyPrayer(getActivity());
         boolean isConventionAutomatic = SharedPreferencesUtils.getConventionIsAutomatic(getActivity());
         boolean isSchoolAutomatic = SharedPreferencesUtils.getSchoolIsAutomatic(getActivity());
         boolean isHigherLatitudeAutomatic = SharedPreferencesUtils.getHigherLatitudeModeIsAutomatic(getActivity());
+        boolean isJumuahFirstCallEnabled = SharedPreferencesUtils.getJumuahFirstCallEnabled(getActivity());
 
         int preferedConvention = SharedPreferencesUtils.getConventionValue(getMainActivity());
         int preferedAsr = SharedPreferencesUtils.getSchoolValue(getMainActivity());
         int preferedHigherLatitude = SharedPreferencesUtils.getHigherLatitudeModeValue(getMainActivity());
         int preferedNotificationSound = SharedPreferencesUtils.getSoundNotificationPrayer(getActivity());
+        final int preferedJumuahFirstCallDelay = SharedPreferencesUtils.getJumuahFirstCallDelay(getActivity());
 
+        lblChooseFirstCallJumuahDetail.setText(isJumuahFirstCallEnabled ? getMainActivity().getString(R.string.minutes_before_jumuah, preferedJumuahFirstCallDelay) : getActivity().getString(R.string.jumuah_first_call_disabled));
         lblChooseIfNotification.setText(isNotificationEnabled ? R.string.prayer_notification_enabled : R.string.prayer_notification_disabled);
         swChooseIfNotification.setChecked(isNotificationEnabled);
+        swChooseJumuahFirstCall.setChecked(isJumuahFirstCallEnabled);
 
         swChooseIfNotification.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 lblChooseIfNotification.setText(isChecked ? R.string.prayer_notification_enabled : R.string.prayer_notification_disabled);
                 SharedPreferencesUtils.putNotifyPrayer(getMainActivity(), isChecked);
+            }
+        });
+
+        swChooseJumuahFirstCall.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                lblChooseFirstCallJumuahDetail.setText(isChecked ? getMainActivity().getString(R.string.minutes_before_jumuah, preferedJumuahFirstCallDelay) : getActivity().getString(R.string.jumuah_first_call_disabled));
+                SharedPreferencesUtils.putJumuahFirstCallEnabled(getMainActivity(), isChecked);
             }
         });
 
@@ -129,6 +148,12 @@ public class SettingsFragment extends AbstractFragment{
             lblChooseHigherLatitudeDetail.setText(PrayerTimesUtils.getHigherLatitudeModeResId(PrayerTimesUtils.getHigherLatitudeModeFromPreferenceValue(preferedHigherLatitude)));
         }
 
+        lytChooseFirstCallJumuah.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getMainActivity().redirectToJumuahDelayList();
+            }
+        });
         lytChooseConvention.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

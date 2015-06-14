@@ -52,6 +52,10 @@ public class SharedPreferencesUtils{
 
     private static final String SOUND_NOTIFICATION_PRAYER = "soundNotificationPrayer";
 
+    private static final String JUMUAH_FIRST_CALL = "jumuah_first_call";
+
+    private static final String JUMUAH_FIRST_CALL_DELAY = "jumuah_first_call_delay";
+
     /**
      * Saves a MuslimLocation as the last location in Shared Preferences.
      * @param context Context in which the application is running
@@ -94,6 +98,30 @@ public class SharedPreferencesUtils{
             return new MuslimLocation(locationLatitude, locationLongitude, locationTime, locationMode);
         }
         return null;
+    }
+
+    public static void putJumuahFirstCallDelay(Context context, int jumuahFirstCallDelay){
+        SharedPreferences sharedPreferences = context.getSharedPreferences(PREFERENCES_NAME, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putInt(JUMUAH_FIRST_CALL_DELAY, jumuahFirstCallDelay);
+        editor.commit();
+    }
+
+    public static int getJumuahFirstCallDelay(Context context){
+        SharedPreferences sharedPreferences = context.getSharedPreferences(PREFERENCES_NAME, Context.MODE_PRIVATE);
+        return sharedPreferences.getInt(JUMUAH_FIRST_CALL_DELAY, 30);
+    }
+
+    public static void putJumuahFirstCallEnabled(Context context, boolean isJumuahFirstCallEnabled){
+        SharedPreferences sharedPreferences = context.getSharedPreferences(PREFERENCES_NAME, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putBoolean(JUMUAH_FIRST_CALL, isJumuahFirstCallEnabled);
+        editor.commit();
+    }
+
+    public static boolean getJumuahFirstCallEnabled(Context context){
+        SharedPreferences sharedPreferences = context.getSharedPreferences(PREFERENCES_NAME, Context.MODE_PRIVATE);
+        return sharedPreferences.getBoolean(JUMUAH_FIRST_CALL, true);
     }
 
     public static void putLastNotificationPrayer(Context context, long lastNotificationPrayer){

@@ -124,6 +124,11 @@
     <string name="sound_android_default">Android default</string>
     <string name="sound_adhan">Adhan</string>
 
+    <string name="jumuah_first_call">First call of Jumu\'ah</string>
+    <string name="jumuah_first_call_disabled">Disabled</string>
+
+    <string name="minutes_before_jumuah">%d minutes before Jumu\'ah</string>
+
     <string-array name="day_number_suffix">
         <item />
         <item />

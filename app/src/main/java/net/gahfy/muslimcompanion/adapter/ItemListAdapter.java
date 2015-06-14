@@ -32,7 +32,13 @@ public abstract class ItemListAdapter extends RecyclerView.Adapter<RecyclerView.
      * @param position the position of the item
      * @return the res id of the text the current item
      */
-    public abstract int getTextResId(int position);
+    public int getTextResId(int position){
+        return 0;
+    };
+
+    public String getText(int position){
+        return activity.getString(getTextResId(position));
+    }
 
     /**
      * This method is called when a view is clicked.
@@ -76,7 +82,7 @@ public abstract class ItemListAdapter extends RecyclerView.Adapter<RecyclerView.
         ViewHolder holder = (ViewHolder) viewHolder;
 
         holder.imgTickItem.setVisibility(isSelected(position) ? View.VISIBLE : View.INVISIBLE);
-        holder.lblItem.setText(getTextResId(position));
+        holder.lblItem.setText(getText(position));
     }
 
     @Override

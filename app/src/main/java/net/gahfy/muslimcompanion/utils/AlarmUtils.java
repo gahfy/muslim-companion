@@ -32,6 +32,10 @@ public class AlarmUtils extends BroadcastReceiver{
 
     public static void notifyAndSetNextAlarm(Context context, boolean shouldNotify){
         shouldNotify = shouldNotify && SharedPreferencesUtils.getNotifyPrayer(context);
+
+        boolean isFirstCallOfJumuahEnabled = SharedPreferencesUtils.getJumuahFirstCallEnabled(context);
+        long jumuahFirstCallDelay = SharedPreferencesUtils.getJumuahFirstCallDelay(context);
+
         Uri fajrAdhanUri = Uri.parse("android.resource://" + context.getPackageName() + "/" + R.raw.adhan_fajr);
         Uri normalAdhanUri = Uri.parse("android.resource://" + context.getPackageName() + "/" + R.raw.adhan_normal);
 
@@ -178,11 +182,28 @@ public class AlarmUtils extends BroadcastReceiver{
                     soundUri = normalAdhanUri;
                 }
             }
+            else if(prayerTimesUtils.isFriday() && isFirstCallOfJumuahEnabled
+                    && prayerTimesUtils.getDhuhrTimestamp()-(jumuahFirstCallDelay*60l*1000l) < currentTimestamp
+                    && prayerTimesUtils.getDhuhrTimestamp() > currentTimestamp) {
 
+                timestampOfNextAlarm = prayerTimesUtils.getDhuhrTimestamp();
+
+                notificationTitle = context.getString(R.string.jumuah_first_call);
+
+                notificationContent = context.getString(R.string.prayer_notification_content,
+                        notificationTitle,
+                        simpleDateFormat.format(new Date(prayerTimesUtils.getDhuhrTimestamp())),
+                        cityName);
+                shouldNotify = shouldNotify && (prayerTimesUtils.getDhuhrTimestamp() != SharedPreferencesUtils.getLastNotificationPrayer(context));
+                SharedPreferencesUtils.putLastNotificationPrayer(context, prayerTimesUtils.getDhuhrTimestamp());
+                if(SharedPreferencesUtils.getSoundNotificationPrayer(context) == 2) {
+                    soundUri = normalAdhanUri;
+                }
+            }
             else if(prayerTimesUtils.getFajrTimestamp() < currentTimestamp && prayerTimesUtils.getFajrTimestamp() > currentTimestampMinus10Minutes){
                 if(prayerTimesUtils.getIshaTimestampOfPreviousDay() == prayerTimesUtils.getFajrTimestamp()){
                     // Isha of previous day and Fajr
-                    timestampOfNextAlarm = prayerTimesUtils.getDhuhrTimestamp();
+                    timestampOfNextAlarm = prayerTimesUtils.getDhuhrTimestamp() - ((prayerTimesUtils.isFriday() && isFirstCallOfJumuahEnabled) ? jumuahFirstCallDelay*60l*1000l : 0l);
                     notificationTitle = context.getString(R.string.prayer_name_isha_and_fajr);
 
                     notificationContent = context.getString(R.string.prayer_notification_content,
@@ -262,6 +283,8 @@ public class AlarmUtils extends BroadcastReceiver{
                     timestampOfNextAlarm = prayerTimesUtils.getIshaTimestampOfPreviousDay();
                 } else if (prayerTimesUtils.getFajrTimestamp() > currentTimestamp) {
                     timestampOfNextAlarm = prayerTimesUtils.getFajrTimestamp();
+                } else if ((prayerTimesUtils.isFriday() && isFirstCallOfJumuahEnabled) && prayerTimesUtils.getDhuhrTimestamp()-jumuahFirstCallDelay*60l*1000l > currentTimestamp) {
+                    timestampOfNextAlarm = prayerTimesUtils.getDhuhrTimestamp() - jumuahFirstCallDelay*60l*1000l;
                 } else if (prayerTimesUtils.getDhuhrTimestamp() > currentTimestamp) {
                     timestampOfNextAlarm = prayerTimesUtils.getDhuhrTimestamp();
                 } else if (prayerTimesUtils.getAsrTimestamp() > currentTimestamp) {

@@ -129,6 +129,64 @@
                         android:layout_height="1dp"
                         android:background="@color/white_87" />
                 </RelativeLayout>
+
+
+                <RelativeLayout
+                    android:id="@+id/lyt_choose_first_call_jumuah"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_below="@id/lyt_choose_notification_sound"
+                    android:background="@drawable/menu_item_background">
+                    <ImageView
+                        android:id="@+id/img_choose_first_call_jumuah"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_centerVertical="true"
+                        android:layout_alignParentLeft="true"
+                        android:layout_marginLeft="16dp"
+                        android:layout_marginRight="16dp"
+                        android:src="@drawable/ic_mosque_accent_24dp" />
+                    <RelativeLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_toRightOf="@id/img_choose_first_call_jumuah"
+                        android:padding="16dp"
+                        android:layout_centerVertical="true">
+                        <TextView
+                            android:id="@+id/lbl_choose_first_call_jumuah"
+                            android:layout_alignParentTop="true"
+                            android:layout_alignParentLeft="true"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="16sp"
+                            android:textColor="@color/black_87"
+                            android:singleLine="false"
+                            android:text="@string/jumuah_first_call" />
+                        <TextView
+                            android:id="@+id/lbl_choose_first_call_jumuah_details"
+                            android:layout_below="@id/lbl_choose_first_call_jumuah"
+                            android:layout_alignParentLeft="true"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="14sp"
+                            android:textColor="@color/black_54"
+                            android:singleLine="false" />
+                        <android.support.v7.widget.SwitchCompat
+                            android:id="@+id/sw_choose_if_first_call_jumuah"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true"
+                            android:layout_marginRight="16dp"
+                            android:layout_centerVertical="true" />
+                    </RelativeLayout>
+                    <View
+                        android:layout_toRightOf="@id/img_choose_first_call_jumuah"
+                        android:layout_alignParentBottom="true"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/white_87" />
+                </RelativeLayout>
             </RelativeLayout>
         </android.support.v7.widget.CardView>
 
