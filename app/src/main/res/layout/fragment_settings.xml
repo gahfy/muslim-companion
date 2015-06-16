@@ -25,11 +25,12 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/prayer_notification"
+                        android:gravity="left"
                         android:textSize="14sp"
                         android:textColor="@color/accent"
-                        android:paddingTop="14.33dp"
-                        android:paddingBottom="14.33dp"
-                        android:paddingLeft="16dp"
+                        android:layout_marginTop="14.33dp"
+                        android:layout_marginBottom="14.33dp"
+                        android:layout_marginLeft="16dp"
                         />
                 </LinearLayout>
                 <RelativeLayout
@@ -54,15 +55,6 @@
                         android:layout_toRightOf="@id/img_choose_if_notification"
                         android:padding="16dp"
                         android:layout_centerVertical="true">
-                        <TextView
-                            android:id="@+id/lbl_choose_if_notification"
-                            android:layout_alignParentTop="true"
-                            android:layout_alignParentLeft="true"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:textSize="16sp"
-                            android:textColor="@color/black_87"
-                            android:singleLine="false" />
                         <android.support.v7.widget.SwitchCompat
                             android:id="@+id/sw_choose_if_notification"
                             android:layout_width="wrap_content"
@@ -70,6 +62,17 @@
                             android:layout_alignParentRight="true"
                             android:layout_marginRight="16dp"
                             android:layout_centerVertical="true" />
+                        <TextView
+                            android:id="@+id/lbl_choose_if_notification"
+                            android:layout_alignParentTop="true"
+                            android:layout_alignParentLeft="true"
+                            android:layout_toLeftOf="@id/sw_choose_if_notification"
+                            android:gravity="left"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="16sp"
+                            android:textColor="@color/black_87"
+                            android:singleLine="false" />
                     </RelativeLayout>
                     <View
                         android:layout_toRightOf="@id/img_choose_if_notification"
@@ -106,6 +109,7 @@
                             android:id="@+id/lbl_choose_notification_sound"
                             android:layout_alignParentTop="true"
                             android:layout_alignParentLeft="true"
+                            android:gravity="left"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textSize="16sp"
@@ -116,6 +120,7 @@
                             android:id="@+id/lbl_choose_notification_sound_details"
                             android:layout_below="@id/lbl_choose_notification_sound"
                             android:layout_alignParentLeft="true"
+                            android:gravity="left"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textSize="14sp"
@@ -153,10 +158,19 @@
                         android:layout_toRightOf="@id/img_choose_first_call_jumuah"
                         android:padding="16dp"
                         android:layout_centerVertical="true">
+                        <android.support.v7.widget.SwitchCompat
+                            android:id="@+id/sw_choose_if_first_call_jumuah"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true"
+                            android:layout_marginRight="16dp"
+                            android:layout_centerVertical="true" />
                         <TextView
                             android:id="@+id/lbl_choose_first_call_jumuah"
                             android:layout_alignParentTop="true"
                             android:layout_alignParentLeft="true"
+                            android:layout_toLeftOf="@id/sw_choose_if_first_call_jumuah"
+                            android:gravity="left"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textSize="16sp"
@@ -167,18 +181,13 @@
                             android:id="@+id/lbl_choose_first_call_jumuah_details"
                             android:layout_below="@id/lbl_choose_first_call_jumuah"
                             android:layout_alignParentLeft="true"
+                            android:layout_toLeftOf="@id/sw_choose_if_first_call_jumuah"
+                            android:gravity="left"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textSize="14sp"
                             android:textColor="@color/black_54"
                             android:singleLine="false" />
-                        <android.support.v7.widget.SwitchCompat
-                            android:id="@+id/sw_choose_if_first_call_jumuah"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentRight="true"
-                            android:layout_marginRight="16dp"
-                            android:layout_centerVertical="true" />
                     </RelativeLayout>
                     <View
                         android:layout_toRightOf="@id/img_choose_first_call_jumuah"
@@ -200,19 +209,20 @@
                 <LinearLayout
                     android:id="@+id/lyt_prayer_time_title"
                     android:layout_width="wrap_content"
-                    android:layout_height="48dp"
+                    android:layout_height="wrap_content"
                     android:layout_alignParentTop="true"
                     android:layout_alignParentLeft="true">
                     <TextView
                         android:id="@+id/lbl_prayer_title"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:gravity="left"
                         android:text="@string/prayer_times"
                         android:textSize="14sp"
                         android:textColor="@color/accent"
-                        android:paddingTop="14.33dp"
-                        android:paddingBottom="14.33dp"
-                        android:paddingLeft="16dp"
+                        android:layout_marginTop="14.33dp"
+                        android:layout_marginBottom="14.33dp"
+                        android:layout_marginLeft="16dp"
                         />
                 </LinearLayout>
                 <RelativeLayout
@@ -241,6 +251,7 @@
                             android:id="@+id/lbl_choose_convention"
                             android:layout_alignParentTop="true"
                             android:layout_alignParentLeft="true"
+                            android:gravity="left"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textSize="16sp"
@@ -251,6 +262,7 @@
                             android:id="@+id/lbl_choose_convention_details"
                             android:layout_below="@id/lbl_choose_convention"
                             android:layout_alignParentLeft="true"
+                            android:gravity="left"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textSize="14sp"
@@ -292,6 +304,7 @@
                             android:id="@+id/lbl_choose_asr"
                             android:layout_alignParentTop="true"
                             android:layout_alignParentLeft="true"
+                            android:gravity="left"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textSize="16sp"
@@ -302,6 +315,7 @@
                             android:id="@+id/lbl_choose_asr_details"
                             android:layout_below="@id/lbl_choose_asr"
                             android:layout_alignParentLeft="true"
+                            android:gravity="left"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textSize="14sp"
@@ -345,6 +359,7 @@
                             android:id="@+id/lbl_choose_higher_latitude"
                             android:layout_alignParentTop="true"
                             android:layout_alignParentLeft="true"
+                            android:gravity="left"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textSize="16sp"
@@ -355,6 +370,7 @@
                             android:id="@+id/lbl_choose_higher_latitude_details"
                             android:layout_below="@id/lbl_choose_higher_latitude"
                             android:layout_alignParentLeft="true"
+                            android:gravity="left"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textSize="14sp"

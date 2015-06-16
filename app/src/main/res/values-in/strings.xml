@@ -126,6 +126,11 @@
     <string name="sound_android_default">Android default</string>
     <string name="sound_adhan">Azan</string>
 
+    <string name="jumuah_first_call">Pertama adzan untuk Jumat</string>
+    <string name="jumuah_first_call_disabled">Dimatikan</string>
+
+    <string name="minutes_before_jumuah">%d menit sebelum Jumat</string>
+
     <string-array name="day_number_suffix">
         <item />
         <item />

@@ -42,6 +42,8 @@ public class PrayerTimeFragment extends AbstractFragment{
     private TextView lblTimeMaghrib;
     private TextView lblTimeIsha;
 
+    private Bundle savedInstanceState;
+
     public PrayerTimeFragment(){
         super();
     }
@@ -54,6 +56,17 @@ public class PrayerTimeFragment extends AbstractFragment{
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         fragmentView = inflater.inflate(R.layout.fragment_prayer_time, container, false);
 
+        if(savedInstanceState != null) {
+            this.savedInstanceState = savedInstanceState;
+        }
+
+        return fragmentView;
+    }
+
+    @Override
+    public void onResume(){
+        super.onResume();
+
         initMembers();
 
         if(savedInstanceState == null) {
@@ -64,9 +77,8 @@ public class PrayerTimeFragment extends AbstractFragment{
         }
         else{
             restoreState(savedInstanceState);
+            savedInstanceState = null;
         }
-
-        return fragmentView;
     }
 
     public void initMembers() {

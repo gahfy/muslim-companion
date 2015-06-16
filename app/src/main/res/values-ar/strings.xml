@@ -121,6 +121,11 @@
     <string name="sound_android_default">صوت الاندرويد الافتراضي</string>
     <string name="sound_adhan">الآذان</string>
 
+    <string name="jumuah_first_call">الاذان الأول من صلاة الجمعة</string>
+    <string name="jumuah_first_call_disabled">غير مشغل</string>
+
+    <string name="minutes_before_jumuah">%d دقيقة على صلاة الجمعة</string>
+
     <string-array name="day_number_suffix">
         <item />
         <item />

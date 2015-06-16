@@ -51,6 +51,7 @@
                     android:layout_height="wrap_content"
                     android:textColor="@color/black_87"
                     android:textSize="0sp"
+                    android:gravity="left"
                     android:layout_centerVertical="true"
                     android:text="@string/qibla_below_compass" />
             </RelativeLayout>
@@ -66,6 +67,7 @@
                     android:layout_height="wrap_content"
                     android:textColor="@color/accent"
                     android:textSize="0sp"
+                    android:gravity="left"
                     android:layout_centerVertical="true" />
             </RelativeLayout>
         </RelativeLayout>

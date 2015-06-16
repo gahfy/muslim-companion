@@ -14,8 +14,8 @@ android {
         applicationId "net.gahfy.muslimcompanion"
         minSdkVersion 9
         targetSdkVersion 22
-        versionCode 7
-        versionName "0.83"
+        versionCode 8
+        versionName "0.84"
     }
     buildTypes {
         release {

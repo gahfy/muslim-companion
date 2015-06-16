@@ -56,6 +56,7 @@
                             android:id="@+id/toolbar_title"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:gravity="left"
                             android:textSize="20sp"
                             android:textColor="@color/white_93"
                             android:singleLine="true" />
@@ -64,6 +65,7 @@
                             android:id="@+id/toolbar_subtitle"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:gravity="left"
                             android:textSize="13sp"
                             android:textColor="@color/white_93"
                             android:singleLine="true"
@@ -101,6 +103,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_horizontal"
+                        android:gravity="center_horizontal"
                         android:textColor="@color/black_87"
                         android:textSize="32sp"
                         android:text="@string/geolocating" />

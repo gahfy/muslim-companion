@@ -378,7 +378,8 @@ public class CompassFragment extends AbstractFragment implements ViewTreeObserve
                         HashMap<String, Object> exceptionData = new HashMap<String, Object>();
                         exceptionData.put("StackTrace", Log.getStackTraceString(e));
                         exceptionData.put("getActivity()", getActivity() == null ? "null" : "not null");
-                        exceptionData.put("getActivity().getResources()", getActivity().getResources() == null ? "null" : "not null");
+                        if(getActivity() != null)
+                            exceptionData.put("getActivity().getResources()", getActivity().getResources() == null ? "null" : "not null");
                         Mint.logEvent("Exception in runOnUiThread apply city", MintLogLevel.Error, exceptionData);
                     }
                 }
