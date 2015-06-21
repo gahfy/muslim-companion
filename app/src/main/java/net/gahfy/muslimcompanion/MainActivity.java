@@ -31,6 +31,7 @@ import net.gahfy.muslimcompanion.fragment.NotificationSoundListFragment;
 import net.gahfy.muslimcompanion.fragment.PrayerTimeFragment;
 import net.gahfy.muslimcompanion.fragment.SchoolListFragment;
 import net.gahfy.muslimcompanion.fragment.SettingsFragment;
+import net.gahfy.muslimcompanion.fragment.SuraFragment;
 import net.gahfy.muslimcompanion.models.MuslimLocation;
 import net.gahfy.muslimcompanion.utils.LocationUtils;
 import net.gahfy.muslimcompanion.utils.SharedPreferencesUtils;
@@ -156,11 +157,13 @@ public class MainActivity extends ActionBarActivity implements LocationListener{
         TextView lblMenuSettings = (TextView) findViewById(R.id.lbl_menu_settings);
         TextView lblMenuPrayerTimes = (TextView) findViewById(R.id.lbl_menu_prayer_time);
         TextView lblMenuQibla = (TextView) findViewById(R.id.lbl_menu_qibla);
+        TextView lblMenuQuran = (TextView) findViewById(R.id.lbl_menu_quran);
 
         ViewUtils.setTypefaceToTextView(this, lblGeolocating, ViewUtils.FONT_WEIGHT.LIGHT);
         ViewUtils.setTypefaceToTextView(this, lblMenuSettings, ViewUtils.FONT_WEIGHT.MEDIUM);
         ViewUtils.setTypefaceToTextView(this, lblMenuPrayerTimes, ViewUtils.FONT_WEIGHT.MEDIUM);
         ViewUtils.setTypefaceToTextView(this, lblMenuQibla, ViewUtils.FONT_WEIGHT.MEDIUM);
+        ViewUtils.setTypefaceToTextView(this, lblMenuQuran, ViewUtils.FONT_WEIGHT.MEDIUM);
 
         findViewById(R.id.lyt_menu_settings_container).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -180,6 +183,14 @@ public class MainActivity extends ActionBarActivity implements LocationListener{
             @Override
             public void onClick(View v) {
                 redirectToFragment(new CompassFragment(), false);
+            }
+        });
+
+
+        findViewById(R.id.lyt_menu_quran_container).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                redirectToFragment(new SuraFragment(), false);
             }
         });
 

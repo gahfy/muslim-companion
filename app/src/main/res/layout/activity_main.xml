@@ -202,6 +202,35 @@
                         android:textSize="14sp" />
                 </RelativeLayout>
                 <RelativeLayout
+                    android:id="@+id/lyt_menu_quran_container"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:paddingLeft="16dp"
+                    android:paddingRight="16dp"
+                    android:background="@drawable/menu_item_background">
+                    <LinearLayout
+                        android:id="@+id/lyt_menu_quran_image_container"
+                        android:layout_alignParentLeft="true"
+                        android:paddingRight="16dp"
+                        android:layout_width="56dp"
+                        android:layout_height="match_parent">
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="left|center_vertical"
+                            android:src="@drawable/ic_book_open_grey600" />
+                    </LinearLayout>
+                    <TextView
+                        android:id="@+id/lbl_menu_quran"
+                        android:layout_toRightOf="@id/lyt_menu_quran_image_container"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:text="@string/quran"
+                        android:textColor="@color/black_87"
+                        android:gravity="left|center_vertical"
+                        android:textSize="14sp" />
+                </RelativeLayout>
+                <RelativeLayout
                     android:id="@+id/lyt_menu_settings_container"
                     android:layout_width="match_parent"
                     android:layout_height="48dp"

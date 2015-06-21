@@ -33,7 +33,8 @@ public class ViewUtils {
         BOLD_ITALIC,
         BLACK,
         BLACK_ITALIC,
-        TOOLBAR_TITLE
+        TOOLBAR_TITLE,
+        QURAN_ARABIC
     }
 
     /**
@@ -80,6 +81,8 @@ public class ViewUtils {
                 return Typeface.createFromAsset(context.getAssets(), context.getString(R.string.black_italic_path));
             case TOOLBAR_TITLE:
                 return Typeface.createFromAsset(context.getAssets(), context.getString(R.string.toolbat_title_path));
+            case QURAN_ARABIC:
+                return Typeface.createFromAsset(context.getAssets(), "font/KFC_naskh.otf");
             default:
                 return Typeface.createFromAsset(context.getAssets(), context.getString(R.string.regular_path));
         }

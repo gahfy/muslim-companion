@@ -131,6 +131,8 @@
 
     <string name="minutes_before_jumuah">%d menit sebelum jumat</string>
 
+    <string name="quran">Al-Qur\'an</string>
+
     <string-array name="day_number_suffix">
         <item />
         <item />

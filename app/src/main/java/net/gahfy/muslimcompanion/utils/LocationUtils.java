@@ -180,5 +180,9 @@ public class LocationUtils {
             // TODO: Handle error
             return null;
         }
+        catch(StackOverflowError e){
+            // TODO: Handle error
+            return null;
+        }
     }
 }

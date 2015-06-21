@@ -126,6 +126,8 @@
 
     <string name="minutes_before_jumuah">%d دقيقة على صلاة الجمعة</string>
 
+    <string name="quran">القرآن</string>
+
     <string-array name="day_number_suffix">
         <item />
         <item />

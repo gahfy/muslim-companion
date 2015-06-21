@@ -56,6 +56,8 @@ public class SharedPreferencesUtils{
 
     private static final String JUMUAH_FIRST_CALL_DELAY = "jumuah_first_call_delay";
 
+    private static final String DATABASE_VERSION = "database_version";
+
     /**
      * Saves a MuslimLocation as the last location in Shared Preferences.
      * @param context Context in which the application is running
@@ -104,6 +106,18 @@ public class SharedPreferencesUtils{
         SharedPreferences sharedPreferences = context.getSharedPreferences(PREFERENCES_NAME, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putInt(JUMUAH_FIRST_CALL_DELAY, jumuahFirstCallDelay);
+        editor.commit();
+    }
+
+    public static int getDatabaseVersion(Context context){
+        SharedPreferences sharedPreferences = context.getSharedPreferences(PREFERENCES_NAME, Context.MODE_PRIVATE);
+        return sharedPreferences.getInt(DATABASE_VERSION, 0);
+    }
+
+    public static void putDatabaseVersion(Context context, int databaseVersion){
+        SharedPreferences sharedPreferences = context.getSharedPreferences(PREFERENCES_NAME, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putInt(DATABASE_VERSION, databaseVersion);
         editor.commit();
     }
 

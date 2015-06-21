@@ -5,6 +5,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import net.gahfy.muslimcompanion.utils.SharedPreferencesUtils;
+
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -15,8 +17,8 @@ public class DbManager extends SQLiteOpenHelper{
 
     //The Android's default system path of your application database.
     private static String DB_PATH = "/data/data/net.gahfy.muslimcompanion/databases/";
-
     private static String DB_NAME = "muslimcompanion.db";
+    private static int DB_VERSION = 1;
 
     private SQLiteDatabase myDataBase;
 
@@ -39,14 +41,16 @@ public class DbManager extends SQLiteOpenHelper{
     public void createDataBase() throws IOException{
 
         boolean dbExist = checkDataBase();
-
+        boolean needDbCopy = true;
         if(dbExist){
             //do nothing - database already exist
-        }else{
+            needDbCopy = (SharedPreferencesUtils.getDatabaseVersion(myContext) != DB_VERSION);
+        }
 
+        if(needDbCopy){
             //By calling this method and empty database will be created into the default system path
             //of your application so we are gonna be able to overwrite that database with our database.
-            this.getReadableDatabase();
+            this.getWritableDatabase();
 
             try {
 
