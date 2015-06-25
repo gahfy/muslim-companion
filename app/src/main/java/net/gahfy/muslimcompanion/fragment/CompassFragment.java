@@ -356,7 +356,8 @@ public class CompassFragment extends AbstractFragment implements ViewTreeObserve
                 @Override
                 public void run() {
                     try {
-                        getMainActivity().setTitle(getMainActivity().getString(R.string.qibla_at, cityName));
+                        if(cityName != null)
+                            getMainActivity().setTitle(getMainActivity().getString(R.string.qibla_at, cityName));
                         if (getMainActivity().getCurrentLocation().getLocationMode() == MuslimLocation.MODE.MODE_PROVIDER) {
                             GregorianCalendar calendar = new GregorianCalendar();
                             calendar.setTimeInMillis(getMainActivity().getCurrentLocation().getLocationTime());

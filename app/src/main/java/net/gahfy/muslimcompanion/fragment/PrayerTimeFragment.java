@@ -200,7 +200,8 @@ public class PrayerTimeFragment extends AbstractFragment{
             getMainActivity().runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    getMainActivity().setTitle(getMainActivity().getString(R.string.salat_at, cityName));
+                    if(cityName != null)
+                        getMainActivity().setTitle(getMainActivity().getString(R.string.salat_at, cityName));
 
                     long timeStamp = new Date().getTime() + ((long) dayDifference * 24l * 3600l * 1000l);
                     int[] calendarDatas = DateUtils.getDayMonthYear(timeStamp);
