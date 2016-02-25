@@ -1,26 +1,30 @@
 package net.gahfy.muslimcompanion;
 
+import android.Manifest;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
-
-import com.splunk.mint.Mint;
-import com.splunk.mint.MintLogLevel;
 
 import net.gahfy.muslimcompanion.fragment.AbstractFragment;
 import net.gahfy.muslimcompanion.fragment.CompassFragment;
@@ -31,15 +35,16 @@ import net.gahfy.muslimcompanion.fragment.NotificationSoundListFragment;
 import net.gahfy.muslimcompanion.fragment.PrayerTimeFragment;
 import net.gahfy.muslimcompanion.fragment.SchoolListFragment;
 import net.gahfy.muslimcompanion.fragment.SettingsFragment;
-import net.gahfy.muslimcompanion.fragment.SuraFragment;
 import net.gahfy.muslimcompanion.models.MuslimLocation;
 import net.gahfy.muslimcompanion.utils.LocationUtils;
 import net.gahfy.muslimcompanion.utils.SharedPreferencesUtils;
 import net.gahfy.muslimcompanion.utils.ViewUtils;
-import java.util.Date;
-import java.util.HashMap;
 
-public class MainActivity extends ActionBarActivity implements LocationListener{
+import java.util.Date;
+
+public class MainActivity extends AppCompatActivity implements LocationListener {
+    private static final int REQUEST_CODE_PERMISSION_FINE_LOCATION = 1;
+
     private AlertDialog locationDisabledDialog;
 
     /** The current Fragment */
@@ -47,6 +52,8 @@ public class MainActivity extends ActionBarActivity implements LocationListener{
 
     /** The Geolocating layout */
     private LinearLayout lytGeolocatingContainer;
+
+    private LinearLayout lytLocationRefusedLayout;
 
     /** The Menu container */
     private RelativeLayout lytIcMenuContainer;
@@ -57,23 +64,19 @@ public class MainActivity extends ActionBarActivity implements LocationListener{
     /** The scrollview with the navigation drawer */
     private ScrollView scrollDrawerView;
 
+    private TextView lbllocationRationale;
+
     /** The Location Manager of the activity */
     private LocationManager locationManager;
 
     /** The current location of the Activity */
     private MuslimLocation currentLocation;
 
-    /** The microtime when the location is switched on */
-    private long locationStartTime;
-
     /** Whether location listeners are on or not */
     private boolean isGeolocationWorking = false;
 
     /** The toolbar of the activity */
     private Toolbar toolbar;
-
-    /** The time when the application starts */
-    private long applicationStartTime;
 
     /**
      * The status (enabled/disabled) of location listeners
@@ -87,37 +90,37 @@ public class MainActivity extends ActionBarActivity implements LocationListener{
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        Mint.initAndStartSession(MainActivity.this, "c72aff53");
-
         this.setContentView(R.layout.activity_main);
 
         initMembers();
         initToolbar();
 
-        if(savedInstanceState != null){
+        if (savedInstanceState != null) {
             restoreState(savedInstanceState);
-        }
-        else {
+        } else {
             setTitle(R.string.app_name);
             redirectToFragment(new PrayerTimeFragment(), false);
         }
     }
 
-    public void initMembers(){
+    public void initMembers() {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
 
+        lytLocationRefusedLayout = (LinearLayout) findViewById(R.id.lyt_location_refused_container);
         lytIcMenuContainer = (RelativeLayout) findViewById(R.id.lyt_ic_menu_container);
         lytGeolocatingContainer = (LinearLayout) findViewById(R.id.lyt_geolocating_container);
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         scrollDrawerView = (ScrollView) findViewById(R.id.scroll_drawer_view);
+        lbllocationRationale = (TextView) findViewById(R.id.lbl_location_rationale);
 
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         locationProvidersStatus = LocationUtils.getLocationProvidersStatus(this);
     }
 
-    public void initToolbar(){
+    public void initToolbar() {
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        if(getSupportActionBar() != null)
+            getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         lytIcMenuContainer.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -127,23 +130,23 @@ public class MainActivity extends ActionBarActivity implements LocationListener{
         });
     }
 
-    public void redirectToNotificationSoundList(){
+    public void redirectToNotificationSoundList() {
         redirectToFragment(new NotificationSoundListFragment(), true);
     }
 
-    public void redirectToConventionList(){
+    public void redirectToConventionList() {
         redirectToFragment(new ConventionListFragment(), true);
     }
 
-    public void redirectToJumuahDelayList(){
+    public void redirectToJumuahDelayList() {
         redirectToFragment(new JumuahDelayListFragment(), true);
     }
 
-    public void redirectToHigherLatitudeList(){
+    public void redirectToHigherLatitudeList() {
         redirectToFragment(new HigherLatitudeModeListFragment(), true);
     }
 
-    public void redirectToSchoolList(){
+    public void redirectToSchoolList() {
         redirectToFragment(new SchoolListFragment(), true);
     }
 
@@ -151,20 +154,29 @@ public class MainActivity extends ActionBarActivity implements LocationListener{
     public void onResume() {
         super.onResume();
 
-        Mint.startSession(MainActivity.this);
-
         TextView lblGeolocating = (TextView) findViewById(R.id.lbl_geolocating);
         TextView lblMenuSettings = (TextView) findViewById(R.id.lbl_menu_settings);
         TextView lblMenuPrayerTimes = (TextView) findViewById(R.id.lbl_menu_prayer_time);
         TextView lblMenuQibla = (TextView) findViewById(R.id.lbl_menu_qibla);
-        TextView lblMenuQuran = (TextView) findViewById(R.id.lbl_menu_quran);
+        //TextView lblMenuQuran = (TextView) findViewById(R.id.lbl_menu_quran);
+        TextView lblLocationNeeded = (TextView) findViewById(R.id.lbl_location_needed);
+        Button btLocationPermission = (Button) findViewById(R.id.bt_location_permission);
 
         ViewUtils.setTypefaceToTextView(this, lblGeolocating, ViewUtils.FONT_WEIGHT.LIGHT);
         ViewUtils.setTypefaceToTextView(this, lblMenuSettings, ViewUtils.FONT_WEIGHT.MEDIUM);
         ViewUtils.setTypefaceToTextView(this, lblMenuPrayerTimes, ViewUtils.FONT_WEIGHT.MEDIUM);
         ViewUtils.setTypefaceToTextView(this, lblMenuQibla, ViewUtils.FONT_WEIGHT.MEDIUM);
-        ViewUtils.setTypefaceToTextView(this, lblMenuQuran, ViewUtils.FONT_WEIGHT.MEDIUM);
+        //ViewUtils.setTypefaceToTextView(this, lblMenuQuran, ViewUtils.FONT_WEIGHT.MEDIUM);
+        ViewUtils.setTypefaceToTextView(this, lblLocationNeeded, ViewUtils.FONT_WEIGHT.MEDIUM);
+        ViewUtils.setTypefaceToTextView(this, lbllocationRationale, ViewUtils.FONT_WEIGHT.REGULAR);
+        ViewUtils.setTypefaceToTextView(this, btLocationPermission, ViewUtils.FONT_WEIGHT.MEDIUM);
 
+        btLocationPermission.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                checkLocationPermission(true);
+            }
+        });
         findViewById(R.id.lyt_menu_settings_container).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -187,90 +199,59 @@ public class MainActivity extends ActionBarActivity implements LocationListener{
         });
 
 
-        findViewById(R.id.lyt_menu_quran_container).setOnClickListener(new View.OnClickListener() {
+        /*findViewById(R.id.lyt_menu_quran_container).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 redirectToFragment(new SuraFragment(), false);
             }
-        });
-
-        applicationStartTime = new Date().getTime();
-
-        if(SharedPreferencesUtils.saveUsageandGetHasUsedYesterday(this)){
-            Mint.logEvent("Daily user", MintLogLevel.Info);
-        }
+        });*/
     }
 
     @Override
-    public void setTitle(int titleResId){
+    public void setTitle(int titleResId) {
         TextView textViewTitle = (TextView) findViewById(R.id.toolbar_title);
-        if(textViewTitle != null){
+        if (textViewTitle != null) {
             textViewTitle.setText(titleResId);
             ViewUtils.setTypefaceToTextView(this, textViewTitle, ViewUtils.FONT_WEIGHT.TOOLBAR_TITLE);
         }
     }
 
-    public void setTitle(String title){
+    public void setTitle(String title) {
         TextView textViewTitle = (TextView) findViewById(R.id.toolbar_title);
-        if(textViewTitle != null){
+        if (textViewTitle != null) {
             textViewTitle.setText(title);
             ViewUtils.setTypefaceToTextView(this, textViewTitle, ViewUtils.FONT_WEIGHT.TOOLBAR_TITLE);
         }
     }
 
-    public void hideToolbar(){
-        findViewById(R.id.lyt_status_bar_container).setBackgroundColor(getResources().getColor(R.color.white_93));
-        findViewById(R.id.toolbar).setVisibility(View.GONE);
-    }
-
-    public void showToolbar(){
-        findViewById(R.id.lyt_status_bar_container).setBackgroundColor(getResources().getColor(R.color.primary));
+    public void showToolbar() {
+        findViewById(R.id.lyt_status_bar_container).setBackgroundColor(ContextCompat.getColor(this, R.color.primary));
         findViewById(R.id.toolbar).setVisibility(View.VISIBLE);
     }
 
-    public void setSubTitle(int subtitleResId){
+    public void setSubTitle(String subtitle) {
         TextView textViewSubTitle = (TextView) findViewById(R.id.toolbar_subtitle);
-        if(textViewSubTitle != null){
-            textViewSubTitle.setText(subtitleResId);
-            ViewUtils.setTypefaceToTextView(this, textViewSubTitle, ViewUtils.FONT_WEIGHT.REGULAR_ITALIC);
-        }
-    }
-
-    public void setSubTitle(String subtitle){
-        TextView textViewSubTitle = (TextView) findViewById(R.id.toolbar_subtitle);
-        if(subtitle != null) {
+        if (subtitle != null) {
             textViewSubTitle.setVisibility(View.VISIBLE);
-            if (textViewSubTitle != null) {
-                textViewSubTitle.setText(subtitle);
-                ViewUtils.setTypefaceToTextView(this, textViewSubTitle, ViewUtils.FONT_WEIGHT.REGULAR_ITALIC);
-            }
-        }
-        else{
+            textViewSubTitle.setText(subtitle);
+            ViewUtils.setTypefaceToTextView(this, textViewSubTitle, ViewUtils.FONT_WEIGHT.REGULAR_ITALIC);
+        } else {
             textViewSubTitle.setVisibility(View.GONE);
         }
     }
 
     @Override
-    public void onPause(){
+    public void onPause() {
         super.onPause();
         switchOffLocationListeners();
-        if(getLastMuslimLocation() == null){
-            long timeTaken = new Date().getTime() - applicationStartTime;
-
-            HashMap<String, Object> timeData = new HashMap<String, Object>();
-            timeData.put("timeTaken", new Long(timeTaken));
-            Mint.logEvent("Left without location", MintLogLevel.Info, timeData);
-        }
-        Mint.closeSession(MainActivity.this);
     }
 
-    public MuslimLocation getCurrentLocation(){
+    public MuslimLocation getCurrentLocation() {
         return this.currentLocation;
     }
 
-    public void switchOnLocationListeners(){
-        if(!isGeolocationWorking) {
-            locationStartTime = new Date().getTime();
+    public void switchOnLocationListeners() {
+        if (!isGeolocationWorking && checkLocationPermission(false)) {
             isGeolocationWorking = true;
             locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
             try {
@@ -278,7 +259,8 @@ public class MainActivity extends ActionBarActivity implements LocationListener{
             } catch (IllegalArgumentException e) {
                 //TODO: Handle error
             }
-            locationManager.requestLocationUpdates(LocationManager.PASSIVE_PROVIDER, 0, 0, this);
+            if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.FROYO)
+                locationManager.requestLocationUpdates(LocationManager.PASSIVE_PROVIDER, 0, 0, this);
         }
     }
 
@@ -326,7 +308,7 @@ public class MainActivity extends ActionBarActivity implements LocationListener{
     }
 
     public void switchOffLocationListeners(){
-        if(isGeolocationWorking) {
+        if(isGeolocationWorking && checkLocationPermission(false)) {
             isGeolocationWorking = false;
             locationManager.removeUpdates(this);
         }
@@ -356,8 +338,8 @@ public class MainActivity extends ActionBarActivity implements LocationListener{
         }
 
         FragmentTransaction fragmentTransaction = getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.lyt_fragment_container, currentFragment);
+                .beginTransaction();
+        fragmentTransaction.replace(R.id.lyt_fragment_container, currentFragment);
 
         if (addToBackStack) {
             fragmentTransaction.addToBackStack(null);
@@ -374,6 +356,7 @@ public class MainActivity extends ActionBarActivity implements LocationListener{
 
     public void manageNoGeolocationNeeded(){
         lytGeolocatingContainer.setVisibility(View.GONE);
+        lytLocationRefusedLayout.setVisibility(View.GONE);
         MuslimLocation lastKnownMuslimLocation = getLastMuslimLocation();
         if(lastKnownMuslimLocation != null) {
             if(lastKnownMuslimLocation.getLocationTime() + (SharedPreferencesUtils.getLocationValidityTime(this)*1000) > new Date().getTime()) {
@@ -387,6 +370,7 @@ public class MainActivity extends ActionBarActivity implements LocationListener{
         if(lastKnownMuslimLocation != null){
             currentLocation = lastKnownMuslimLocation;
             lytGeolocatingContainer.setVisibility(View.GONE);
+            lytLocationRefusedLayout.setVisibility(View.GONE);
             if(communicateToFragment)
                 currentFragment.onLocationChanged(currentLocation);
             if(lastKnownMuslimLocation.getLocationTime() + (SharedPreferencesUtils.getLocationValidityTime(this)*1000) < new Date().getTime()) {
@@ -408,14 +392,6 @@ public class MainActivity extends ActionBarActivity implements LocationListener{
 
     @Override
     public void onLocationChanged(Location location) {
-        if(getLastMuslimLocation() == null) {
-            long timeTaken = new Date().getTime() - applicationStartTime;
-
-            HashMap<String, Object> timeData = new HashMap<String, Object>();
-            timeData.put("timeTaken", new Long(timeTaken));
-            Mint.logEvent("Time to geolocate", MintLogLevel.Info, timeData);
-        }
-
         switch(currentFragment.getGeolocationTypeNeeded()) {
             case NONE:
             case ONCE:
@@ -484,11 +460,31 @@ public class MainActivity extends ActionBarActivity implements LocationListener{
         super.onSaveInstanceState(outState);
     }
 
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           @NonNull String permissions[], @NonNull int[] grantResults) {
+        switch (requestCode) {
+            case REQUEST_CODE_PERMISSION_FINE_LOCATION: {
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    switchOnLocationListeners();
+                } else {
+                    lytLocationRefusedLayout.setVisibility(View.VISIBLE);
+                    if(currentFragment.getLocationDetailsTextResId() != 0)
+                        lbllocationRationale.setText(currentFragment.getLocationDetailsTextResId());
+                }
+            }
+        }
+    }
+
     private void restoreState(Bundle savedInstanceState){
         if(!savedInstanceState.getBoolean("isCurrentLocationNull")){
+            String latitude = savedInstanceState.getString("currentLocationLatitude");
+            String longitude = savedInstanceState.getString("currentLocationLongitude");
+
             currentLocation = new MuslimLocation(
-                    Double.valueOf(savedInstanceState.getString("currentLocationLatitude")),
-                    Double.valueOf(savedInstanceState.getString("currentLocationLongitude")),
+                    Double.valueOf(latitude != null ? latitude : "0.0"),
+                    Double.valueOf(longitude != null ? longitude : "0.0"),
                     savedInstanceState.getLong("currentLocationTime"),
                     savedInstanceState.getInt("currentLocationMode")
             );
@@ -506,5 +502,27 @@ public class MainActivity extends ActionBarActivity implements LocationListener{
             case CONTINUOUS:
                 break;
         }
+    }
+
+
+    private boolean checkLocationPermission(boolean fromButton){
+        return checkLocationPermission(fromButton, true);
+    }
+
+    private boolean checkLocationPermission(boolean fromButton, boolean displayDialog){
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.ACCESS_FINE_LOCATION) && !fromButton && displayDialog) {
+                lytLocationRefusedLayout.setVisibility(View.VISIBLE);
+                if(currentFragment.getLocationDetailsTextResId() != 0)
+                    lbllocationRationale.setText(currentFragment.getLocationDetailsTextResId());
+            } else if(displayDialog){
+                ActivityCompat.requestPermissions(this,
+                        new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                        REQUEST_CODE_PERMISSION_FINE_LOCATION);
+            }
+            return false;
+        }
+        lytLocationRefusedLayout.setVisibility(View.GONE);
+        return true;
     }
 }

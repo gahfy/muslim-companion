@@ -5,7 +5,6 @@ import android.support.v7.widget.RecyclerView;
 import net.gahfy.muslimcompanion.MainActivity;
 import net.gahfy.muslimcompanion.R;
 import net.gahfy.muslimcompanion.utils.AlarmUtils;
-import net.gahfy.muslimcompanion.utils.PrayerTimesUtils;
 import net.gahfy.muslimcompanion.utils.SharedPreferencesUtils;
 
 /**

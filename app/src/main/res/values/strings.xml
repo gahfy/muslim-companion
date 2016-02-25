@@ -7,6 +7,10 @@
     <string name="cancel">Cancel</string>
 
     <string name="geolocating">Geolocation</string>
+    <string name="geolocation_needed">Location needed</string>
+    <string name="allow_location">Allow location access</string>
+    <string name="location_details_salat">Salat time depends on your location</string>
+    <string name="location_details_qibla">Qibla depends on your location</string>
     <string name="location_required_title">Enable location</string>
     <string name="location_required_message">The application requires the location to be enabled</string>
     <string name="settings">Settings</string>

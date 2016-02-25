@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Path;
+import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 import android.view.View;
 
@@ -41,7 +42,7 @@ public class CompassArrowView extends View {
     private void initPaintAndPath(){
         arrowPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         arrowPaint.setStyle(Paint.Style.FILL);
-        arrowPaint.setColor(getResources().getColor(R.color.primary));
+        arrowPaint.setColor(ContextCompat.getColor(getContext(), R.color.primary));
     }
 
     @Override

@@ -6,7 +6,6 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.Display;
 import android.view.LayoutInflater;
@@ -19,9 +18,6 @@ import android.view.animation.Animation;
 import android.view.animation.RotateAnimation;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
-import com.splunk.mint.Mint;
-import com.splunk.mint.MintLogLevel;
 
 import net.gahfy.muslimcompanion.R;
 import net.gahfy.muslimcompanion.models.MuslimLocation;
@@ -183,7 +179,7 @@ public class CompassFragment extends AbstractFragment implements ViewTreeObserve
             float azimuthInRadians = mOrientation[0];
             float azimuthInDegrees = (float)(Math.toDegrees(azimuthInRadians)+360);
 
-            switch(mDisplay.getRotation()){
+            switch(getOrientation(mDisplay)){
                 case Surface.ROTATION_90:
                     azimuthInDegrees += 90;
                     break;
@@ -376,12 +372,7 @@ public class CompassFragment extends AbstractFragment implements ViewTreeObserve
                         }
                     }
                     catch(NullPointerException e){
-                        HashMap<String, Object> exceptionData = new HashMap<String, Object>();
-                        exceptionData.put("StackTrace", Log.getStackTraceString(e));
-                        exceptionData.put("getActivity()", getActivity() == null ? "null" : "not null");
-                        if(getActivity() != null)
-                            exceptionData.put("getActivity().getResources()", getActivity().getResources() == null ? "null" : "not null");
-                        Mint.logEvent("Exception in runOnUiThread apply city", MintLogLevel.Error, exceptionData);
+                        e.printStackTrace();
                     }
                 }
             });
@@ -396,6 +387,11 @@ public class CompassFragment extends AbstractFragment implements ViewTreeObserve
         outState.putString("cityName", cityName);
 
         super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    public int getLocationDetailsTextResId(){
+        return R.string.location_details_qibla;
     }
 
     public void restoreState(Bundle savedInstanceState){

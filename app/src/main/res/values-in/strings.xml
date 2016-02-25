@@ -3,6 +3,10 @@
 
     <string name="cancel">Batal</string>
 
+    <string name="geolocation_needed">Lokasi dibutuhkan</string>
+    <string name="allow_location">Izinkan mengakses lokasi</string>
+    <string name="location_details_salat">Shalat tergantung pada lokasi Anda</string>
+    <string name="location_details_qibla">Kiblat tergantung pada lokasi Anda</string>
     <string name="location_required_title">Aktifkan lokasi</string>
     <string name="location_required_message">Aplikasi ini butuh keterangan lokasi</string>
     <string name="settings">Setelan</string>

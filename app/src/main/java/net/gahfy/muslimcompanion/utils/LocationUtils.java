@@ -3,22 +3,15 @@ package net.gahfy.muslimcompanion.utils;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteException;
-import android.location.Location;
 import android.location.LocationManager;
+import android.os.Build;
 import android.support.annotation.Nullable;
 import android.telephony.TelephonyManager;
+import android.util.Log;
 
-import com.splunk.mint.Mint;
-import com.splunk.mint.MintLogLevel;
-
-import net.gahfy.muslimcompanion.DbManager;
-import net.gahfy.muslimcompanion.R;
+import net.gahfy.muslimcompanion.DbOpenHelper;
 import net.gahfy.muslimcompanion.models.MuslimLocation;
 
-import java.io.IOException;
-import java.sql.SQLException;
-import java.util.HashMap;
 import java.util.Locale;
 
 /**
@@ -36,23 +29,6 @@ public class LocationUtils {
     public static final int NOT_NETWORK_ENABLED = 5;
     public static final int NOT_GPS_ENABLED = 6;
 
-    public static Location getLastKnownLocation(LocationManager locationManager){
-        Location gpsLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-        Location networkLocation = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
-        Location passiveLocation = locationManager.getLastKnownLocation(LocationManager.PASSIVE_PROVIDER);
-
-        if(gpsLocation != null){
-            return gpsLocation;
-        }
-        else if(networkLocation != null){
-            return networkLocation;
-        }
-        else if(passiveLocation != null){
-            return passiveLocation;
-        }
-        return null;
-    }
-
     /**
      * Returns the current status of location providers.
      * @param context Context in which the application is running
@@ -64,7 +40,9 @@ public class LocationUtils {
 
         boolean gps_enabled = lm.isProviderEnabled(LocationManager.GPS_PROVIDER);
         boolean network_enabled = lm.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
-        boolean passive_enabled = lm.isProviderEnabled(LocationManager.PASSIVE_PROVIDER);
+        boolean passive_enabled = false;
+        if( Build.VERSION.SDK_INT >= Build.VERSION_CODES.FROYO)
+            passive_enabled = lm.isProviderEnabled(LocationManager.PASSIVE_PROVIDER);
 
         if (gps_enabled) {
             currentStatus = currentStatus | GPS_ENABLED;
@@ -140,49 +118,16 @@ public class LocationUtils {
      * @return the country and the name of the city for a position
      */
     public static String[] getCountryIsoAndCityName(Context context, double latitude, double longitude){
-        try {
-            DbManager dbManager = new DbManager(context);
-            dbManager.createDataBase();
-            dbManager.openDataBase();
-            SQLiteDatabase db = dbManager.getDb();
-            String query = String.format(Locale.US,
-                    "SELECT cities._id, cities.iso, CASE WHEN (alternateNames.alternate_name IS NULL) THEN cities.name ELSE alternateNames.alternate_name END as cityName\n" +
-                            "FROM cities\n" +
-                            "LEFT OUTER JOIN (SELECT * FROM alternateNames WHERE isolanguage IN (" + context.getString(R.string.language_name_for_database) + ")) alternateNames ON alternateNames.geonameid = cities._id\n" +
-                            "ORDER BY ((cities.latitude - %f)*(cities.latitude - %f)) + ((cities.longitude - %f)*(cities.longitude - %f))\n" +
-                            "LIMIT 0,1;", latitude, latitude, longitude, longitude);
-            Cursor c = db.rawQuery(query, null);
-            c.moveToFirst();
-            String[] result = new String[]{c.getString(1), c.getString(2)};
+        SQLiteDatabase db = DbOpenHelper.getDb(context);
+        String sqlQuery = String.format(Locale.US, "SELECT name, country FROM cities ORDER BY ((%f-latitude)*(%f-latitude))+((%f-longitude)*(%f-longitude)) ASC LIMIT 0, 1", latitude, latitude, longitude, longitude);
+        Log.i(LocationUtils.class.getSimpleName(), sqlQuery);
+        Cursor cursor = db.rawQuery(sqlQuery, null);
+        if(cursor.getCount() == 0)
+            return null;
+        cursor.moveToFirst();
 
-            HashMap<String, Object> cityData = new HashMap<String, Object>();
-            cityData.put("cityId", c.getLong(0));
-            cityData.put("location", String.format(Locale.US, "%f,%f", latitude, longitude));
-            cityData.put("cityName", c.getString(2));
-            cityData.put("cityCountry", c.getString(1));
-            cityData.put("language", context.getString(R.string.language_name_for_database));
-            Mint.logEvent("City found", MintLogLevel.Info, cityData);
-
-            c.close();
-            dbManager.close();
-
-            return result;
-        }
-        catch(IOException e){
-            // TODO: Handle error
-            return null;
-        }
-        catch(SQLException e){
-            // TODO: Handle error
-            return null;
-        }
-        catch(SQLiteException e){
-            // TODO: Handle error
-            return null;
-        }
-        catch(StackOverflowError e){
-            // TODO: Handle error
-            return null;
-        }
+        String[] result = new String[]{cursor.getString(1), cursor.getString(0)};
+        cursor.close();
+        return result;
     }
 }

@@ -34,7 +34,7 @@ public abstract class ItemListAdapter extends RecyclerView.Adapter<RecyclerView.
      */
     public int getTextResId(int position){
         return 0;
-    };
+    }
 
     public String getText(int position){
         return activity.getString(getTextResId(position));
@@ -97,7 +97,7 @@ public abstract class ItemListAdapter extends RecyclerView.Adapter<RecyclerView.
     private class ItemClickedListener implements View.OnClickListener {
         @Override
         public void onClick(View view) {
-            int itemPosition = recyclerView.getChildPosition(view);
+            int itemPosition = recyclerView.getChildAdapterPosition(view);
             ItemListAdapter.this.onClick(itemPosition);
             // We call this to go back to previous fragment
             activity.onBackPressed();

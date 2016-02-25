@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 import android.view.View;
 
@@ -50,13 +51,13 @@ public class CompassView extends View{
         westAbbreviation = getResources().getString(R.string.west_abbreviation);
 
         northTextPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        northTextPaint.setColor(getResources().getColor(R.color.accent));
+        northTextPaint.setColor(ContextCompat.getColor(getContext(), R.color.accent));
         northTextPaint.setStyle(Paint.Style.FILL);
         northTextPaint.setTextSize(50);
         northTextPaint.setTypeface(ViewUtils.getTypefaceToUse(this.getContext(), ViewUtils.FONT_WEIGHT.MEDIUM));
 
         defaultTextPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        defaultTextPaint.setColor(getResources().getColor(R.color.black_87));
+        defaultTextPaint.setColor(ContextCompat.getColor(getContext(), R.color.black_87));
         defaultTextPaint.setStyle(Paint.Style.FILL);
         defaultTextPaint.setTextSize(50);
         defaultTextPaint.setTypeface(ViewUtils.getTypefaceToUse(this.getContext(), ViewUtils.FONT_WEIGHT.LIGHT));

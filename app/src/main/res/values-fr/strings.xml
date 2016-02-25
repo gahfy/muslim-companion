@@ -11,6 +11,10 @@
 
     <!-- Affiché pour inciter l'utilisateur à patienter durant la géolocalisation -->
     <string name="geolocating">Geolocalisation</string>
+    <string name="geolocation_needed">Localisation nécessaire</string>
+    <string name="allow_location">Autoriser l\'accès à la localisation</string>
+    <string name="location_details_salat">L\'heure de prière dépend de votre localisation</string>
+    <string name="location_details_qibla">La Qibla dépend de votre localisation</string>
     <string name="location_required_message">L\'application nécessite que la localisation soit active</string>
     <string name="location_required_title">Activez la localisation</string>
 

@@ -3,15 +3,13 @@ package net.gahfy.muslimcompanion.fragment;
 import android.graphics.Point;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.util.TypedValue;
 import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-
-import com.splunk.mint.Mint;
-import com.splunk.mint.MintLogLevel;
 
 import net.gahfy.muslimcompanion.R;
 import net.gahfy.muslimcompanion.models.MuslimLocation;
@@ -23,7 +21,6 @@ import net.gahfy.muslimcompanion.utils.ViewUtils;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.Locale;
 
 public class PrayerTimeFragment extends AbstractFragment{
@@ -46,10 +43,6 @@ public class PrayerTimeFragment extends AbstractFragment{
 
     public PrayerTimeFragment(){
         super();
-    }
-
-    public void setDayDifference(int dayDifference){
-        this.dayDifference = dayDifference;
     }
 
     @Override
@@ -92,8 +85,9 @@ public class PrayerTimeFragment extends AbstractFragment{
             height = size.y;
         }
         else{
-            width = display.getWidth();
-            height = display.getHeight();
+            int[] size = getDisplaySizeBeforeHoneyComb(display);
+            width = size[0];
+            height = size[1];
         }
 
         if(width <= height) {
@@ -248,6 +242,11 @@ public class PrayerTimeFragment extends AbstractFragment{
         super.onSaveInstanceState(outState);
     }
 
+    @Override
+    public int getLocationDetailsTextResId(){
+        return R.string.location_details_salat;
+    }
+
     public void updatePrayerTimes(PrayerTimesUtils prayerTimesUtils){
         if(getActivity() != null) {
             int year = prayerTimesUtils.getYear();
@@ -280,24 +279,24 @@ public class PrayerTimeFragment extends AbstractFragment{
             long currentTimestamp = new Date().getTime();
 
             if (prayerTimesUtils.getFajrTimestamp() > currentTimestamp) {
-                lblTimeFajr.setTextColor(getActivity().getResources().getColor(R.color.accent));
+                lblTimeFajr.setTextColor(ContextCompat.getColor(getActivity(), R.color.accent));
             } else if (prayerTimesUtils.getSunriseTimestamp() > currentTimestamp) {
-                lblTimeFajr.setTextColor(getActivity().getResources().getColor(R.color.primary));
-                lblTimeSunrise.setTextColor(getActivity().getResources().getColor(R.color.accent));
+                lblTimeFajr.setTextColor(ContextCompat.getColor(getActivity(), R.color.primary));
+                lblTimeSunrise.setTextColor(ContextCompat.getColor(getActivity(), R.color.accent));
             } else if (prayerTimesUtils.getDhuhrTimestamp() > currentTimestamp) {
-                lblTimeSunrise.setTextColor(getActivity().getResources().getColor(R.color.primary));
-                lblTimeDhuhr.setTextColor(getActivity().getResources().getColor(R.color.accent));
+                lblTimeSunrise.setTextColor(ContextCompat.getColor(getActivity(), R.color.primary));
+                lblTimeDhuhr.setTextColor(ContextCompat.getColor(getActivity(), R.color.accent));
             } else if (prayerTimesUtils.getAsrTimestamp() > currentTimestamp) {
-                lblTimeDhuhr.setTextColor(getActivity().getResources().getColor(R.color.primary));
-                lblTimeAsr.setTextColor(getActivity().getResources().getColor(R.color.accent));
+                lblTimeDhuhr.setTextColor(ContextCompat.getColor(getActivity(), R.color.primary));
+                lblTimeAsr.setTextColor(ContextCompat.getColor(getActivity(), R.color.accent));
             } else if (prayerTimesUtils.getMaghribTimestamp() > currentTimestamp) {
-                lblTimeAsr.setTextColor(getActivity().getResources().getColor(R.color.primary));
-                lblTimeMaghrib.setTextColor(getActivity().getResources().getColor(R.color.accent));
+                lblTimeAsr.setTextColor(ContextCompat.getColor(getActivity(), R.color.primary));
+                lblTimeMaghrib.setTextColor(ContextCompat.getColor(getActivity(), R.color.accent));
             } else if (prayerTimesUtils.getIshaTimestamp() > currentTimestamp) {
-                lblTimeMaghrib.setTextColor(getActivity().getResources().getColor(R.color.primary));
-                lblTimeIsha.setTextColor(getActivity().getResources().getColor(R.color.accent));
+                lblTimeMaghrib.setTextColor(ContextCompat.getColor(getActivity(), R.color.primary));
+                lblTimeIsha.setTextColor(ContextCompat.getColor(getActivity(), R.color.accent));
             } else {
-                lblTimeIsha.setTextColor(getActivity().getResources().getColor(R.color.primary));
+                lblTimeIsha.setTextColor(ContextCompat.getColor(getActivity(), R.color.primary));
             }
 
             lblTimeFajr.setText(simpleDateFormat.format(new Date(prayerTimesUtils.getFajrTimestamp())));
@@ -306,18 +305,6 @@ public class PrayerTimeFragment extends AbstractFragment{
             lblTimeAsr.setText(simpleDateFormat.format(new Date(prayerTimesUtils.getAsrTimestamp())));
             lblTimeMaghrib.setText(simpleDateFormat.format(new Date(prayerTimesUtils.getMaghribTimestamp())));
             lblTimeIsha.setText(simpleDateFormat.format(new Date(prayerTimesUtils.getIshaTimestamp())));
-
-            SimpleDateFormat logSimpleDateFormat = new SimpleDateFormat(getActivity().getString(R.string.hour_format), Locale.US);
-
-            HashMap<String, Object> prayerData = new HashMap<String, Object>();
-            prayerData.put("Location", String.format(Locale.US, "%f,%f", prayerTimesUtils.getLatitude(), prayerTimesUtils.getLongitude()));
-            prayerData.put("Fajr", String.format("%s (%d)", logSimpleDateFormat.format(new Date(prayerTimesUtils.getFajrTimestamp())), prayerTimesUtils.getFajrTimestamp()/1000));
-            prayerData.put("Shuruq", String.format("%s (%d)", logSimpleDateFormat.format(new Date(prayerTimesUtils.getSunriseTimestamp())), prayerTimesUtils.getSunriseTimestamp()/1000));
-            prayerData.put("Dhuhr", String.format("%s (%d)", logSimpleDateFormat.format(new Date(prayerTimesUtils.getDhuhrTimestamp())), prayerTimesUtils.getDhuhrTimestamp()/1000));
-            prayerData.put("Asr", String.format("%s (%d)", logSimpleDateFormat.format(new Date(prayerTimesUtils.getAsrTimestamp())), prayerTimesUtils.getAsrTimestamp()/1000));
-            prayerData.put("Maghrib", String.format("%s (%d)", logSimpleDateFormat.format(new Date(prayerTimesUtils.getMaghribTimestamp())), prayerTimesUtils.getMaghribTimestamp()/1000));
-            prayerData.put("Isha", String.format("%s (%d)", logSimpleDateFormat.format(new Date(prayerTimesUtils.getIshaTimestamp())), prayerTimesUtils.getIshaTimestamp()/1000));
-            Mint.logEvent("Prayer times", MintLogLevel.Info, prayerData);
 
             new Thread(
                 new Runnable() {
@@ -328,5 +315,10 @@ public class PrayerTimeFragment extends AbstractFragment{
                 }
             ).start();
         }
+    }
+
+    @SuppressWarnings("deprecation")
+    private int[] getDisplaySizeBeforeHoneyComb(Display display){
+        return new int[]{display.getWidth(), display.getHeight()};
     }
 }

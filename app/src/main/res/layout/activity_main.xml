@@ -88,8 +88,7 @@
                 <FrameLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:id="@+id/lyt_fragment_container"></FrameLayout>
-
+                    android:id="@+id/lyt_fragment_container" />
                 <LinearLayout
                     android:id="@+id/lyt_geolocating_container"
                     android:layout_width="match_parent"
@@ -118,6 +117,47 @@
                         android:layout_marginLeft="17.66dp"
                         android:layout_marginRight="17.66dp"
                         />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/lyt_location_refused_container"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
+                    android:orientation="vertical"
+                    android:visibility="gone"
+                    android:background="@color/white_93">
+
+                    <TextView
+                        android:id="@+id/lbl_location_needed"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:gravity="center_horizontal"
+                        android:textColor="@color/black_87"
+                        android:textSize="32sp"
+                        android:text="@string/geolocation_needed" />
+
+                    <TextView
+                        android:id="@+id/lbl_location_rationale"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:gravity="center_horizontal"
+                        android:textColor="@color/black_87"
+                        android:textSize="14sp"
+                        android:padding="16dp" />
+
+                    <Button
+                        android:id="@+id/bt_location_permission"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:background="@drawable/accent_button_background"
+                        android:paddingLeft="16dp"
+                        android:paddingRight="16dp"
+                        android:text="@string/allow_location"/>
+
                 </LinearLayout>
             </RelativeLayout>
 
@@ -201,7 +241,7 @@
                         android:gravity="left|center_vertical"
                         android:textSize="14sp" />
                 </RelativeLayout>
-                <RelativeLayout
+                <!--RelativeLayout
                     android:id="@+id/lyt_menu_quran_container"
                     android:layout_width="match_parent"
                     android:layout_height="48dp"
@@ -229,7 +269,7 @@
                         android:textColor="@color/black_87"
                         android:gravity="left|center_vertical"
                         android:textSize="14sp" />
-                </RelativeLayout>
+                </RelativeLayout-->
                 <RelativeLayout
                     android:id="@+id/lyt_menu_settings_container"
                     android:layout_width="match_parent"

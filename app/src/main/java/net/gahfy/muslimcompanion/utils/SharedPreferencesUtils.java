@@ -5,10 +5,6 @@ import android.content.SharedPreferences;
 
 import net.gahfy.muslimcompanion.models.MuslimLocation;
 
-import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
-
 public class SharedPreferencesUtils{
     /** The name of the shared preferences file */
     private static final String PREFERENCES_NAME = "muslimCompanionPrefs";
@@ -43,8 +39,6 @@ public class SharedPreferencesUtils{
     private static final String SCHOOL_AUTOMATIC = "schoolIsAutomatic";
 
     private static final String HIGHER_LATITUDE_MODE_AUTOMATIC = "higherLatitudeModeIsAutomatic";
-
-    private static final String LAST_USAGE = "lastUsage";
 
     private static final String TIME_LAST_NOTIFICATION_PRAYER = "timeLastNotificationPrayer";
 
@@ -114,13 +108,6 @@ public class SharedPreferencesUtils{
         return sharedPreferences.getInt(DATABASE_VERSION, 0);
     }
 
-    public static void putDatabaseVersion(Context context, int databaseVersion){
-        SharedPreferences sharedPreferences = context.getSharedPreferences(PREFERENCES_NAME, Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putInt(DATABASE_VERSION, databaseVersion);
-        editor.commit();
-    }
-
     public static int getJumuahFirstCallDelay(Context context){
         SharedPreferences sharedPreferences = context.getSharedPreferences(PREFERENCES_NAME, Context.MODE_PRIVATE);
         return sharedPreferences.getInt(JUMUAH_FIRST_CALL_DELAY, 30);
@@ -186,45 +173,6 @@ public class SharedPreferencesUtils{
         return sharedPreferences.getInt(HIGHER_LATITUDE_MODE, -1);
     }
 
-    public static boolean saveUsageandGetHasUsedYesterday(Context context){
-        long lastUsage = getLastUsage(context);
-        boolean shouldSave = false;
-        boolean hasUsedYesterday = false;
-
-        if(lastUsage != -1){
-            GregorianCalendar currentDayCalendar = new GregorianCalendar();
-            currentDayCalendar.setTimeInMillis(new Date().getTime());
-
-            currentDayCalendar.set(Calendar.HOUR, 0);
-            currentDayCalendar.set(Calendar.MINUTE, 0);
-            currentDayCalendar.set(Calendar.SECOND, 0);
-            currentDayCalendar.set(Calendar.MILLISECOND, 0);
-
-            long todayMidnightDate = currentDayCalendar.getTimeInMillis();
-
-            if(lastUsage < todayMidnightDate){
-                shouldSave = true;
-                hasUsedYesterday = lastUsage > (todayMidnightDate-86400l*1000l);
-            }
-        }
-        else{
-            shouldSave = true;
-        }
-
-        if(shouldSave){
-            SharedPreferences sharedPreferences = context.getSharedPreferences(PREFERENCES_NAME, Context.MODE_PRIVATE);
-            SharedPreferences.Editor editor = sharedPreferences.edit();
-            editor.putLong(LAST_USAGE, new Date().getTime());
-            editor.commit();
-        }
-        return hasUsedYesterday;
-    }
-
-    public static long getLastUsage(Context context){
-        SharedPreferences sharedPreferences = context.getSharedPreferences(PREFERENCES_NAME, Context.MODE_PRIVATE);
-        return sharedPreferences.getLong(LAST_USAGE, -1);
-    }
-
     public static void putHigherLatitudeModeIsAutomatic(Context context, boolean higherLatitudeModeIsAutomatic){
         SharedPreferences sharedPreferences = context.getSharedPreferences(PREFERENCES_NAME, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
@@ -283,13 +231,6 @@ public class SharedPreferencesUtils{
     public static boolean getConventionIsAutomatic(Context context){
         SharedPreferences sharedPreferences = context.getSharedPreferences(PREFERENCES_NAME, Context.MODE_PRIVATE);
         return sharedPreferences.getBoolean(CONVENTION_AUTOMATIC, true);
-    }
-
-    public static void putLocationValidityDate(Context context, long locationValidityTime){
-        SharedPreferences sharedPreferences = context.getSharedPreferences(PREFERENCES_NAME, Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putLong(LOCATION_VALIDITY_TIME, locationValidityTime);
-        editor.commit();
     }
 
     public static long getLocationValidityTime(Context context){

@@ -1,7 +1,9 @@
 package net.gahfy.muslimcompanion.fragment;
 
-import android.app.Activity;
+import android.content.Context;
+import android.os.Build;
 import android.support.v4.app.Fragment;
+import android.view.Display;
 
 import net.gahfy.muslimcompanion.MainActivity;
 import net.gahfy.muslimcompanion.models.MuslimLocation;
@@ -25,13 +27,13 @@ public abstract class AbstractFragment extends Fragment {
     private MainActivity mainActivity;
 
     @Override
-    public void onAttach(Activity activity){
-        super.onAttach(activity);
+    public void onAttach(Context context){
+        super.onAttach(context);
 
         // If the parent activity is instance of MainActivity, then we set it as the parent
         // MainActivity
-        if(activity instanceof MainActivity)
-            this.mainActivity = (MainActivity) activity;
+        if(context instanceof MainActivity)
+            this.mainActivity = (MainActivity) context;
     }
 
     @Override
@@ -42,6 +44,10 @@ public abstract class AbstractFragment extends Fragment {
     @Override
     public void onStop(){
         super.onStop();
+    }
+
+    public int getLocationDetailsTextResId(){
+        return 0;
     }
 
     /**
@@ -66,5 +72,17 @@ public abstract class AbstractFragment extends Fragment {
      */
     public void onLocationChanged(MuslimLocation location){
 
+    }
+
+    public int getOrientation(Display display){
+        if(Build.VERSION.SDK_INT < Build.VERSION_CODES.FROYO)
+            return getOrientationBefore8(display);
+        else
+            return display.getRotation();
+    }
+
+    @SuppressWarnings("deprecation")
+    public int getOrientationBefore8(Display display){
+        return display.getOrientation();
     }
 }

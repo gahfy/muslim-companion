@@ -1,7 +1,5 @@
 package net.gahfy.muslimcompanion.fragment;
 
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -9,9 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import net.gahfy.muslimcompanion.DbManager;
 import net.gahfy.muslimcompanion.R;
-import net.gahfy.muslimcompanion.adapter.AyaListAdapter;
 
 public class SuraFragment extends AbstractFragment{
     RecyclerView listAya;
@@ -30,7 +26,7 @@ public class SuraFragment extends AbstractFragment{
     @Override
     public void onStart(){
         super.onStart();
-        try {
+        /*try {
             DbManager dbManager = new DbManager(getActivity());
             dbManager.createDataBase();
             dbManager.openDataBase();
@@ -50,6 +46,6 @@ public class SuraFragment extends AbstractFragment{
         }
         catch (Exception e){
             e.printStackTrace();
-        }
+        }*/
     }
 }
