@@ -161,6 +161,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
         //TextView lblMenuQuran = (TextView) findViewById(R.id.lbl_menu_quran);
         TextView lblLocationNeeded = (TextView) findViewById(R.id.lbl_location_needed);
         Button btLocationPermission = (Button) findViewById(R.id.bt_location_permission);
+        Button btManualLocation = (Button) findViewById(R.id.bt_manual_location);
 
         ViewUtils.setTypefaceToTextView(this, lblGeolocating, ViewUtils.FONT_WEIGHT.LIGHT);
         ViewUtils.setTypefaceToTextView(this, lblMenuSettings, ViewUtils.FONT_WEIGHT.MEDIUM);
@@ -170,6 +171,13 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
         ViewUtils.setTypefaceToTextView(this, lblLocationNeeded, ViewUtils.FONT_WEIGHT.MEDIUM);
         ViewUtils.setTypefaceToTextView(this, lbllocationRationale, ViewUtils.FONT_WEIGHT.REGULAR);
         ViewUtils.setTypefaceToTextView(this, btLocationPermission, ViewUtils.FONT_WEIGHT.MEDIUM);
+
+        btManualLocation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
 
         btLocationPermission.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -197,14 +205,6 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
                 redirectToFragment(new CompassFragment(), false);
             }
         });
-
-
-        /*findViewById(R.id.lyt_menu_quran_container).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                redirectToFragment(new SuraFragment(), false);
-            }
-        });*/
     }
 
     @Override

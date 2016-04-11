@@ -29,7 +29,6 @@ import net.gahfy.muslimcompanion.view.CompassArrowView;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
-import java.util.HashMap;
 import java.util.Locale;
 
 public class CompassFragment extends AbstractFragment implements ViewTreeObserver.OnGlobalLayoutListener, SensorEventListener {
@@ -103,9 +102,9 @@ public class CompassFragment extends AbstractFragment implements ViewTreeObserve
             mSensorManager.registerListener(this, mAccelerometer, SensorManager.SENSOR_DELAY_GAME);
             mSensorManager.registerListener(this, mMagnetometer, SensorManager.SENSOR_DELAY_GAME);
         }
-        else{
+        /*else{
             //TODO : Manage Error
-        }
+        }*/
 
         ViewUtils.setTypefaceToTextView(getMainActivity(), lblQibla, ViewUtils.FONT_WEIGHT.LIGHT);
         ViewUtils.setTypefaceToTextView(getMainActivity(), lblAngle, ViewUtils.FONT_WEIGHT.MEDIUM);

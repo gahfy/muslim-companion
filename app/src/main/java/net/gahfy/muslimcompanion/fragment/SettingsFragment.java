@@ -2,10 +2,12 @@ package net.gahfy.muslimcompanion.fragment;
 
 import android.os.Bundle;
 import android.support.v7.widget.SwitchCompat;
+import android.view.InflateException;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CompoundButton;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -14,13 +16,22 @@ import net.gahfy.muslimcompanion.utils.PrayerTimesUtils;
 import net.gahfy.muslimcompanion.utils.SharedPreferencesUtils;
 import net.gahfy.muslimcompanion.utils.ViewUtils;
 
-import org.w3c.dom.Text;
-
 public class SettingsFragment extends AbstractFragment{
+    boolean isNotificationEnabled;
+    boolean isJumuahFirstCallEnabled;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        final View view = inflater.inflate(R.layout.fragment_settings, container, false);
+        View printedView;
+        boolean isAlternative = false;
+        try{
+            printedView = inflater.inflate(R.layout.fragment_settings, container, false);
+        }
+        catch(InflateException e){
+            printedView = inflater.inflate(R.layout.fragment_settings_alternative, container, false);
+            isAlternative = true;
+        }
+        final View view = printedView;
 
         RelativeLayout lytChooseConvention = (RelativeLayout) view.findViewById(R.id.lyt_choose_convention);
         RelativeLayout lytChooseAsr = (RelativeLayout) view.findViewById(R.id.lyt_choose_asr);
@@ -48,9 +59,60 @@ public class SettingsFragment extends AbstractFragment{
         TextView lblChooseNotificationSound = (TextView) view.findViewById(R.id.lbl_choose_notification_sound);
         TextView lblChooseNotificationSoundDetail= (TextView) view.findViewById(R.id.lbl_choose_notification_sound_details);
 
-        SwitchCompat swChooseIfNotification = (SwitchCompat) view.findViewById(R.id.sw_choose_if_notification);
-        SwitchCompat swChooseJumuahFirstCall = (SwitchCompat) view.findViewById(R.id.sw_choose_if_first_call_jumuah);
+        isNotificationEnabled = SharedPreferencesUtils.getNotifyPrayer(getActivity());
+        isJumuahFirstCallEnabled = SharedPreferencesUtils.getJumuahFirstCallEnabled(getActivity());
+        final int preferedJumuahFirstCallDelay = SharedPreferencesUtils.getJumuahFirstCallDelay(getActivity());
 
+        if(isAlternative) {
+            final ImageView swChooseIfNotification = (ImageView) view.findViewById(R.id.sw_choose_if_notification);
+            final ImageView swChooseJumuahFirstCall = (ImageView) view.findViewById(R.id.sw_choose_if_first_call_jumuah);
+
+            ViewUtils.setDrawableToImageView(swChooseIfNotification, isNotificationEnabled ? R.drawable.switch_compat_on : R.drawable.switch_compat_off);
+            ViewUtils.setDrawableToImageView(swChooseJumuahFirstCall, isJumuahFirstCallEnabled ? R.drawable.switch_compat_on : R.drawable.switch_compat_off);
+
+            swChooseIfNotification.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    isNotificationEnabled = !isNotificationEnabled;
+                    ViewUtils.setDrawableToImageView(swChooseIfNotification, isNotificationEnabled ? R.drawable.switch_compat_on : R.drawable.switch_compat_off);
+                    lblChooseIfNotification.setText(isNotificationEnabled ? R.string.prayer_notification_enabled : R.string.prayer_notification_disabled);
+                    SharedPreferencesUtils.putNotifyPrayer(getMainActivity(), isNotificationEnabled);
+                }
+            });
+
+            swChooseJumuahFirstCall.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    isJumuahFirstCallEnabled = !isJumuahFirstCallEnabled;
+                    ViewUtils.setDrawableToImageView(swChooseJumuahFirstCall, isJumuahFirstCallEnabled ? R.drawable.switch_compat_on : R.drawable.switch_compat_off);
+                    lblChooseFirstCallJumuahDetail.setText(isJumuahFirstCallEnabled ? getMainActivity().getString(R.string.minutes_before_jumuah, preferedJumuahFirstCallDelay) : getActivity().getString(R.string.jumuah_first_call_disabled));
+                    SharedPreferencesUtils.putJumuahFirstCallEnabled(getMainActivity(), isJumuahFirstCallEnabled);
+                }
+            });
+        }
+        else{
+            SwitchCompat swChooseIfNotification = (SwitchCompat) view.findViewById(R.id.sw_choose_if_notification);
+            SwitchCompat swChooseJumuahFirstCall = (SwitchCompat) view.findViewById(R.id.sw_choose_if_first_call_jumuah);
+
+            swChooseIfNotification.setChecked(isNotificationEnabled);
+            swChooseJumuahFirstCall.setChecked(isJumuahFirstCallEnabled);
+
+            swChooseIfNotification.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    lblChooseIfNotification.setText(isChecked ? R.string.prayer_notification_enabled : R.string.prayer_notification_disabled);
+                    SharedPreferencesUtils.putNotifyPrayer(getMainActivity(), isChecked);
+                }
+            });
+
+            swChooseJumuahFirstCall.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    lblChooseFirstCallJumuahDetail.setText(isChecked ? getMainActivity().getString(R.string.minutes_before_jumuah, preferedJumuahFirstCallDelay) : getActivity().getString(R.string.jumuah_first_call_disabled));
+                    SharedPreferencesUtils.putJumuahFirstCallEnabled(getMainActivity(), isChecked);
+                }
+            });
+        }
         ViewUtils.setTypefaceToTextView(getActivity(), lblPrayerTitle, ViewUtils.FONT_WEIGHT.BOLD);
         ViewUtils.setTypefaceToTextView(getActivity(), lblPrayerNotificationTitle, ViewUtils.FONT_WEIGHT.BOLD);
 
@@ -67,38 +129,18 @@ public class SettingsFragment extends AbstractFragment{
         ViewUtils.setTypefaceToTextView(getActivity(), lblChooseNotificationSoundDetail, ViewUtils.FONT_WEIGHT.LIGHT);
         ViewUtils.setTypefaceToTextView(getActivity(), lblChooseFirstCallJumuahDetail, ViewUtils.FONT_WEIGHT.LIGHT);
 
-        boolean isNotificationEnabled = SharedPreferencesUtils.getNotifyPrayer(getActivity());
         boolean isConventionAutomatic = SharedPreferencesUtils.getConventionIsAutomatic(getActivity());
         boolean isSchoolAutomatic = SharedPreferencesUtils.getSchoolIsAutomatic(getActivity());
         boolean isHigherLatitudeAutomatic = SharedPreferencesUtils.getHigherLatitudeModeIsAutomatic(getActivity());
-        boolean isJumuahFirstCallEnabled = SharedPreferencesUtils.getJumuahFirstCallEnabled(getActivity());
 
         int preferedConvention = SharedPreferencesUtils.getConventionValue(getMainActivity());
         int preferedAsr = SharedPreferencesUtils.getSchoolValue(getMainActivity());
         int preferedHigherLatitude = SharedPreferencesUtils.getHigherLatitudeModeValue(getMainActivity());
         int preferedNotificationSound = SharedPreferencesUtils.getSoundNotificationPrayer(getActivity());
-        final int preferedJumuahFirstCallDelay = SharedPreferencesUtils.getJumuahFirstCallDelay(getActivity());
 
         lblChooseFirstCallJumuahDetail.setText(isJumuahFirstCallEnabled ? getMainActivity().getString(R.string.minutes_before_jumuah, preferedJumuahFirstCallDelay) : getActivity().getString(R.string.jumuah_first_call_disabled));
         lblChooseIfNotification.setText(isNotificationEnabled ? R.string.prayer_notification_enabled : R.string.prayer_notification_disabled);
-        swChooseIfNotification.setChecked(isNotificationEnabled);
-        swChooseJumuahFirstCall.setChecked(isJumuahFirstCallEnabled);
 
-        swChooseIfNotification.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                lblChooseIfNotification.setText(isChecked ? R.string.prayer_notification_enabled : R.string.prayer_notification_disabled);
-                SharedPreferencesUtils.putNotifyPrayer(getMainActivity(), isChecked);
-            }
-        });
-
-        swChooseJumuahFirstCall.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                lblChooseFirstCallJumuahDetail.setText(isChecked ? getMainActivity().getString(R.string.minutes_before_jumuah, preferedJumuahFirstCallDelay) : getActivity().getString(R.string.jumuah_first_call_disabled));
-                SharedPreferencesUtils.putJumuahFirstCallEnabled(getMainActivity(), isChecked);
-            }
-        });
 
         switch (preferedNotificationSound){
             case 0:

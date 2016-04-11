@@ -88,7 +88,7 @@ public class SharedPreferencesUtils{
         if(sharedPreferences.getBoolean(HAS_SAVED_LOCATION, false)){
             double locationLatitude = Double.valueOf(sharedPreferences.getString(LOCATION_LATITUDE, "200.0"));
             double locationLongitude = Double.valueOf(sharedPreferences.getString(LOCATION_LONGITUDE, "200.0"));
-            long locationTime = sharedPreferences.getLong(LOCATION_TIME, 0l);
+            long locationTime = sharedPreferences.getLong(LOCATION_TIME, 0L);
             MuslimLocation.MODE locationMode = (sharedPreferences.getInt(LOCATION_MODE, 0) == 0) ? MuslimLocation.MODE.MODE_PROVIDER : MuslimLocation.MODE.MODE_MANUAL;
 
             return new MuslimLocation(locationLatitude, locationLongitude, locationTime, locationMode);
@@ -101,11 +101,6 @@ public class SharedPreferencesUtils{
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putInt(JUMUAH_FIRST_CALL_DELAY, jumuahFirstCallDelay);
         editor.commit();
-    }
-
-    public static int getDatabaseVersion(Context context){
-        SharedPreferences sharedPreferences = context.getSharedPreferences(PREFERENCES_NAME, Context.MODE_PRIVATE);
-        return sharedPreferences.getInt(DATABASE_VERSION, 0);
     }
 
     public static int getJumuahFirstCallDelay(Context context){
@@ -235,6 +230,6 @@ public class SharedPreferencesUtils{
 
     public static long getLocationValidityTime(Context context){
         SharedPreferences sharedPreferences = context.getSharedPreferences(PREFERENCES_NAME, Context.MODE_PRIVATE);
-        return sharedPreferences.getLong(LOCATION_VALIDITY_TIME, -2l);
+        return sharedPreferences.getLong(LOCATION_VALIDITY_TIME, -2L);
     }
 }

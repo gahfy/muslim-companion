@@ -163,7 +163,7 @@ public class PrayerTimeFragment extends AbstractFragment{
      */
     public void manageFoundLocation(MuslimLocation location){
         if(hasResumed) {
-            long timeStamp = new Date().getTime() + ((long) dayDifference * 24l * 3600l * 1000l);
+            long timeStamp = new Date().getTime() + ((long) dayDifference * 24L * 3600L * 1000L);
             int[] calendarDatas = DateUtils.getDayMonthYear(timeStamp);
 
             countryIso = LocationUtils.getCountryIso(getActivity());
@@ -197,7 +197,7 @@ public class PrayerTimeFragment extends AbstractFragment{
                     if(cityName != null)
                         getMainActivity().setTitle(getMainActivity().getString(R.string.salat_at, cityName));
 
-                    long timeStamp = new Date().getTime() + ((long) dayDifference * 24l * 3600l * 1000l);
+                    long timeStamp = new Date().getTime() + ((long) dayDifference * 24L * 3600L * 1000L);
                     int[] calendarDatas = DateUtils.getDayMonthYear(timeStamp);
 
                     PrayerTimesUtils prayerTimesUtils = new PrayerTimesUtils(getMainActivity(), calendarDatas[0], calendarDatas[1], calendarDatas[2], getMainActivity().getCurrentLocation().getLocationLatitude(), getMainActivity().getCurrentLocation().getLocationLongitude(), PrayerTimesUtils.Convention.MUSLIM_WORLD_LEAGUE, PrayerTimesUtils.School.NOT_HANAFI);
@@ -224,7 +224,7 @@ public class PrayerTimeFragment extends AbstractFragment{
             getMainActivity().setTitle(R.string.salat);
         }
         if(getMainActivity().getCurrentLocation() != null){
-            long timeStamp = new Date().getTime() + ((long) dayDifference * 24l * 3600l * 1000l);
+            long timeStamp = new Date().getTime() + ((long) dayDifference * 24L * 3600L * 1000L);
             int[] calendarDatas = DateUtils.getDayMonthYear(timeStamp);
 
             PrayerTimesUtils prayerTimesUtils = new PrayerTimesUtils(getMainActivity(), calendarDatas[0], calendarDatas[1], calendarDatas[2], getMainActivity().getCurrentLocation().getLocationLatitude(), getMainActivity().getCurrentLocation().getLocationLongitude(), PrayerTimesUtils.Convention.MUSLIM_WORLD_LEAGUE, PrayerTimesUtils.School.NOT_HANAFI);

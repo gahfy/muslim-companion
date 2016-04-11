@@ -15,8 +15,8 @@ public class DateUtils {
      * @return the julian day
      */
     public static long dateToJulian(int yearInt, int monthInt, int dayInt) {
-        long year = monthInt  < 3 ? ((long) yearInt)-1l : (long) yearInt;
-        long month = monthInt < 3 ? ((long) monthInt)+12l : (long) monthInt;
+        long year = monthInt  < 3 ? ((long) yearInt)-1L : (long) yearInt;
+        long month = monthInt < 3 ? ((long) monthInt)+12L : (long) monthInt;
         long day = (long) dayInt;
         long s = year/100;
         long b = 2-s+(s/4);
@@ -29,11 +29,11 @@ public class DateUtils {
      * @return the hijri date with an integer array (year, month, day)
      */
     public static int[] getHijriFromJulianDay(long julianDay){
-        long year = (30l*julianDay - 58442554l)/(10631l);
-        long r2 = julianDay-((10631l*year+58442583l)/30l);
-        long month = (11l*r2+330l)/325l;
-        long r1 = r2-((325l*month-320l)/11l);
-        long day = r1+1l;
+        long year = (30L*julianDay - 58442554L)/(10631L);
+        long r2 = julianDay-((10631L*year+58442583L)/30L);
+        long month = (11L*r2+330L)/325L;
+        long r1 = r2-((325L*month-320L)/11L);
+        long day = r1+1L;
         return new int[]{(int) year, (int) month, (int) day};
     }
 
@@ -65,10 +65,10 @@ public class DateUtils {
      */
     public static long utcTimeToTimestamp(int year, int month, int day, int hour, int minute, int second){
         try {
-            String dateFormatted = String.format("%04d/%02d/%02d %02d:%02d:%02d +0000", year, month, day, hour, minute, second);
+            String dateFormatted = String.format(Locale.US, "%04d/%02d/%02d %02d:%02d:%02d +0000", year, month, day, hour, minute, second);
 
             String dateFormat = "yyyy/MM/dd HH:mm:ss z";
-            SimpleDateFormat format = new SimpleDateFormat(dateFormat, Locale.getDefault());
+            SimpleDateFormat format = new SimpleDateFormat(dateFormat, Locale.US);
 
             return format.parse(dateFormatted).getTime();
         }

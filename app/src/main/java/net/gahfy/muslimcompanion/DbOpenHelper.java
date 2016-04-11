@@ -3,7 +3,6 @@ package net.gahfy.muslimcompanion;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.util.Log;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -24,7 +23,6 @@ public class DbOpenHelper extends SQLiteOpenHelper {
     public static synchronized SQLiteDatabase getDb(Context context){
         if(db == null){
             DbOpenHelper openHelper = new DbOpenHelper(context);
-            Log.e(DbOpenHelper.class.getSimpleName(), "0");
             db = openHelper.getWritableDatabase();
         }
         return db;

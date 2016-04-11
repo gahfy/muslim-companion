@@ -9,10 +9,6 @@ import java.util.GregorianCalendar;
 import java.util.HashMap;
 
 public class PrayerTimesUtils {
-    /**
-     * Number of milliseconds in a day.
-     */
-    private static final int DAY_MILLIS = 24*60*60*1000;
 
     /**
      * All the possible schools for Asr calculation
@@ -220,14 +216,6 @@ public class PrayerTimesUtils {
         return day;
     }
 
-    public double getLatitude(){
-        return latitude;
-    }
-
-    public double getLongitude(){
-        return longitude;
-    }
-
     public void changeCountry(String countryIso){
         Pair pair = COUNTRY_DEFAULT_CONVENTION.get(countryIso);
         if(pair != null){
@@ -258,182 +246,189 @@ public class PrayerTimesUtils {
         }
 
         higherLatitudeMode = mode;
+        if(school == null)
+            asrTime = 1.0;
+        else
+            switch (school){
+                case HANAFI:
+                    asrTime = 2.0;
+                    break;
+                case NOT_HANAFI:
+                    asrTime = 1.0;
+                    break;
+            }
 
-        switch (school){
-            case HANAFI:
-                asrTime = 2.0;
-                break;
-            case NOT_HANAFI:
-                asrTime = 1.0;
-                break;
+        if(convention == null) {
+            fajrAngle = 18.0;
+            ishaAngle = 17.0;
         }
-
-        switch(convention){
-            case MUSLIM_WORLD_LEAGUE:
-                fajrAngle = 18.0;
-                ishaAngle = 17.0;
-                break;
-            case ISLAMIC_SOCIETY_OF_NORTH_AMERICA:
-                fajrAngle = 15.0;
-                ishaAngle = 15.0;
-                break;
-            case EGYPTIAN_GENERAL_AUTHORITY_OF_SURVEY:
-                fajrAngle = 19.5;
-                ishaAngle = 17.5;
-                break;
-            case UMM_AL_QURA_UNIVERSITY_MAKKAH:
-                fajrAngle = 18.5;
-                ishaAngle = maghribAngle;
-                ishaDelayNormal = 1.5;
-                ishaDelayOnRamadhan = 2.0;
-                break;
-            case UNIVERSITY_OF_ISLAMIC_SCIENCES_KARACHI:
-                fajrAngle = 18.0;
-                ishaAngle = 18.0;
-                break;
-            case INSTITUTE_OF_GEOPHYSICS_UNIVERSITY_OF_TEHRAN:
-                fajrAngle = 17.7;
-                ishaAngle = 14.0;
-                break;
-            case SHIA_ITHNA_ASHARI_LEVA_RESEARCH_INSTITUTE_QUM:
-                fajrAngle = 16.0;
-                ishaAngle = 14.0;
-                maghribAngle = 4.0;
-                break;
-            case DEPARTMENT_OF_ISLAMIC_AFFAIRS_AND_CHARITABLE_ACTIVITIES_DUBAI:
-                fajrAngle = 18.5;
-                ishaAngle = maghribAngle;
-                ishaDelayNormal = 1.5;
-                ishaDelayOnRamadhan = 2.0;
-                dhuhrDelay = 4.0/60.0;
-                asrDelay = 5.0/60.0;
-                maghribDelay = 2.0/60.0;
-                break;
-            case MINISTRY_RELIGIOUS_AFFAIRS_AND_WAKFS_ALGERIA:
-                fajrAngle = 18.0;
-                ishaAngle = 17.0;
-                maghribDelay = 3.0/60.0;
-                break;
-            case MINISTRY_HABOUS_AND_ISLAMIC_AFFAIRS_MOROCCO:
-                fajrAngle = 18.0;
-                ishaAngle = 17.0;
-                fajrDelay = -1.0/60.0;
-                sunriseDelay = -2.0/60.0;
-                dhuhrDelay = 5.0/60.0;
-                maghribDelay = 3.0/60.0;
-                break;
-            case MINISTRY_RELIGIOUS_AFFAIRS_TUNISIA:
-                fajrAngle = 18.0;
-                ishaAngle = 18.0;
-                fajrDelay = -1.0/60.0;
-                dhuhrDelay = 7.0/60.0;
-                maghribDelay = 1.0/60.0;
-                ishaDelay = 1.0/60.0;
-                break;
-            case SOUTH_EAST_ASIA:
-                fajrAngle = 20.0;
-                ishaAngle = 18.0;
-                fajrDelay = 3.0/60.0;
-                sunriseDelay = 2.0/60.0;
-                dhuhrDelay = 1.0/60.0;
-                asrDelay = 2.0/60.0;
-                maghribDelay = 1.0/60.0;
-                ishaDelay = -1.0/60.0;
-                break;
-            case UNION_OF_ISLAMIC_ORGANISATIONS_OF_FRANCE:
-                fajrAngle = 12.0;
-                ishaAngle = 12.0;
-                fajrDelay = -5.0/60.0;
-                dhuhrDelay = 5.0/60.0;
-                maghribDelay = 4.0/60.0;
-                ishaDelay = 5.0/60.0;
-                break;
-            case PRESIDENCY_OF_RELIGIOUS_AFFAIRS_TURKEY:
-                fajrAngle = 18.0;
-                ishaAngle = 17.0;
-                fajrDelay = -2.0/60.0;
-                sunriseDelay = -7.0/60.0;
-                dhuhrDelay = 6.0/60.0;
-                asrDelay = 4.0/60.0;
-                maghribDelay = 9.0/60.0;
-                ishaDelay = 2.0/60.0;
-                break;
-            case MINISTRY_OF_ENDOWMENTS_AND_RELIGIOUS_AFFAIRS_OMAN:
-                fajrAngle = 18.0;
-                ishaAngle = 18.0;
-                dhuhrDelay = 5.0/60.0;
-                asrDelay = 5.0/60.0;
-                maghribDelay = 5.0/60.0;
-                ishaDelay = 1.0/60.0;
-                break;
-            case GENERAL_AUTHORITY_OF_ISLAMIC_AFFAIRS_AND_ENDOWMENTS_UAE:
-                fajrAngle = 18.5;
-                ishaAngle = maghribAngle;
-                asrDelay = 4.0/60.0;
-                maghribDelay = 2.0/60.0;
-                ishaDelay = 2.0/60.0;
-                ishaDelayNormal = 1.5;
-                ishaDelayOnRamadhan = 2.0;
-                break;
-            case MINISTRY_OF_AWQAF_ISLAMIC_AFFAIRS_AND_HOLY_PLACES_JORDAN:
-                fajrAngle = 18.0;
-                ishaAngle = 18.0;
-                break;
-            case MINISTRY_OF_AWQAF_AND_ISLAMIC_AFFAIRS_KUWAIT:
-                fajrAngle = 18.0;
-                ishaAngle = 17.5;
-                break;
-            case QATAR_CALENDAR_HOUSE:
-                fajrAngle = 18.0;
-                ishaAngle = maghribAngle;
-                dhuhrDelay = 4.0/60.0;
-                maghribDelay = 4.0/60.0;
-                ishaDelay = 4.0/60.0;
-                ishaDelayNormal = 1.5;
-                ishaDelayOnRamadhan = 2.0;
-                break;
-            case MINISTRY_OF_ENDOWMENTS_AND_ISLAMIC_AFFAIRS_LYBIA:
-                fajrAngle = 18.5;
-                ishaAngle = 18.5;
-                dhuhrDelay = 4.0/60.0;
-                maghribDelay = 4.0/60.0;
-                break;
-            case MINISTRY_OF_ISLAMIC_AFFAIRS_MALDIVES:
-                fajrAngle = 19.0;
-                ishaAngle = 19.0;
-                sunriseDelay = -1.0/60.0;
-                dhuhrDelay = 4.0/60.0;
-                asrDelay = 1.0/60.0;
-                maghribDelay = 1.0/60.0;
-                ishaDelay = 1.0/60.0;
-                break;
-            case BIRMINGHAM_CENTRAL_MOSQUE:
-                fajrAngle = 5.0;
-                ishaAngle = maghribAngle;
-                fajrDelay = -1.0;
-                ishaDelay = 1.0;
-                break;
-            case LONDON_CENTRAL_MOSQUE:
-                fajrAngle = 5.0;
-                ishaAngle = maghribAngle;
-                fajrDelay = -1.0;
-                ishaDelay = 1.0;
-                break;
-            case MUNICH_GERMANY:
-                fajrAngle = 18.0;
-                ishaAngle = 17.0;
-                break;
-            case GRAND_MOSQUE_OF_PARIS:
-                fajrAngle = 18.0;
-                ishaAngle = 17.0;
-                break;
-            case ISLAMIC_CENTRE_OF_QUEBEC:
-                fajrAngle = 17.79;
-                ishaAngle = 17.6;
-                asrDelay = 5.0/60.0;
-                maghribDelay = 5.0/60.0;
-                break;
-        }
+        else
+            switch(convention){
+                case MUSLIM_WORLD_LEAGUE:
+                    fajrAngle = 18.0;
+                    ishaAngle = 17.0;
+                    break;
+                case ISLAMIC_SOCIETY_OF_NORTH_AMERICA:
+                    fajrAngle = 15.0;
+                    ishaAngle = 15.0;
+                    break;
+                case EGYPTIAN_GENERAL_AUTHORITY_OF_SURVEY:
+                    fajrAngle = 19.5;
+                    ishaAngle = 17.5;
+                    break;
+                case UMM_AL_QURA_UNIVERSITY_MAKKAH:
+                    fajrAngle = 18.5;
+                    ishaAngle = maghribAngle;
+                    ishaDelayNormal = 1.5;
+                    ishaDelayOnRamadhan = 2.0;
+                    break;
+                case UNIVERSITY_OF_ISLAMIC_SCIENCES_KARACHI:
+                    fajrAngle = 18.0;
+                    ishaAngle = 18.0;
+                    break;
+                case INSTITUTE_OF_GEOPHYSICS_UNIVERSITY_OF_TEHRAN:
+                    fajrAngle = 17.7;
+                    ishaAngle = 14.0;
+                    break;
+                case SHIA_ITHNA_ASHARI_LEVA_RESEARCH_INSTITUTE_QUM:
+                    fajrAngle = 16.0;
+                    ishaAngle = 14.0;
+                    maghribAngle = 4.0;
+                    break;
+                case DEPARTMENT_OF_ISLAMIC_AFFAIRS_AND_CHARITABLE_ACTIVITIES_DUBAI:
+                    fajrAngle = 18.5;
+                    ishaAngle = maghribAngle;
+                    ishaDelayNormal = 1.5;
+                    ishaDelayOnRamadhan = 2.0;
+                    dhuhrDelay = 4.0/60.0;
+                    asrDelay = 5.0/60.0;
+                    maghribDelay = 2.0/60.0;
+                    break;
+                case MINISTRY_RELIGIOUS_AFFAIRS_AND_WAKFS_ALGERIA:
+                    fajrAngle = 18.0;
+                    ishaAngle = 17.0;
+                    maghribDelay = 3.0/60.0;
+                    break;
+                case MINISTRY_HABOUS_AND_ISLAMIC_AFFAIRS_MOROCCO:
+                    fajrAngle = 18.0;
+                    ishaAngle = 17.0;
+                    fajrDelay = -1.0/60.0;
+                    sunriseDelay = -2.0/60.0;
+                    dhuhrDelay = 5.0/60.0;
+                    maghribDelay = 3.0/60.0;
+                    break;
+                case MINISTRY_RELIGIOUS_AFFAIRS_TUNISIA:
+                    fajrAngle = 18.0;
+                    ishaAngle = 18.0;
+                    fajrDelay = -1.0/60.0;
+                    dhuhrDelay = 7.0/60.0;
+                    maghribDelay = 1.0/60.0;
+                    ishaDelay = 1.0/60.0;
+                    break;
+                case SOUTH_EAST_ASIA:
+                    fajrAngle = 20.0;
+                    ishaAngle = 18.0;
+                    fajrDelay = 3.0/60.0;
+                    sunriseDelay = 2.0/60.0;
+                    dhuhrDelay = 1.0/60.0;
+                    asrDelay = 2.0/60.0;
+                    maghribDelay = 1.0/60.0;
+                    ishaDelay = -1.0/60.0;
+                    break;
+                case UNION_OF_ISLAMIC_ORGANISATIONS_OF_FRANCE:
+                    fajrAngle = 12.0;
+                    ishaAngle = 12.0;
+                    fajrDelay = -5.0/60.0;
+                    dhuhrDelay = 5.0/60.0;
+                    maghribDelay = 4.0/60.0;
+                    ishaDelay = 5.0/60.0;
+                    break;
+                case PRESIDENCY_OF_RELIGIOUS_AFFAIRS_TURKEY:
+                    fajrAngle = 18.0;
+                    ishaAngle = 17.0;
+                    fajrDelay = -2.0/60.0;
+                    sunriseDelay = -7.0/60.0;
+                    dhuhrDelay = 6.0/60.0;
+                    asrDelay = 4.0/60.0;
+                    maghribDelay = 9.0/60.0;
+                    ishaDelay = 2.0/60.0;
+                    break;
+                case MINISTRY_OF_ENDOWMENTS_AND_RELIGIOUS_AFFAIRS_OMAN:
+                    fajrAngle = 18.0;
+                    ishaAngle = 18.0;
+                    dhuhrDelay = 5.0/60.0;
+                    asrDelay = 5.0/60.0;
+                    maghribDelay = 5.0/60.0;
+                    ishaDelay = 1.0/60.0;
+                    break;
+                case GENERAL_AUTHORITY_OF_ISLAMIC_AFFAIRS_AND_ENDOWMENTS_UAE:
+                    fajrAngle = 18.5;
+                    ishaAngle = maghribAngle;
+                    asrDelay = 4.0/60.0;
+                    maghribDelay = 2.0/60.0;
+                    ishaDelay = 2.0/60.0;
+                    ishaDelayNormal = 1.5;
+                    ishaDelayOnRamadhan = 2.0;
+                    break;
+                case MINISTRY_OF_AWQAF_ISLAMIC_AFFAIRS_AND_HOLY_PLACES_JORDAN:
+                    fajrAngle = 18.0;
+                    ishaAngle = 18.0;
+                    break;
+                case MINISTRY_OF_AWQAF_AND_ISLAMIC_AFFAIRS_KUWAIT:
+                    fajrAngle = 18.0;
+                    ishaAngle = 17.5;
+                    break;
+                case QATAR_CALENDAR_HOUSE:
+                    fajrAngle = 18.0;
+                    ishaAngle = maghribAngle;
+                    dhuhrDelay = 4.0/60.0;
+                    maghribDelay = 4.0/60.0;
+                    ishaDelay = 4.0/60.0;
+                    ishaDelayNormal = 1.5;
+                    ishaDelayOnRamadhan = 2.0;
+                    break;
+                case MINISTRY_OF_ENDOWMENTS_AND_ISLAMIC_AFFAIRS_LYBIA:
+                    fajrAngle = 18.5;
+                    ishaAngle = 18.5;
+                    dhuhrDelay = 4.0/60.0;
+                    maghribDelay = 4.0/60.0;
+                    break;
+                case MINISTRY_OF_ISLAMIC_AFFAIRS_MALDIVES:
+                    fajrAngle = 19.0;
+                    ishaAngle = 19.0;
+                    sunriseDelay = -1.0/60.0;
+                    dhuhrDelay = 4.0/60.0;
+                    asrDelay = 1.0/60.0;
+                    maghribDelay = 1.0/60.0;
+                    ishaDelay = 1.0/60.0;
+                    break;
+                case BIRMINGHAM_CENTRAL_MOSQUE:
+                    fajrAngle = 5.0;
+                    ishaAngle = maghribAngle;
+                    fajrDelay = -1.0;
+                    ishaDelay = 1.0;
+                    break;
+                case LONDON_CENTRAL_MOSQUE:
+                    fajrAngle = 5.0;
+                    ishaAngle = maghribAngle;
+                    fajrDelay = -1.0;
+                    ishaDelay = 1.0;
+                    break;
+                case MUNICH_GERMANY:
+                    fajrAngle = 18.0;
+                    ishaAngle = 17.0;
+                    break;
+                case GRAND_MOSQUE_OF_PARIS:
+                    fajrAngle = 18.0;
+                    ishaAngle = 17.0;
+                    break;
+                case ISLAMIC_CENTRE_OF_QUEBEC:
+                    fajrAngle = 17.79;
+                    ishaAngle = 17.6;
+                    asrDelay = 5.0/60.0;
+                    maghribDelay = 5.0/60.0;
+                    break;
+            }
     }
 
     /**
@@ -466,12 +461,12 @@ public class PrayerTimesUtils {
      */
     public long getDhuhrTimestamp(){
         long realTime = DateUtils.utcTimeToTimestamp(year, month, day, getDhuhr() + dhuhrDelay);
-        return realTime - (realTime%60000l) + 60000l;
+        return realTime - (realTime%60000L) + 60000L;
     }
 
     public long getDhuhrOfNextDayTimestamp(){
-        long realTime = DateUtils.utcTimeToTimestamp(year, month, day, getDhuhrOfNextDay() + dhuhrDelay)+24l*3600l*1000l;
-        return realTime - (realTime%60000l) + 60000l;
+        long realTime = DateUtils.utcTimeToTimestamp(year, month, day, getDhuhrOfNextDay() + dhuhrDelay)+24L*3600L*1000L;
+        return realTime - (realTime%60000L) + 60000L;
     }
 
     /**
@@ -481,13 +476,13 @@ public class PrayerTimesUtils {
     public long getSunriseTimestamp(){
         double hoursInTheDay = getDhuhr() - getTimeBelowHorizonDifference(sunriseAngle) + sunriseDelay;
         long realTime = DateUtils.utcTimeToTimestamp(year, month, day, hoursInTheDay);
-        return realTime - (realTime%60000l) + 60000l;
+        return realTime - (realTime%60000L) + 60000L;
     }
 
     public long getSunriseOfNextDayTimestamp(){
         double hoursInTheDay = getDhuhrOfNextDay() - getTimeBelowHorizonDifference(sunriseAngle, time + (1.0/36525.0)) + sunriseDelay;
-        long realTime = DateUtils.utcTimeToTimestamp(year, month, day, hoursInTheDay) + 24l*3600l*1000l;
-        return realTime - (realTime%60000l) + 60000l;
+        long realTime = DateUtils.utcTimeToTimestamp(year, month, day, hoursInTheDay) + 24L*3600L*1000L;
+        return realTime - (realTime%60000L) + 60000L;
     }
 
     /**
@@ -497,13 +492,13 @@ public class PrayerTimesUtils {
     public long getMaghribTimestamp(){
         double hoursInTheDay = getDhuhr() + getTimeBelowHorizonDifference(maghribAngle) + maghribDelay;
         long realTime = DateUtils.utcTimeToTimestamp(year, month, day, hoursInTheDay);
-        return realTime - (realTime%60000l) + 60000l;
+        return realTime - (realTime%60000L) + 60000L;
     }
 
     public long getMaghribOfPreviousDayTimestamp(){
         double hoursInTheDay = getDhuhrOfPreviousDay() + getTimeBelowHorizonDifference(maghribAngle, time - (1.0/36525.0)) + maghribDelay;
-        long realTime = DateUtils.utcTimeToTimestamp(year, month, day, hoursInTheDay) - 24l*3600l*1000l;
-        return realTime - (realTime%60000l) + 60000l;
+        long realTime = DateUtils.utcTimeToTimestamp(year, month, day, hoursInTheDay) - 24L*3600L*1000L;
+        return realTime - (realTime%60000L) + 60000L;
     }
 
     /**
@@ -525,7 +520,7 @@ public class PrayerTimesUtils {
         }
         double hoursInTheDay = getDhuhr() - timeBelowHorizonDifference + fajrDelay;
         long realTime = DateUtils.utcTimeToTimestamp(year, month, day, hoursInTheDay);
-        return realTime - (realTime%60000l) + 60000l;
+        return realTime - (realTime%60000L) + 60000L;
     }
 
     public long getFajrTimestampOfNextDay(){
@@ -542,8 +537,8 @@ public class PrayerTimesUtils {
             }
         }
         double hoursInTheDay = getDhuhrOfNextDay() - timeBelowHorizonDifference + fajrDelay;
-        long realTime = DateUtils.utcTimeToTimestamp(year, month, day, hoursInTheDay) + 24l*3600l*1000l;
-        return realTime - (realTime%60000l) + 60000l;
+        long realTime = DateUtils.utcTimeToTimestamp(year, month, day, hoursInTheDay) + 24L*3600L*1000L;
+        return realTime - (realTime%60000L) + 60000L;
     }
 
     /**
@@ -569,7 +564,7 @@ public class PrayerTimesUtils {
         }
         double hoursInTheDay = getDhuhr() + timeBelowHorizonDifference + delayToAdd + ishaDelay;
         long realTime = DateUtils.utcTimeToTimestamp(year, month, day, hoursInTheDay);
-        return realTime - (realTime % 60000l) + 60000l;
+        return realTime - (realTime % 60000L) + 60000L;
     }
 
     public long getIshaTimestampOfPreviousDay(){
@@ -590,8 +585,8 @@ public class PrayerTimesUtils {
             }
         }
         double hoursInTheDay = getDhuhrOfPreviousDay() + timeBelowHorizonDifference + delayToAdd + ishaDelay;
-        long realTime = DateUtils.utcTimeToTimestamp(year, month, day, hoursInTheDay) - 24l*3600l*1000l;
-        return realTime - (realTime%60000l) + 60000l;
+        long realTime = DateUtils.utcTimeToTimestamp(year, month, day, hoursInTheDay) - 24L*3600L*1000L;
+        return realTime - (realTime%60000L) + 60000L;
     }
 
     /**
@@ -601,7 +596,7 @@ public class PrayerTimesUtils {
     public long getAsrTimestamp(){
         double hoursInTheDay = getDhuhr() + getTimeShadowSizeDifference(asrTime) + asrDelay;
         long realTime = DateUtils.utcTimeToTimestamp(year, month, day, hoursInTheDay);
-        return realTime - (realTime%60000l) + 60000l;
+        return realTime - (realTime%60000L) + 60000L;
     }
 
     /**
