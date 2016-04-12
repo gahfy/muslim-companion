@@ -28,8 +28,6 @@
 
     <string name="last_geolocation_on">Geolokasi terakhir : %1$s hingga %2$s</string>
 
-    <string name="hour_format">HH:mm</string>
-
     <string name="prayer_times">Waktu Shalat</string>
     <string name="salat">Shalat</string>
 

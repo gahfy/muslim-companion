@@ -21,11 +21,13 @@ import android.widget.TextView;
 
 import net.gahfy.muslimcompanion.R;
 import net.gahfy.muslimcompanion.models.MuslimLocation;
+import net.gahfy.muslimcompanion.utils.DateUtils;
 import net.gahfy.muslimcompanion.utils.LocationUtils;
 import net.gahfy.muslimcompanion.utils.MathUtils;
 import net.gahfy.muslimcompanion.utils.ViewUtils;
 import net.gahfy.muslimcompanion.view.CompassArrowView;
 
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
@@ -366,7 +368,7 @@ public class CompassFragment extends AbstractFragment implements ViewTreeObserve
                             String gregorianDateFormat = getActivity().getString(R.string.gregorian_date_format);
 
                             String date = String.format(gregorianDateFormat, gregorianMonths[month], day, year, daySuffix[day]);
-                            String hour = new SimpleDateFormat(getMainActivity().getString(R.string.hour_format), Locale.getDefault()).format(getMainActivity().getCurrentLocation().getLocationTime());
+                            String hour = DateUtils.getShortTime(getMainActivity(), getMainActivity().getCurrentLocation().getLocationTime());
                             getMainActivity().setSubTitle(getMainActivity().getString(R.string.last_geolocation_on, date, hour));
                         }
                     }
@@ -415,7 +417,7 @@ public class CompassFragment extends AbstractFragment implements ViewTreeObserve
                 String gregorianDateFormat = getActivity().getString(R.string.gregorian_date_format);
 
                 String date = String.format(gregorianDateFormat, gregorianMonths[month], day, year, daySuffix[day]);
-                String hour = new SimpleDateFormat(getMainActivity().getString(R.string.hour_format), Locale.getDefault()).format(getMainActivity().getCurrentLocation().getLocationTime());
+                String hour = DateUtils.getShortTime(getMainActivity(), getMainActivity().getCurrentLocation().getLocationTime());
                 getMainActivity().setSubTitle(getMainActivity().getString(R.string.last_geolocation_on, date, hour));
             }
 

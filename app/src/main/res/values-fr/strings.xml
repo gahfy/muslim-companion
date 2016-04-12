@@ -44,11 +44,6 @@
     <!-- %1$s est pour le jour de la date, %2$s est pour l'heure -->
     <string name="last_geolocation_on">Dernière géolocalisation : %1$s à %2$s</string>
 
-    <!-- Format de l'heure -->
-    <!-- HH pour l'heure sur 2 chiffres -->
-    <!-- mm pour les minutes sur 2 chiffres -->
-    <string name="hour_format">HH:mm</string>
-
     <string name="prayer_times">Heures de prière</string>
     <string name="salat">Salat</string>
 

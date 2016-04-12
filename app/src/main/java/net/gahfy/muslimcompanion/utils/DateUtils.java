@@ -1,5 +1,10 @@
 package net.gahfy.muslimcompanion.utils;
 
+import android.content.Context;
+import android.text.format.DateFormat;
+
+import net.gahfy.muslimcompanion.R;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -129,5 +134,10 @@ public class DateUtils {
         if(month==3)
             return new int[]{year, month-1, (year%4==0) ? 29 : 28};
         return new int[]{year-1, 12, 31};
+    }
+
+    public static String getShortTime(Context context, long timeStamp){
+        SimpleDateFormat timeFormat = new SimpleDateFormat(context.getString(DateFormat.is24HourFormat(context) ? R.string.hour_format_24hours : R.string.hour_format_12hours), Locale.getDefault());
+        return timeFormat.format(timeStamp);
     }
 }

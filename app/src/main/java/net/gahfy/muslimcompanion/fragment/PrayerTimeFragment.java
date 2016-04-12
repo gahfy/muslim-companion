@@ -20,6 +20,7 @@ import net.gahfy.muslimcompanion.utils.PrayerTimesUtils;
 import net.gahfy.muslimcompanion.utils.SharedPreferencesUtils;
 import net.gahfy.muslimcompanion.utils.ViewUtils;
 
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
@@ -268,8 +269,6 @@ public class PrayerTimeFragment extends AbstractFragment{
                 lblPrayerDhuhr.setText(R.string.prayer_name_dhuhr);
 
 
-            SimpleDateFormat simpleDateFormat = new SimpleDateFormat(getActivity().getString(R.string.hour_format), Locale.getDefault());
-
             String[] islamicMonths = getActivity().getResources().getStringArray(R.array.islamic_month);
             String[] gregorianMonths = getActivity().getResources().getStringArray(R.array.gregorian_month);
             String[] daySuffix = getActivity().getResources().getStringArray(R.array.day_number_suffix);
@@ -308,12 +307,12 @@ public class PrayerTimeFragment extends AbstractFragment{
                 lblTimeIsha.setTextColor(ContextCompat.getColor(getActivity(), R.color.primary));
             }
 
-            lblTimeFajr.setText(simpleDateFormat.format(new Date(prayerTimesUtils.getFajrTimestamp())));
-            lblTimeSunrise.setText(simpleDateFormat.format(new Date(prayerTimesUtils.getSunriseTimestamp())));
-            lblTimeDhuhr.setText(simpleDateFormat.format(new Date(prayerTimesUtils.getDhuhrTimestamp())));
-            lblTimeAsr.setText(simpleDateFormat.format(new Date(prayerTimesUtils.getAsrTimestamp())));
-            lblTimeMaghrib.setText(simpleDateFormat.format(new Date(prayerTimesUtils.getMaghribTimestamp())));
-            lblTimeIsha.setText(simpleDateFormat.format(new Date(prayerTimesUtils.getIshaTimestamp())));
+            lblTimeFajr.setText(DateUtils.getShortTime(getMainActivity(), prayerTimesUtils.getFajrTimestamp()));
+            lblTimeSunrise.setText(DateUtils.getShortTime(getMainActivity(), prayerTimesUtils.getSunriseTimestamp()));
+            lblTimeDhuhr.setText(DateUtils.getShortTime(getMainActivity(), prayerTimesUtils.getDhuhrTimestamp()));
+            lblTimeAsr.setText(DateUtils.getShortTime(getMainActivity(), prayerTimesUtils.getAsrTimestamp()));
+            lblTimeMaghrib.setText(DateUtils.getShortTime(getMainActivity(), prayerTimesUtils.getMaghribTimestamp()));
+            lblTimeIsha.setText(DateUtils.getShortTime(getMainActivity(), prayerTimesUtils.getIshaTimestamp()));
 
             new Thread(
                 new Runnable() {

@@ -25,8 +25,6 @@
 
     <string name="qibla_at">القبلة في %s</string>
     <string name="last_geolocation_on">آخر تحديد للموقع الجغرافي : %1$s في الساعة %2$s</string>
-
-    <string name="hour_format">HH:mm</string>
     
     <string name="prayer_times">أوقات الصلاة</string>
     <string name="salat">الصلاة</string>

@@ -18,6 +18,7 @@ import net.gahfy.muslimcompanion.MainActivity;
 import net.gahfy.muslimcompanion.R;
 import net.gahfy.muslimcompanion.models.MuslimLocation;
 
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -74,8 +75,6 @@ public class AlarmUtils extends BroadcastReceiver{
             long currentTimestamp = new Date().getTime();
             long currentTimestampMinus10Minutes = currentTimestamp - (35L*60000L);
 
-            SimpleDateFormat simpleDateFormat = new SimpleDateFormat(context.getString(R.string.hour_format), Locale.getDefault());
-
             long timestampOfNextAlarm = 0L;
 
             String cityName = "";
@@ -94,7 +93,7 @@ public class AlarmUtils extends BroadcastReceiver{
 
                     notificationContent = context.getString(R.string.prayer_notification_content,
                             context.getString(R.string.prayer_name_isha_and_fajr),
-                            simpleDateFormat.format(new Date(prayerTimesUtils.getIshaTimestamp())),
+                            DateUtils.getShortTime(context, prayerTimesUtils.getIshaTimestamp()),
                             cityName);
                     shouldNotify = shouldNotify && (prayerTimesUtils.getIshaTimestamp() != SharedPreferencesUtils.getLastNotificationPrayer(context));
                     SharedPreferencesUtils.putLastNotificationPrayer(context, prayerTimesUtils.getIshaTimestamp());
@@ -109,7 +108,7 @@ public class AlarmUtils extends BroadcastReceiver{
 
                     notificationContent = context.getString(R.string.prayer_notification_content,
                             context.getString(R.string.prayer_name_fajr),
-                            simpleDateFormat.format(new Date(prayerTimesUtils.getFajrTimestampOfNextDay())),
+                            DateUtils.getShortTime(context, prayerTimesUtils.getFajrTimestampOfNextDay()),
                             cityName);
                     shouldNotify = shouldNotify && (prayerTimesUtils.getFajrTimestampOfNextDay() != SharedPreferencesUtils.getLastNotificationPrayer(context));
                     SharedPreferencesUtils.putLastNotificationPrayer(context, prayerTimesUtils.getFajrTimestampOfNextDay());
@@ -125,7 +124,7 @@ public class AlarmUtils extends BroadcastReceiver{
 
                 notificationContent = context.getString(R.string.prayer_notification_content,
                         context.getString(R.string.prayer_name_isha),
-                        simpleDateFormat.format(new Date(prayerTimesUtils.getIshaTimestamp())),
+                        DateUtils.getShortTime(context, prayerTimesUtils.getIshaTimestamp()),
                         cityName);
                 shouldNotify = shouldNotify && (prayerTimesUtils.getIshaTimestamp() != SharedPreferencesUtils.getLastNotificationPrayer(context));
                 SharedPreferencesUtils.putLastNotificationPrayer(context, prayerTimesUtils.getIshaTimestamp());
@@ -140,7 +139,7 @@ public class AlarmUtils extends BroadcastReceiver{
 
                 notificationContent = context.getString(R.string.prayer_notification_content,
                         context.getString(R.string.prayer_name_maghrib),
-                        simpleDateFormat.format(new Date(prayerTimesUtils.getMaghribTimestamp())),
+                        DateUtils.getShortTime(context, prayerTimesUtils.getMaghribTimestamp()),
                         cityName);
                 shouldNotify = shouldNotify && (prayerTimesUtils.getMaghribTimestamp() != SharedPreferencesUtils.getLastNotificationPrayer(context));
                 SharedPreferencesUtils.putLastNotificationPrayer(context, prayerTimesUtils.getMaghribTimestamp());
@@ -155,7 +154,7 @@ public class AlarmUtils extends BroadcastReceiver{
 
                 notificationContent = context.getString(R.string.prayer_notification_content,
                         context.getString(R.string.prayer_name_asr),
-                        simpleDateFormat.format(new Date(prayerTimesUtils.getAsrTimestamp())),
+                        DateUtils.getShortTime(context, prayerTimesUtils.getAsrTimestamp()),
                         cityName);
                 shouldNotify = shouldNotify && (prayerTimesUtils.getAsrTimestamp() != SharedPreferencesUtils.getLastNotificationPrayer(context));
                 SharedPreferencesUtils.putLastNotificationPrayer(context, prayerTimesUtils.getAsrTimestamp());
@@ -174,7 +173,7 @@ public class AlarmUtils extends BroadcastReceiver{
 
                 notificationContent = context.getString(R.string.prayer_notification_content,
                         notificationTitle,
-                        simpleDateFormat.format(new Date(prayerTimesUtils.getDhuhrTimestamp())),
+                        DateUtils.getShortTime(context, prayerTimesUtils.getDhuhrTimestamp()),
                         cityName);
                 shouldNotify = shouldNotify && (prayerTimesUtils.getDhuhrTimestamp() != SharedPreferencesUtils.getLastNotificationPrayer(context));
                 SharedPreferencesUtils.putLastNotificationPrayer(context, prayerTimesUtils.getDhuhrTimestamp());
@@ -192,7 +191,7 @@ public class AlarmUtils extends BroadcastReceiver{
 
                 notificationContent = context.getString(R.string.prayer_notification_content,
                         notificationTitle,
-                        simpleDateFormat.format(new Date(prayerTimesUtils.getDhuhrTimestamp())),
+                        DateUtils.getShortTime(context, prayerTimesUtils.getDhuhrTimestamp()),
                         cityName);
                 shouldNotify = shouldNotify && (prayerTimesUtils.getDhuhrTimestamp() != SharedPreferencesUtils.getLastNotificationPrayer(context));
                 SharedPreferencesUtils.putLastNotificationPrayer(context, prayerTimesUtils.getDhuhrTimestamp());
@@ -208,7 +207,7 @@ public class AlarmUtils extends BroadcastReceiver{
 
                     notificationContent = context.getString(R.string.prayer_notification_content,
                             context.getString(R.string.prayer_name_isha_and_fajr),
-                            simpleDateFormat.format(new Date(prayerTimesUtils.getFajrTimestamp())),
+                            DateUtils.getShortTime(context, prayerTimesUtils.getFajrTimestamp()),
                             cityName);
                     shouldNotify = shouldNotify && (prayerTimesUtils.getFajrTimestamp() != SharedPreferencesUtils.getLastNotificationPrayer(context));
                     SharedPreferencesUtils.putLastNotificationPrayer(context, prayerTimesUtils.getFajrTimestamp());
@@ -223,7 +222,7 @@ public class AlarmUtils extends BroadcastReceiver{
 
                     notificationContent = context.getString(R.string.prayer_notification_content,
                             context.getString(R.string.prayer_name_fajr),
-                            simpleDateFormat.format(new Date(prayerTimesUtils.getFajrTimestamp())),
+                            DateUtils.getShortTime(context, prayerTimesUtils.getFajrTimestamp()),
                             cityName);
                     shouldNotify = shouldNotify && (prayerTimesUtils.getFajrTimestamp() != SharedPreferencesUtils.getLastNotificationPrayer(context));
                     SharedPreferencesUtils.putLastNotificationPrayer(context, prayerTimesUtils.getFajrTimestamp());
@@ -239,7 +238,7 @@ public class AlarmUtils extends BroadcastReceiver{
 
                 notificationContent = context.getString(R.string.prayer_notification_content,
                         context.getString(R.string.prayer_name_isha),
-                        simpleDateFormat.format(new Date(prayerTimesUtils.getIshaTimestampOfPreviousDay())),
+                        DateUtils.getShortTime(context, prayerTimesUtils.getIshaTimestampOfPreviousDay()),
                         cityName);
                 shouldNotify = shouldNotify && (prayerTimesUtils.getIshaTimestampOfPreviousDay() != SharedPreferencesUtils.getLastNotificationPrayer(context));
                 SharedPreferencesUtils.putLastNotificationPrayer(context, prayerTimesUtils.getIshaTimestampOfPreviousDay());

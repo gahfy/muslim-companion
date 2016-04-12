@@ -119,6 +119,19 @@
                         android:layout_marginLeft="17.66dp"
                         android:layout_marginRight="17.66dp"
                         />
+
+                    <Button
+                        android:id="@+id/bt_manual_location"
+                        android:layout_width="wrap_content"
+                        android:layout_height="36dp"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="24dp"
+                        android:padding="8dp"
+                        android:textSize="14sp"
+                        android:textColor="@color/accent"
+                        android:background="@drawable/flat_button_background"
+                        style="?android:attr/borderlessButtonStyle"
+                        android:text="SET LOCATION MANUALLY" />
                 </LinearLayout>
 
                 <LinearLayout

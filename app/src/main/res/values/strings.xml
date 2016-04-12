@@ -28,7 +28,8 @@
 
     <string name="qibla_at">Qibla at %s</string>
     <string name="last_geolocation_on">Last geolocation: %1$s at %2$s</string>
-    <string name="hour_format">HH:mm</string>
+    <string name="hour_format_24hours">HH:mm</string>
+    <string name="hour_format_12hours">h:mm</string>
 
     <string name="prayer_times">Prayer times</string>
     <string name="salat">Salat</string>

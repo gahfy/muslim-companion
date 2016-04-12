@@ -43,9 +43,8 @@ public class DbOpenHelper extends SQLiteOpenHelper {
             this.onCreate(db);
         }
         else{
-            if(oldVersion < 11){
+            if(oldVersion < 11)
                 executeSqlFileFromAssets("update_10_11.jpg", db);
-            }
         }
     }
 
