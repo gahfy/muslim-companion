@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="gregorian_date_format" formatted="false">%2$d%4$s %1$s %3$d</string>
 </resources>

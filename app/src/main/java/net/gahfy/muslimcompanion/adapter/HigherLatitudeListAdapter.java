@@ -50,7 +50,7 @@ public class HigherLatitudeListAdapter extends ItemListAdapter {
     }
 
     @Override
-    public void onClick(int position) {
+    public boolean onClick(int position) {
         if(position == 0) {
             SharedPreferencesUtils.putHigherLatitudeModeIsAutomatic(activity, true);
             SharedPreferencesUtils.putHigherLatitudeMode(activity, -1);
@@ -65,5 +65,6 @@ public class HigherLatitudeListAdapter extends ItemListAdapter {
                 AlarmUtils.notifyAndSetNextAlarm(activity, false);
             }
         }).start();
+        return true;
     }
 }

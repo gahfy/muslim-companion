@@ -41,7 +41,8 @@ public class NotificationSoundListAdapter extends ItemListAdapter {
     }
 
     @Override
-    public void onClick(int position) {
+    public boolean onClick(int position) {
         SharedPreferencesUtils.putSoundNotificationPrayer(activity, position);
+        return true;
     }
 }

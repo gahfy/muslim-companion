@@ -1,12 +1,17 @@
 package net.gahfy.muslimcompanion.utils;
 
 import android.content.Context;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 
+import net.gahfy.muslimcompanion.DbOpenHelper;
 import net.gahfy.muslimcompanion.R;
 
 import java.util.Calendar;
+import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
+import java.util.Locale;
 
 public class PrayerTimesUtils {
 
@@ -53,6 +58,8 @@ public class PrayerTimesUtils {
         INSTITUTE_OF_GEOPHYSICS_UNIVERSITY_OF_TEHRAN,
         /** Shia Ithna Ashari, Leva Research Institute, Qum */
         SHIA_ITHNA_ASHARI_LEVA_RESEARCH_INSTITUTE_QUM,
+        /** Kurdistan */
+        KURDISTAN,
         /** Ministry of religious affairs and Wakfs, Algeria */
         MINISTRY_RELIGIOUS_AFFAIRS_AND_WAKFS_ALGERIA,
         /** Ministry of Habous and Islamic Affairs, Morocco */
@@ -90,7 +97,29 @@ public class PrayerTimesUtils {
         /** Islamic Centre of Quebec */
         ISLAMIC_CENTRE_OF_QUEBEC,
         /** Munich, Germany */
-        MUNICH_GERMANY
+        MUNICH_GERMANY,
+        /** Aqrah, Kurdistan */
+        KURDISTAN_AQRAH,
+        /** Darbandikhan, Kurdistan */
+        KURDISTAN_DARBANDIKHAN,
+        /** Dohuk, Kurdistan */
+        KURDISTAN_DOHUK,
+        /** Erbil, Kurdistan */
+        KURDISTAN_ERBIL,
+        /** Halabja, Kurdistan */
+        KURDISTAN_HALABJA,
+        /** Kifri, Kurdistan */
+        KURDISTAN_KIFRI,
+        /** Kirkuk, Kurdistan */
+        KURDISTAN_KIRKUK,
+        /** Koy Sanjaq, Kurdistan */
+        KURDISTAN_KOY_SANJAQ,
+        /** Qaladiza, Kurdistan */
+        KURDISTAN_QALADIZA,
+        /** Sulaymaniyah, Kurdistan */
+        KURDISTAN_SULAYMANIYAH,
+        /** Zakho, Kurdistan */
+        KURDISTAN_ZAKHO
     }
 
     public static final int MUSLIM_WORLD_LEAGUE_VALUE = 0;
@@ -119,6 +148,17 @@ public class PrayerTimesUtils {
     public static final int MUNICH_GERMANY_VALUE = 23;
     public static final int GRAND_MOSQUE_OF_PARIS_VALUE = 24;
     public static final int ISLAMIC_CENTRE_OF_QUEBEC_VALUE = 25;
+    public static final int KURDISTAN_AQRAH = 26;
+    public static final int KURDISTAN_DARBANDIKHAN = 27;
+    public static final int KURDISTAN_DOHUK = 28;
+    public static final int KURDISTAN_ERBIL = 29;
+    public static final int KURDISTAN_HALABJA = 30;
+    public static final int KURDISTAN_KIFRI = 31;
+    public static final int KURDISTAN_KIRKUK = 32;
+    public static final int KURDISTAN_KOY_SANJAQ = 33;
+    public static final int KURDISTAN_QALADIZA = 34;
+    public static final int KURDISTAN_SULAYMANIYAH = 35;
+    public static final int KURDISTAN_ZAKHO = 36;
 
     public static final int HANAFI_VALUE = 0;
     public static final int NOT_HANAFI_VALUE = 1;
@@ -166,6 +206,10 @@ public class PrayerTimesUtils {
     private double maghribAngle = 5.0/6.0;
     /** The delay to add for calculation of Dhuhr */
     private double dhuhrDelay = 0.0;
+    /** Whether the time calculation should be yearly repeated or not */
+    public boolean isYearlyRepeatedStaticTime = false;
+    /** The unique identifier of the city for repeated prayer times */
+    public long staticPrayerCityId = 0;
     /** The calculation mode for Fajr and Isha at abnormal periods*/
     private HigherLatitudeMode higherLatitudeMode = HigherLatitudeMode.ANGLE_BASED;
 
@@ -428,7 +472,96 @@ public class PrayerTimesUtils {
                     asrDelay = 5.0/60.0;
                     maghribDelay = 5.0/60.0;
                     break;
+                case KURDISTAN_AQRAH:
+                    staticPrayerCityId = 1;
+                    isYearlyRepeatedStaticTime = true;
+                    break;
+                case KURDISTAN_DARBANDIKHAN:
+                    staticPrayerCityId = 2;
+                    isYearlyRepeatedStaticTime = true;
+                    break;
+                case KURDISTAN_DOHUK:
+                    staticPrayerCityId = 3;
+                    isYearlyRepeatedStaticTime = true;
+                    break;
+                case KURDISTAN_ERBIL:
+                    staticPrayerCityId = 4;
+                    isYearlyRepeatedStaticTime = true;
+                    break;
+                case KURDISTAN_HALABJA:
+                    staticPrayerCityId = 5;
+                    isYearlyRepeatedStaticTime = true;
+                    break;
+                case KURDISTAN_KIFRI:
+                    staticPrayerCityId = 6;
+                    isYearlyRepeatedStaticTime = true;
+                    break;
+                case KURDISTAN_KIRKUK:
+                    staticPrayerCityId = 7;
+                    isYearlyRepeatedStaticTime = true;
+                    break;
+                case KURDISTAN_KOY_SANJAQ:
+                    staticPrayerCityId = 8;
+                    isYearlyRepeatedStaticTime = true;
+                    break;
+                case KURDISTAN_QALADIZA:
+                    staticPrayerCityId = 9;
+                    isYearlyRepeatedStaticTime = true;
+                    break;
+                case KURDISTAN_SULAYMANIYAH:
+                    staticPrayerCityId = 10;
+                    isYearlyRepeatedStaticTime = true;
+                    break;
+                case KURDISTAN_ZAKHO:
+                    staticPrayerCityId = 11;
+                    isYearlyRepeatedStaticTime = true;
+                    break;
             }
+    }
+
+    /**
+     * Returns the timestamp of prayer time for a static convention.
+     * @param cityId The unique identifier of the city to get the time for
+     * @param prayerName The name of the prayer
+     * @param year The year for which to get the prayer times
+     * @param month The month for which to get the prayer times
+     * @param day The day for which to get the prayer times
+     * @return the timestamp of prayer time for a static convention
+     */
+    private long getStaticPrayerTimeTimestamp(long cityId, String prayerName, int year, int month, int day){
+        SQLiteDatabase db = DbOpenHelper.getDb(context);
+        String sqlQuery = String.format(Locale.US, "SELECT %s FROM static_times WHERE day=%d AND month=%d AND city_id=%d", prayerName, day, month, cityId);
+        Cursor cursor = db.rawQuery(sqlQuery, null);
+        if(cursor.getCount() == 0)
+            return 0;
+        cursor.moveToFirst();
+
+        long prayerTime = cursor.getLong(0);
+        cursor.close();
+
+        GregorianCalendar calendar = new GregorianCalendar(year, month-1, day);
+        calendar.setTime(new Date());
+        calendar.set(Calendar.HOUR, 0);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+        calendar.set(Calendar.MILLISECOND, 0);
+
+        long midnightTime = calendar.getTimeInMillis();
+        return midnightTime+(prayerTime*60000L);
+    }
+
+    private long getStaticPrayerTimeTimestamp(long cityId, String prayerName){
+        return getStaticPrayerTimeTimestamp(cityId, prayerName, year, month, day);
+    }
+
+    private long getStaticPrayerTimeOfNextDayTimestamp(long cityId, String prayerName){
+        int[] nextDay = DateUtils.getNextDay(year, month, day);
+        return getStaticPrayerTimeTimestamp(cityId, prayerName, nextDay[0], nextDay[1], nextDay[2]);
+    }
+
+    private long getStaticPrayerTimeOfPreviousDayTimestamp(long cityId, String prayerName){
+        int[] previousDay = DateUtils.getPreviousDay(year, month, day);
+        return getStaticPrayerTimeTimestamp(cityId, prayerName, previousDay[0], previousDay[1], previousDay[2]);
     }
 
     /**
@@ -460,11 +593,15 @@ public class PrayerTimesUtils {
      * @return the timestamp of Dhuhr
      */
     public long getDhuhrTimestamp(){
+        if(isYearlyRepeatedStaticTime)
+            return getStaticPrayerTimeTimestamp(staticPrayerCityId, "dhuhr");
         long realTime = DateUtils.utcTimeToTimestamp(year, month, day, getDhuhr() + dhuhrDelay);
         return realTime - (realTime%60000L) + 60000L;
     }
 
     public long getDhuhrOfNextDayTimestamp(){
+        if(isYearlyRepeatedStaticTime)
+            return getStaticPrayerTimeOfNextDayTimestamp(staticPrayerCityId, "dhuhr");
         long realTime = DateUtils.utcTimeToTimestamp(year, month, day, getDhuhrOfNextDay() + dhuhrDelay)+24L*3600L*1000L;
         return realTime - (realTime%60000L) + 60000L;
     }
@@ -474,12 +611,16 @@ public class PrayerTimesUtils {
      * @return the timestamp of Sunrise
      */
     public long getSunriseTimestamp(){
+        if(isYearlyRepeatedStaticTime)
+            return getStaticPrayerTimeTimestamp(staticPrayerCityId, "sunrise");
         double hoursInTheDay = getDhuhr() - getTimeBelowHorizonDifference(sunriseAngle) + sunriseDelay;
         long realTime = DateUtils.utcTimeToTimestamp(year, month, day, hoursInTheDay);
         return realTime - (realTime%60000L) + 60000L;
     }
 
     public long getSunriseOfNextDayTimestamp(){
+        if(isYearlyRepeatedStaticTime)
+            return getStaticPrayerTimeOfNextDayTimestamp(staticPrayerCityId, "dhuhr");
         double hoursInTheDay = getDhuhrOfNextDay() - getTimeBelowHorizonDifference(sunriseAngle, time + (1.0/36525.0)) + sunriseDelay;
         long realTime = DateUtils.utcTimeToTimestamp(year, month, day, hoursInTheDay) + 24L*3600L*1000L;
         return realTime - (realTime%60000L) + 60000L;
@@ -490,12 +631,16 @@ public class PrayerTimesUtils {
      * @return the timestamp of Maghrib
      */
     public long getMaghribTimestamp(){
+        if(isYearlyRepeatedStaticTime)
+            return getStaticPrayerTimeTimestamp(staticPrayerCityId, "maghrib");
         double hoursInTheDay = getDhuhr() + getTimeBelowHorizonDifference(maghribAngle) + maghribDelay;
         long realTime = DateUtils.utcTimeToTimestamp(year, month, day, hoursInTheDay);
         return realTime - (realTime%60000L) + 60000L;
     }
 
     public long getMaghribOfPreviousDayTimestamp(){
+        if(isYearlyRepeatedStaticTime)
+            return getStaticPrayerTimeOfPreviousDayTimestamp(staticPrayerCityId, "maghrib");
         double hoursInTheDay = getDhuhrOfPreviousDay() + getTimeBelowHorizonDifference(maghribAngle, time - (1.0/36525.0)) + maghribDelay;
         long realTime = DateUtils.utcTimeToTimestamp(year, month, day, hoursInTheDay) - 24L*3600L*1000L;
         return realTime - (realTime%60000L) + 60000L;
@@ -506,6 +651,8 @@ public class PrayerTimesUtils {
      * @return the timestamp of Fajr
      */
     public long getFajrTimestamp(){
+        if(isYearlyRepeatedStaticTime)
+            return getStaticPrayerTimeTimestamp(staticPrayerCityId, "fajr");
         double timeBelowHorizonDifference = getTimeBelowHorizonDifference(fajrAngle);
         if(Double.isNaN(timeBelowHorizonDifference)){
             switch (higherLatitudeMode){
@@ -524,6 +671,8 @@ public class PrayerTimesUtils {
     }
 
     public long getFajrTimestampOfNextDay(){
+        if(isYearlyRepeatedStaticTime)
+            return getStaticPrayerTimeOfNextDayTimestamp(staticPrayerCityId, "fajr");
         double timeBelowHorizonDifference = getTimeBelowHorizonDifference(fajrAngle, time + (1.0/36525.0));
         if(Double.isNaN(timeBelowHorizonDifference)){
             switch (higherLatitudeMode){
@@ -546,6 +695,8 @@ public class PrayerTimesUtils {
      * @return the timestamp of Isha
      */
     public long getIshaTimestamp() {
+        if(isYearlyRepeatedStaticTime)
+            return getStaticPrayerTimeTimestamp(staticPrayerCityId, "isha");
         double timeBelowHorizonDifference = getTimeBelowHorizonDifference(ishaAngle);
 
         int[] hijri = DateUtils.getHijriFromJulianDay(DateUtils.dateToJulian(year, month, day));
@@ -568,6 +719,8 @@ public class PrayerTimesUtils {
     }
 
     public long getIshaTimestampOfPreviousDay(){
+        if(isYearlyRepeatedStaticTime)
+            return getStaticPrayerTimeOfPreviousDayTimestamp(staticPrayerCityId, "isha");
         double timeBelowHorizonDifference = getTimeBelowHorizonDifference(ishaAngle, time - (1.0/36525.0));
 
         int[] hijri = DateUtils.getHijriFromJulianDay(DateUtils.dateToJulian(year, month, day));
@@ -594,6 +747,8 @@ public class PrayerTimesUtils {
      * @return the timestamp of Asr
      */
     public long getAsrTimestamp(){
+        if(isYearlyRepeatedStaticTime)
+            return getStaticPrayerTimeTimestamp(staticPrayerCityId, "asr");
         double hoursInTheDay = getDhuhr() + getTimeShadowSizeDifference(asrTime) + asrDelay;
         long realTime = DateUtils.utcTimeToTimestamp(year, month, day, hoursInTheDay);
         return realTime - (realTime%60000L) + 60000L;
@@ -709,6 +864,28 @@ public class PrayerTimesUtils {
                 return Convention.GRAND_MOSQUE_OF_PARIS;
             case ISLAMIC_CENTRE_OF_QUEBEC_VALUE:
                 return Convention.ISLAMIC_CENTRE_OF_QUEBEC;
+            case KURDISTAN_AQRAH:
+                return Convention.KURDISTAN_AQRAH;
+            case KURDISTAN_DARBANDIKHAN:
+                return Convention.KURDISTAN_DARBANDIKHAN;
+            case KURDISTAN_DOHUK:
+                return Convention.KURDISTAN_DOHUK;
+            case KURDISTAN_ERBIL:
+                return Convention.KURDISTAN_ERBIL;
+            case KURDISTAN_HALABJA:
+                return Convention.KURDISTAN_HALABJA;
+            case KURDISTAN_KIFRI:
+                return Convention.KURDISTAN_KIFRI;
+            case KURDISTAN_KIRKUK:
+                return Convention.KURDISTAN_KIRKUK;
+            case KURDISTAN_KOY_SANJAQ:
+                return Convention.KURDISTAN_KOY_SANJAQ;
+            case KURDISTAN_QALADIZA:
+                return Convention.KURDISTAN_QALADIZA;
+            case KURDISTAN_SULAYMANIYAH:
+                return Convention.KURDISTAN_SULAYMANIYAH;
+            case KURDISTAN_ZAKHO:
+                return Convention.KURDISTAN_ZAKHO;
         }
         return null;
     }
@@ -795,6 +972,28 @@ public class PrayerTimesUtils {
                 return GRAND_MOSQUE_OF_PARIS_VALUE;
             case ISLAMIC_CENTRE_OF_QUEBEC:
                 return ISLAMIC_CENTRE_OF_QUEBEC_VALUE;
+            case KURDISTAN_AQRAH:
+                return KURDISTAN_AQRAH;
+            case KURDISTAN_DARBANDIKHAN:
+                return KURDISTAN_DARBANDIKHAN;
+            case KURDISTAN_DOHUK:
+                return KURDISTAN_DOHUK;
+            case KURDISTAN_ERBIL:
+                return KURDISTAN_ERBIL;
+            case KURDISTAN_HALABJA:
+                return KURDISTAN_HALABJA;
+            case KURDISTAN_KIFRI:
+                return KURDISTAN_KIFRI;
+            case KURDISTAN_KIRKUK:
+                return KURDISTAN_KIRKUK;
+            case KURDISTAN_KOY_SANJAQ:
+                return KURDISTAN_KOY_SANJAQ;
+            case KURDISTAN_QALADIZA:
+                return KURDISTAN_QALADIZA;
+            case KURDISTAN_SULAYMANIYAH:
+                return KURDISTAN_SULAYMANIYAH;
+            case KURDISTAN_ZAKHO:
+                return KURDISTAN_ZAKHO;
         }
         return -1;
     }
@@ -886,6 +1085,30 @@ public class PrayerTimesUtils {
                 return R.string.convention_name_paris;
             case ISLAMIC_CENTRE_OF_QUEBEC:
                 return R.string.convention_name_quebec;
+            case KURDISTAN:
+                return R.string.convention_name_kurdistan;
+            case KURDISTAN_AQRAH:
+                return R.string.convention_city_aqrah;
+            case KURDISTAN_DARBANDIKHAN:
+                return R.string.convention_city_darbandikhan;
+            case KURDISTAN_DOHUK:
+                return R.string.convention_city_dohuk;
+            case KURDISTAN_ERBIL:
+                return R.string.convention_city_erbil;
+            case KURDISTAN_HALABJA:
+                return R.string.convention_city_halabja;
+            case KURDISTAN_KIFRI:
+                return R.string.convention_city_kifri;
+            case KURDISTAN_KIRKUK:
+                return R.string.convention_city_kirkuk;
+            case KURDISTAN_KOY_SANJAQ:
+                return R.string.convention_city_koy_sanjaq;
+            case KURDISTAN_QALADIZA:
+                return R.string.convention_city_qaladiza;
+            case KURDISTAN_SULAYMANIYAH:
+                return R.string.convention_city_sulaymaniyah;
+            case KURDISTAN_ZAKHO:
+                return R.string.convention_city_zakho;
         }
         return -1;
     }
@@ -1039,6 +1262,79 @@ public class PrayerTimesUtils {
         return Math.sin(1*m) * (1.914602 - t*(0.004817 + 0.000014*t)) +
                 Math.sin(2*m) * (0.019993 - t*(0.000101             )) +
                 Math.sin(3*m) * (0.000289);
+    }
+
+    public static boolean hasChildren(Convention convention){
+        return convention == Convention.KURDISTAN;
+    }
+
+    public static Convention getParentConvention(Convention childConvention){
+        switch(childConvention){
+            case KURDISTAN_AQRAH:
+            case KURDISTAN_DARBANDIKHAN:
+            case KURDISTAN_DOHUK:
+            case KURDISTAN_ERBIL:
+            case KURDISTAN_HALABJA:
+            case KURDISTAN_KIFRI:
+            case KURDISTAN_KIRKUK:
+            case KURDISTAN_KOY_SANJAQ:
+            case KURDISTAN_QALADIZA:
+            case KURDISTAN_SULAYMANIYAH:
+            case KURDISTAN_ZAKHO:
+                return Convention.KURDISTAN;
+            default:
+                return null;
+        }
+    }
+
+    public static Convention[] getChildConventions(Convention parentConvention){
+        if(parentConvention == null){
+            return new Convention[]{
+                Convention.MUSLIM_WORLD_LEAGUE,
+                Convention.ISLAMIC_SOCIETY_OF_NORTH_AMERICA,
+                Convention.EGYPTIAN_GENERAL_AUTHORITY_OF_SURVEY,
+                Convention.UMM_AL_QURA_UNIVERSITY_MAKKAH,
+                Convention.UNIVERSITY_OF_ISLAMIC_SCIENCES_KARACHI,
+                Convention.INSTITUTE_OF_GEOPHYSICS_UNIVERSITY_OF_TEHRAN,
+                Convention.SHIA_ITHNA_ASHARI_LEVA_RESEARCH_INSTITUTE_QUM,
+                Convention.KURDISTAN,
+                Convention.MINISTRY_RELIGIOUS_AFFAIRS_AND_WAKFS_ALGERIA,
+                Convention.MINISTRY_HABOUS_AND_ISLAMIC_AFFAIRS_MOROCCO,
+                Convention.MINISTRY_RELIGIOUS_AFFAIRS_TUNISIA,
+                Convention.SOUTH_EAST_ASIA,
+                Convention.UNION_OF_ISLAMIC_ORGANISATIONS_OF_FRANCE,
+                Convention.GRAND_MOSQUE_OF_PARIS,
+                Convention.PRESIDENCY_OF_RELIGIOUS_AFFAIRS_TURKEY,
+                Convention.MINISTRY_OF_ENDOWMENTS_AND_RELIGIOUS_AFFAIRS_OMAN,
+                Convention.GENERAL_AUTHORITY_OF_ISLAMIC_AFFAIRS_AND_ENDOWMENTS_UAE,
+                Convention.DEPARTMENT_OF_ISLAMIC_AFFAIRS_AND_CHARITABLE_ACTIVITIES_DUBAI,
+                Convention.MINISTRY_OF_AWQAF_ISLAMIC_AFFAIRS_AND_HOLY_PLACES_JORDAN,
+                Convention.MINISTRY_OF_AWQAF_AND_ISLAMIC_AFFAIRS_KUWAIT,
+                Convention.QATAR_CALENDAR_HOUSE,
+                Convention.MINISTRY_OF_ENDOWMENTS_AND_ISLAMIC_AFFAIRS_LYBIA,
+                Convention.MINISTRY_OF_ISLAMIC_AFFAIRS_MALDIVES,
+                Convention.BIRMINGHAM_CENTRAL_MOSQUE,
+                Convention.LONDON_CENTRAL_MOSQUE,
+                Convention.ISLAMIC_CENTRE_OF_QUEBEC,
+                Convention.MUNICH_GERMANY
+            };
+        }
+        else if(parentConvention == Convention.KURDISTAN){
+            return new Convention[]{
+                Convention.KURDISTAN_AQRAH,
+                Convention.KURDISTAN_DARBANDIKHAN,
+                Convention.KURDISTAN_DOHUK,
+                Convention.KURDISTAN_ERBIL,
+                Convention.KURDISTAN_HALABJA,
+                Convention.KURDISTAN_KIFRI,
+                Convention.KURDISTAN_KIRKUK,
+                Convention.KURDISTAN_KOY_SANJAQ,
+                Convention.KURDISTAN_QALADIZA,
+                Convention.KURDISTAN_SULAYMANIYAH,
+                Convention.KURDISTAN_ZAKHO
+            };
+        }
+        throw new IllegalArgumentException("Convention without child.");
     }
 
     private static class Pair{

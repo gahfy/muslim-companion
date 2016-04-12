@@ -36,7 +36,7 @@ public class JumuahDelayListAdapter extends ItemListAdapter {
     }
 
     @Override
-    public void onClick(int position) {
+    public boolean onClick(int position) {
         SharedPreferencesUtils.putJumuahFirstCallDelay(activity, (position*5)+10);
 
         new Thread(new Runnable() {
@@ -45,5 +45,6 @@ public class JumuahDelayListAdapter extends ItemListAdapter {
                 AlarmUtils.notifyAndSetNextAlarm(activity, false);
             }
         }).start();
+        return true;
     }
 }

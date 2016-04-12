@@ -7,7 +7,6 @@ import android.location.LocationManager;
 import android.os.Build;
 import android.support.annotation.Nullable;
 import android.telephony.TelephonyManager;
-import android.util.Log;
 
 import net.gahfy.muslimcompanion.DbOpenHelper;
 import net.gahfy.muslimcompanion.models.MuslimLocation;
@@ -120,7 +119,6 @@ public class LocationUtils {
     public static String[] getCountryIsoAndCityName(Context context, double latitude, double longitude){
         SQLiteDatabase db = DbOpenHelper.getDb(context);
         String sqlQuery = String.format(Locale.US, "SELECT name, country FROM cities ORDER BY ((%f-latitude)*(%f-latitude))+((%f-longitude)*(%f-longitude)) ASC LIMIT 0, 1", latitude, latitude, longitude, longitude);
-        Log.i(LocationUtils.class.getSimpleName(), sqlQuery);
         Cursor cursor = db.rawQuery(sqlQuery, null);
         if(cursor.getCount() == 0)
             return null;

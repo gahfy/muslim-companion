@@ -112,6 +112,19 @@
     <string name="convention_name_munich">Munich, Jerman</string>
     <string name="convention_name_paris">Masjid Agung Paris</string>
     <string name="convention_name_quebec">Pusat Islam Québec</string>
+    <string name="convention_name_kurdistan">Kurdistan</string>
+
+    <string name="convention_city_aqrah">Aqrah</string>
+    <string name="convention_city_darbandikhan">Darbandikhan</string>
+    <string name="convention_city_dohuk">Dahuk</string>
+    <string name="convention_city_erbil">Arbil</string>
+    <string name="convention_city_halabja">Halabjah</string>
+    <string name="convention_city_kifri">Kifri</string>
+    <string name="convention_city_kirkuk">Kirkuk</string>
+    <string name="convention_city_koy_sanjaq">Koy Sanjaq</string>
+    <string name="convention_city_qaladiza">Qaladiza</string>
+    <string name="convention_city_sulaymaniyah">As-Sulaimaniyah</string>
+    <string name="convention_city_zakho">Zakho</string>
 
     <string name="asr_not_hanafi">Shafii, Maliki, Jafari, dan Hanbali</string>
     <string name="asr_hanafi">Hanafi</string>

@@ -199,7 +199,7 @@ public class SettingsFragment extends AbstractFragment{
         lytChooseConvention.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getMainActivity().redirectToConventionList();
+                getMainActivity().redirectToConventionList(null);
             }
         });
         lytChooseAsr.setOnClickListener(new View.OnClickListener() {

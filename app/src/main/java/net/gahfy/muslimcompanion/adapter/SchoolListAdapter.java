@@ -50,7 +50,7 @@ public class SchoolListAdapter extends ItemListAdapter {
     }
 
     @Override
-    public void onClick(int position) {
+    public boolean onClick(int position) {
         if(position == 0) {
             SharedPreferencesUtils.putSchoolIsAutomatic(activity, true);
             SharedPreferencesUtils.putSchool(activity, -1);
@@ -65,5 +65,6 @@ public class SchoolListAdapter extends ItemListAdapter {
                 AlarmUtils.notifyAndSetNextAlarm(activity, false);
             }
         }).start();
+        return true;
     }
 }

@@ -146,7 +146,20 @@
     <string name="convention_name_london">Mosquée Centrale de Londres</string>
     <string name="convention_name_munich">Munich, Allemagne</string>
     <string name="convention_name_paris">Grande Mosquée de Paris</string>
-    <string name="convention_name_quebec">Centre Islamic du Québec</string>
+    <string name="convention_name_quebec">Centre Islamique du Québec</string>
+    <string name="convention_name_kurdistan">Kurdistan</string>
+
+    <string name="convention_city_aqrah">Aqrah</string>
+    <string name="convention_city_darbandikhan">Darbandikhan</string>
+    <string name="convention_city_dohuk">Dahuk</string>
+    <string name="convention_city_erbil">Erbil</string>
+    <string name="convention_city_halabja">Halabja</string>
+    <string name="convention_city_kifri">Kifri</string>
+    <string name="convention_city_kirkuk">Kirkouk</string>
+    <string name="convention_city_koy_sanjaq">Koy Sanjaq</string>
+    <string name="convention_city_qaladiza">Qaladze</string>
+    <string name="convention_city_sulaymaniyah">Souleimaniye</string>
+    <string name="convention_city_zakho">Zakho</string>
 
     <string name="asr_not_hanafi">Shafii, Maliki, Jafari, et Hanbali</string>
     <string name="asr_hanafi">Hanafi</string>

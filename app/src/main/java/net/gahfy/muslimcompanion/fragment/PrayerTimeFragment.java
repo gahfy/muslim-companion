@@ -17,6 +17,7 @@ import net.gahfy.muslimcompanion.utils.AlarmUtils;
 import net.gahfy.muslimcompanion.utils.DateUtils;
 import net.gahfy.muslimcompanion.utils.LocationUtils;
 import net.gahfy.muslimcompanion.utils.PrayerTimesUtils;
+import net.gahfy.muslimcompanion.utils.SharedPreferencesUtils;
 import net.gahfy.muslimcompanion.utils.ViewUtils;
 
 import java.text.SimpleDateFormat;
@@ -29,6 +30,7 @@ public class PrayerTimeFragment extends AbstractFragment{
     private boolean hasResumed = false;
 
     private String cityName;
+    private String staticCityName = null;
     private String countryIso;
 
     private TextView lblPrayerDhuhr;
@@ -167,7 +169,7 @@ public class PrayerTimeFragment extends AbstractFragment{
             int[] calendarDatas = DateUtils.getDayMonthYear(timeStamp);
 
             countryIso = LocationUtils.getCountryIso(getActivity());
-            PrayerTimesUtils prayerTimesUtils = new PrayerTimesUtils(getMainActivity(), calendarDatas[0], calendarDatas[1], calendarDatas[2], location.getLocationLatitude(), location.getLocationLongitude(), PrayerTimesUtils.Convention.MUSLIM_WORLD_LEAGUE, PrayerTimesUtils.School.NOT_HANAFI);
+            final PrayerTimesUtils prayerTimesUtils = new PrayerTimesUtils(getMainActivity(), calendarDatas[0], calendarDatas[1], calendarDatas[2], location.getLocationLatitude(), location.getLocationLongitude(), PrayerTimesUtils.Convention.MUSLIM_WORLD_LEAGUE, PrayerTimesUtils.School.NOT_HANAFI);
             if(countryIso != null)
                 prayerTimesUtils.changeCountry(countryIso);
 
@@ -176,13 +178,13 @@ public class PrayerTimeFragment extends AbstractFragment{
             new Thread(new Runnable() {
                 @Override
                 public void run() {
-                    applyCity();
+                    applyCity(prayerTimesUtils);
                 }
             }).start();
         }
     }
 
-    public void applyCity(){
+    public void applyCity(final PrayerTimesUtils prayerTimesUtils){
         try {
             String[] locationDatas = LocationUtils.getCountryIsoAndCityName(getActivity(), getMainActivity().getCurrentLocation());
 
@@ -191,11 +193,16 @@ public class PrayerTimeFragment extends AbstractFragment{
                 cityName = locationDatas[1];
             }
 
+            if(prayerTimesUtils.isYearlyRepeatedStaticTime)
+                staticCityName = getResources().getStringArray(R.array.salat_title_static)[(int) prayerTimesUtils.staticPrayerCityId];
+
             getMainActivity().runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    if(cityName != null)
+                    if(!prayerTimesUtils.isYearlyRepeatedStaticTime && cityName != null)
                         getMainActivity().setTitle(getMainActivity().getString(R.string.salat_at, cityName));
+                    else if(prayerTimesUtils.isYearlyRepeatedStaticTime)
+                        getMainActivity().setTitle(getMainActivity().getString(R.string.salat_at, staticCityName));
 
                     long timeStamp = new Date().getTime() + ((long) dayDifference * 24L * 3600L * 1000L);
                     int[] calendarDatas = DateUtils.getDayMonthYear(timeStamp);
@@ -215,14 +222,15 @@ public class PrayerTimeFragment extends AbstractFragment{
 
     public void restoreState(Bundle savedInstanceState){
         cityName = savedInstanceState.getString("cityName");
+        staticCityName = savedInstanceState.getString("staticCityName");
         countryIso = savedInstanceState.getString("countryIso");
 
-        if(cityName != null){
+        if(staticCityName != null)
+            getMainActivity().setTitle(getMainActivity().getString(R.string.salat_at, staticCityName));
+        else if(cityName != null)
             getMainActivity().setTitle(getMainActivity().getString(R.string.salat_at, cityName));
-        }
-        else{
+        else
             getMainActivity().setTitle(R.string.salat);
-        }
         if(getMainActivity().getCurrentLocation() != null){
             long timeStamp = new Date().getTime() + ((long) dayDifference * 24L * 3600L * 1000L);
             int[] calendarDatas = DateUtils.getDayMonthYear(timeStamp);
@@ -239,6 +247,7 @@ public class PrayerTimeFragment extends AbstractFragment{
     public void onSaveInstanceState(Bundle outState){
         outState.putString("cityName", cityName);
         outState.putString("countryIso", countryIso);
+        outState.putString("staticCityName", staticCityName);
         super.onSaveInstanceState(outState);
     }
 

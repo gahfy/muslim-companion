@@ -110,6 +110,34 @@
     <string name="convention_name_munich">Munich, Germany</string>
     <string name="convention_name_paris">Grand Mosque of Paris</string>
     <string name="convention_name_quebec">Islamic Centre of Quebec</string>
+    <string name="convention_name_kurdistan">Kurdistan</string>
+
+    <string name="convention_city_aqrah">Aqrah</string>
+    <string name="convention_city_darbandikhan">Darbandikhan</string>
+    <string name="convention_city_dohuk">Dohuk</string>
+    <string name="convention_city_erbil">Erbil</string>
+    <string name="convention_city_halabja">Halabja</string>
+    <string name="convention_city_kifri">Kifri</string>
+    <string name="convention_city_kirkuk">Kirkuk</string>
+    <string name="convention_city_koy_sanjaq">Koy Sanjaq</string>
+    <string name="convention_city_qaladiza">Qaladiza</string>
+    <string name="convention_city_sulaymaniyah">Sulaymaniyah</string>
+    <string name="convention_city_zakho">Zakho</string>
+
+    <string-array name="salat_title_static">
+        <item />
+        <item>@string/convention_city_aqrah</item>
+        <item>@string/convention_city_darbandikhan</item>
+        <item>@string/convention_city_dohuk</item>
+        <item>@string/convention_city_erbil</item>
+        <item>@string/convention_city_halabja</item>
+        <item>@string/convention_city_kifri</item>
+        <item>@string/convention_city_kirkuk</item>
+        <item>@string/convention_city_koy_sanjaq</item>
+        <item>@string/convention_city_qaladiza</item>
+        <item>@string/convention_city_sulaymaniyah</item>
+        <item>@string/convention_city_zakho</item>
+    </string-array>
 
     <string name="asr_not_hanafi">Shafi\'i, Maliki, Ja\'fari, and Hanbali</string>
     <string name="asr_hanafi">Hanafi</string>

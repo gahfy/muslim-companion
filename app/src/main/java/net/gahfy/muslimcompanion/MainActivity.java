@@ -37,6 +37,7 @@ import net.gahfy.muslimcompanion.fragment.SchoolListFragment;
 import net.gahfy.muslimcompanion.fragment.SettingsFragment;
 import net.gahfy.muslimcompanion.models.MuslimLocation;
 import net.gahfy.muslimcompanion.utils.LocationUtils;
+import net.gahfy.muslimcompanion.utils.PrayerTimesUtils;
 import net.gahfy.muslimcompanion.utils.SharedPreferencesUtils;
 import net.gahfy.muslimcompanion.utils.ViewUtils;
 
@@ -134,8 +135,10 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
         redirectToFragment(new NotificationSoundListFragment(), true);
     }
 
-    public void redirectToConventionList() {
-        redirectToFragment(new ConventionListFragment(), true);
+    public void redirectToConventionList(PrayerTimesUtils.Convention parentConvention) {
+        ConventionListFragment conventionListFragment = new ConventionListFragment();
+        conventionListFragment.setParentConvention(parentConvention);
+        redirectToFragment(conventionListFragment, true);
     }
 
     public void redirectToJumuahDelayList() {

@@ -43,8 +43,9 @@ public abstract class ItemListAdapter extends RecyclerView.Adapter<RecyclerView.
     /**
      * This method is called when a view is clicked.
      * @param position The position of the view that has been clicked
+     * @return whether this should go to previous fragment or not
      */
-    public abstract void onClick(int position);
+    public abstract boolean onClick(int position);
 
     /**
      * Instantiates a new adapter
@@ -98,9 +99,10 @@ public abstract class ItemListAdapter extends RecyclerView.Adapter<RecyclerView.
         @Override
         public void onClick(View view) {
             int itemPosition = recyclerView.getChildAdapterPosition(view);
-            ItemListAdapter.this.onClick(itemPosition);
+            boolean back = ItemListAdapter.this.onClick(itemPosition);
             // We call this to go back to previous fragment
-            activity.onBackPressed();
+            if(back)
+                activity.onBackPressed();
         }
     }
 }

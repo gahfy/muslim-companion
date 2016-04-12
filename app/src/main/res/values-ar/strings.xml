@@ -107,6 +107,19 @@
     <string name="convention_name_munich">ميونيخ، ألمانيا</string>
     <string name="convention_name_paris">مسجد باريس الكبير</string>
     <string name="convention_name_quebec">المركز الإسلامي في كيبيك</string>
+    <string name="convention_name_kurdistan">كردستان</string>
+
+    <string name="convention_city_aqrah">عقرة</string>
+    <string name="convention_city_darbandikhan">دربندخان</string>
+    <string name="convention_city_dohuk">دهوك</string>
+    <string name="convention_city_erbil">أربيل</string>
+    <string name="convention_city_halabja">حلبجة</string>
+    <string name="convention_city_kifri">كفري</string>
+    <string name="convention_city_kirkuk">كركوك</string>
+    <string name="convention_city_koy_sanjaq">كوي سنجق</string>
+    <string name="convention_city_qaladiza">قلدز</string>
+    <string name="convention_city_sulaymaniyah">السليمانية</string>
+    <string name="convention_city_zakho">زاخو</string>
 
     <string name="asr_not_hanafi">الشافعي والمالكي والجعفري والحنبلي</string>
     <string name="asr_hanafi">الحنفي</string>

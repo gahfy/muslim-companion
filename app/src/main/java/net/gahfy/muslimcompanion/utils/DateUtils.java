@@ -93,4 +93,41 @@ public class DateUtils {
 
         return new int[]{year, month, day};
     }
+
+    /**
+     * Return an array of integer for the next day.
+     * @param year The year of the previous day
+     * @param month The month of the previous day
+     * @param day The day of the previous day
+     * @return An array of integer for the next day
+     */
+    public static int[] getNextDay(int year, int month, int day){
+        if(((month == 1 || month == 3 || month == 5 || month == 7 || month == 8 || month == 10 || month == 12) && day<31)
+                || (month == 2 && day<29 && year%4==0)
+                || (month == 2 && day<28 && year%4!=0)
+                || ((month == 4 || month == 6 || month == 9 || month == 11) && day<30))
+            return new int[]{year, month, day+1};
+        if(month < 12)
+            return new int[]{year, month+1, day};
+        return new int[]{year+1, 1, 1};
+    }
+
+    /**
+     * Return an array of integer for the previous day.
+     * @param year The year of the next day
+     * @param month The month of the next day
+     * @param day The day of the next day
+     * @return An array of integer for the previous day
+     */
+    public static int[] getPreviousDay(int year, int month, int day){
+        if(day > 1)
+            return new int[]{year, month, day-1};
+        if(month==2 || month==4 || month==6 || month==8 || month==9 || month==11)
+            return new int[]{year, month-1, 31};
+        if(month==5 || month==7 || month==10 || month==12)
+            return new int[]{year, month-1, 30};
+        if(month==3)
+            return new int[]{year, month-1, (year%4==0) ? 29 : 28};
+        return new int[]{year-1, 12, 31};
+    }
 }

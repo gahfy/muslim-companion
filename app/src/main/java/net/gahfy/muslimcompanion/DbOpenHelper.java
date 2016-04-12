@@ -10,7 +10,7 @@ import java.io.InputStream;
 
 public class DbOpenHelper extends SQLiteOpenHelper {
     private static final String DB_NAME = "muslimcompanion.db";
-    private static final int DB_VERSION = 10;
+    private static final int DB_VERSION = 11;
 
     private Context context;
     private static SQLiteDatabase db = null;
@@ -30,8 +30,28 @@ public class DbOpenHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
+        executeSqlFileFromAssets("create_database.jpg", db);
+    }
+
+    @Override
+    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        if(oldVersion < 10){
+            db.execSQL("DROP TABLE IF EXISTS cities;");
+            db.execSQL("DROP TABLE IF EXISTS alternateNames;");
+            db.execSQL("DROP TABLE IF EXISTS quran;");
+            db.execSQL("VACUUM");
+            this.onCreate(db);
+        }
+        else{
+            if(oldVersion < 11){
+                executeSqlFileFromAssets("update_10_11.jpg", db);
+            }
+        }
+    }
+
+    private void executeSqlFileFromAssets(String filename, SQLiteDatabase db){
         try {
-            InputStream is = context.getAssets().open("cities15000.jpg");
+            InputStream is = context.getAssets().open(filename);
             ByteArrayOutputStream bos = new ByteArrayOutputStream();
             int nRead;
             while ((nRead = is.read()) != -1) {
@@ -47,17 +67,6 @@ public class DbOpenHelper extends SQLiteOpenHelper {
         }
         catch(IOException e){
             e.printStackTrace();
-        }
-    }
-
-    @Override
-    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        if(oldVersion < 10){
-            db.execSQL("DROP TABLE IF EXISTS cities;");
-            db.execSQL("DROP TABLE IF EXISTS alternateNames;");
-            db.execSQL("DROP TABLE IF EXISTS quran;");
-            db.execSQL("VACUUM");
-            this.onCreate(db);
         }
     }
 }
